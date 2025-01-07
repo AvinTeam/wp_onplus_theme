@@ -16,6 +16,10 @@ define('OP_CSS', OP_ASSETS . 'css/');
 define('OP_JS', OP_ASSETS . 'js/');
 define('OP_IMAGE', OP_ASSETS . 'image/');
 
+require_once OP_INCLUDES . '/postype.php';
+require_once OP_INCLUDES . '/taxonomies.php';
+require_once OP_INCLUDES . '/meta_boxs.php';
+
 // require_once OP_INCLUDES . '/init.php';
 // require_once OP_INCLUDES . '/theme-function.php';
 // require_once OP_INCLUDES . '/styles.php';
@@ -29,12 +33,9 @@ define('OP_IMAGE', OP_ASSETS . 'image/');
 if (is_admin()) {
     // require_once OP_CLASS . '/List_Table.php';
 
-    // require_once OP_INCLUDES . '/menu.php';
-    // require_once OP_INCLUDES . '/install.php';
+    //require_once OP_INCLUDES . '/menu.php';
+    require_once OP_INCLUDES . '/install.php';
 
 }
-
-
-
 
 // exit;
