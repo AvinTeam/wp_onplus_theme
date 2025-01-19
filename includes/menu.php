@@ -1,15 +1,17 @@
 <?php
 (defined('ABSPATH')) || exit;
 
-add_action('admin_menu', 'mph_admin_menu');
+add_action('admin_menu', 'op_admin_menu');
 
 /**
  * Fires before the administration menu loads in the admin.
  *
  * @param string $context Empty context.
  */
-function mph_admin_menu(string $context): void
+function op_admin_menu(string $context): void
 {
+
+
 
     $menu_suffix = add_menu_page(
         'نصرالله',
@@ -112,9 +114,9 @@ function mph_admin_menu(string $context): void
             } else {
 
                 foreach ($_POST[ 'op_row' ] as $row) {
-                    $data = [ 'status' => sanitize_text_field($_POST[ 'action2' ]) ];
-                    $where = [ 'ID' => intval($row) ];
-                    $format = [ '%s' ];
+                    $data         = [ 'status' => sanitize_text_field($_POST[ 'action2' ]) ];
+                    $where        = [ 'ID' => intval($row) ];
+                    $format       = [ '%s' ];
                     $where_format = [ '%d' ];
 
                     $nasrdb->update($data, $where, $format, $where_format);
@@ -133,12 +135,12 @@ function mph_admin_menu(string $context): void
 
             if (isset($_POST[ 'form' ])) {
 
-                $_POST[ 'form' ][ 'text' ] = wp_kses_post(wp_unslash(nl2br($_POST[ 'form' ][ 'text' ])));
-                $_POST[ 'form' ][ 'ostan' ] = (isset($_POST[ 'form' ][ 'ostan' ])) ? true : false;
+                $_POST[ 'form' ][ 'text' ]           = wp_kses_post(wp_unslash(nl2br($_POST[ 'form' ][ 'text' ])));
+                $_POST[ 'form' ][ 'ostan' ]          = (isset($_POST[ 'form' ][ 'ostan' ])) ? true : false;
                 $_POST[ 'form' ][ 'ostan_required' ] = (isset($_POST[ 'form' ][ 'ostan_required' ])) ? true : false;
-                $_POST[ 'form' ][ 'avatar' ] = (isset($_POST[ 'form' ][ 'avatar' ])) ? true : false;
-                $_POST[ 'form' ][ 'description' ] = (isset($_POST[ 'form' ][ 'description' ])) ? true : false;
-                $_POST[ 'form' ][ 'signature' ] = (isset($_POST[ 'form' ][ 'signature' ])) ? true : false;
+                $_POST[ 'form' ][ 'avatar' ]         = (isset($_POST[ 'form' ][ 'avatar' ])) ? true : false;
+                $_POST[ 'form' ][ 'description' ]    = (isset($_POST[ 'form' ][ 'description' ])) ? true : false;
+                $_POST[ 'form' ][ 'signature' ]      = (isset($_POST[ 'form' ][ 'signature' ])) ? true : false;
 
             }
 
@@ -164,3 +166,41 @@ function mph_admin_menu(string $context): void
     }
 
 }
+
+
+
+
+
+
+
+
+function remove_duplicate_taxonomy_submenus() {
+    global $submenu;
+
+    // حذف زیرمنوی اضافی تاکسونومی از بخش پست تایپ‌های خاص
+    if (isset($submenu['edit.php?post_type=episode_cat'])) {
+
+
+        foreach ($submenu['edit.php?post_type=episode_cat'] as $key => $menu_item) {
+
+
+            if ($menu_item[2] == 'edit-tags.php?taxonomy=on_category&amp;post_type=episode_cat') {
+                unset($submenu['edit.php?post_type=episode_cat'][$key]);
+            }
+            if ($menu_item[2] == 'edit-tags.php?taxonomy=on_tag&amp;post_type=episode_cat') {
+                unset($submenu['edit.php?post_type=episode_cat'][$key]);
+            }
+            if ($menu_item[2] == 'edit-tags.php?taxonomy=on_agents&amp;post_type=episode_cat') {
+                unset($submenu['edit.php?post_type=episode_cat'][$key]);
+            }
+            if ($menu_item[2] == 'edit-tags.php?taxonomy=on_position&amp;post_type=episode_cat') {
+                unset($submenu['edit.php?post_type=episode_cat'][$key]);
+            }
+        }
+
+        
+        
+    }
+}
+
+add_action('admin_menu', 'remove_duplicate_taxonomy_submenus', 100);

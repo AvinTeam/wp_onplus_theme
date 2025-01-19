@@ -17,10 +17,6 @@ function op_panel_image($path)
     return OP_IMAGE . $path;
 }
 
-function op_panel_php($path)
-{
-    return OP_PHP . $path;
-}
 
 function op_remote(string $url)
 {

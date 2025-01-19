@@ -1,0 +1,67 @@
+@font-face {
+  font-family: "vazir";
+  src: url("../fonts/Vazir-Bold-FD.eot");
+  src: url("../fonts/Vazir-Bold-FD.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/Vazir-Bold-FD.woff2") format("woff2"),
+    url("../fonts/Vazir-Bold-FD.woff") format("woff"),
+    url("../fonts/Vazir-Bold-FD.ttf") format("truetype");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "vazir";
+  src: url("../fonts/Vazir-FD.eot");
+  src: url("../fonts/Vazir-FD.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/Vazir-FD.woff2") format("woff2"),
+    url("../fonts/Vazir-FD.woff") format("woff"),
+    url("../fonts/Vazir-FD.ttf") format("truetype");
+}
+
+* {
+  font-family: vazir;
+}
+
+.menu-preview {
+    margin: 5px 0px;
+    padding: 10px;
+    border-radius: 10px;
+    width: 100%;
+  }
+  
+  .menu-preview input {
+    padding: 5px;
+  }
+
+  .agents-row {
+    margin: 10px 0px;
+    display: flex;
+    gap: 1rem;
+  }
+  
+  #onplus-general-preview #wp-content-editor-container textarea {
+    color: #000;
+
+  }
+
+  
+.button-error {
+  background: #b12222 !important;
+  border-color: #b12222 !important;
+  border-radius: 10px !important;
+}
+
+.button-error:hover {
+  background: #961313 !important;
+  border-color: #961313 !important;
+}
+
+.button-success {
+  background: #4ab122 !important;
+  border-color: #4ab122 !important;
+  border-radius: 10px !important;
+}
+
+.button-success:hover {
+  background: #139613 !important;
+  border-color: #139613 !important;
+}
