@@ -1,150 +1,87 @@
 <?php
 (defined('ABSPATH')) || exit;
 
-add_action('admin_menu', 'op_admin_menu');
+add_action('admin_menu', 'arma_admin_menu');
 
 /**
  * Fires before the administration menu loads in the admin.
  *
  * @param string $context Empty context.
  */
-function op_admin_menu(string $context): void
+function arma_admin_menu(string $context): void
 {
 
-
-
-    $menu_suffix = add_menu_page(
-        'نصرالله',
-        'نصرالله',
+    add_menu_page(
+        'آرمامدیا',
+        'آرمامدیا',
         'manage_options',
-        'onplus',
-        'op_menu_callback',
+        'arma',
+        'setting_panels',
         'dashicons-hammer',
-        55
+        2
     );
-
-    add_submenu_page(
-        'onplus',
-        'لیست',
-        'لیست',
-        'manage_options',
-        'nasr',
-        'op_menu_callback',
-    );
-
-    function op_menu_callback()
-    {
-        $op_option = op_start_working();
-
-        $nasrListTable = new List_Table;
-
-        require_once OP_VIEWS . 'list.php';
-
-    }
 
     $setting_suffix = add_submenu_page(
-        'nasr',
-        'تنظیمات کلی',
-        'تنظیمات کلی',
+        'arma',
+        'تنظیمات',
+        'تنظیمات',
         'manage_options',
-        'setting_panels',
+        'arma',
         'setting_panels',
     );
 
     function setting_panels()
     {
-        $op_option = op_start_working();
+        $arma_option = arma_start_working();
 
-        require_once OP_VIEWS . 'setting.php';
+        require_once ARMA_VIEWS . 'menu/setting.php';
 
     }
 
     $sms_panels_suffix = add_submenu_page(
-        'nasr',
+        'arma',
         'تنظیمات پنل پیامک',
         'تنظیمات پنل پیامک',
         'manage_options',
         'sms_panels',
-        'op_sms_panels',
+        'arma_sms_panels',
     );
 
-    function op_sms_panels()
+    function arma_sms_panels()
     {
-        $op_option = op_start_working();
+        $arma_option = arma_start_working();
 
-        require_once OP_VIEWS . 'setting_sms_panels.php';
+        require_once ARMA_VIEWS . 'menu/setting_sms_panels.php';
 
     }
-    $form_panels_suffix = add_submenu_page(
-        'nasr',
-        'تنظیمات فرم',
-        'تنظیمات فرم',
+
+    $home_page_suffix = add_submenu_page(
+        'arma',
+        'تنظیمات صفحه نخست',
+        'تنظیمات صفحه نخست',
         'manage_options',
-        'form_panels',
-        'op_form_panels',
+        'arma_home_page',
+        'arma_home_page',
     );
 
-    function op_form_panels()
+    function arma_home_page()
     {
-        $op_option = op_start_working();
+        $arma_option = arma_start_working();
 
-        require_once OP_VIEWS . 'setting_form_panels.php';
+        require_once ARMA_VIEWS . 'menu/home_page.php';
 
     }
 
-    add_action('load-' . $menu_suffix, 'op__list');
-    add_action('load-' . $setting_suffix, 'op__submit');
-    add_action('load-' . $sms_panels_suffix, 'op__submit');
-    add_action('load-' . $form_panels_suffix, 'op__submit');
+    add_action('load-' . $setting_suffix, 'arma__submit');
+    add_action('load-' . $sms_panels_suffix, 'arma__submit');
+    add_action('load-' . $home_page_suffix, 'arma__home_page');
 
-    function op__list()
+    function arma__submit()
     {
 
-        if (isset($_POST[ 'action2' ]) && in_array($_POST[ 'action2' ], [ 'successful', 'failed', 'delete' ])) {
+        if (isset($_POST[ 'arma_act' ]) && $_POST[ 'arma_act' ] == 'arma__submit') {
 
-            $nasrdb = new NasrDB();
-
-            if (sanitize_text_field($_POST[ 'action2' ]) == 'delete') {
-
-                foreach ($_POST[ 'op_row' ] as $row) {
-                    $delete_row = $nasrdb->delete(intval($row));
-
-                }
-
-            } else {
-
-                foreach ($_POST[ 'op_row' ] as $row) {
-                    $data         = [ 'status' => sanitize_text_field($_POST[ 'action2' ]) ];
-                    $where        = [ 'ID' => intval($row) ];
-                    $format       = [ '%s' ];
-                    $where_format = [ '%d' ];
-
-                    $nasrdb->update($data, $where, $format, $where_format);
-                }
-
-            }
-
-        }
-
-    }
-
-    function op__submit()
-    {
-
-        if (isset($_POST[ 'op_act' ]) && $_POST[ 'op_act' ] == 'op__submit') {
-
-            if (isset($_POST[ 'form' ])) {
-
-                $_POST[ 'form' ][ 'text' ]           = wp_kses_post(wp_unslash(nl2br($_POST[ 'form' ][ 'text' ])));
-                $_POST[ 'form' ][ 'ostan' ]          = (isset($_POST[ 'form' ][ 'ostan' ])) ? true : false;
-                $_POST[ 'form' ][ 'ostan_required' ] = (isset($_POST[ 'form' ][ 'ostan_required' ])) ? true : false;
-                $_POST[ 'form' ][ 'avatar' ]         = (isset($_POST[ 'form' ][ 'avatar' ])) ? true : false;
-                $_POST[ 'form' ][ 'description' ]    = (isset($_POST[ 'form' ][ 'description' ])) ? true : false;
-                $_POST[ 'form' ][ 'signature' ]      = (isset($_POST[ 'form' ][ 'signature' ])) ? true : false;
-
-            }
-
-            if (wp_verify_nonce($_POST[ '_wpnonce' ], 'op_nonce' . get_current_user_id())) {
+            if (wp_verify_nonce($_POST[ '_wpnonce' ], 'arma_nonce' . get_current_user_id())) {
                 if (isset($_POST[ 'tsms' ])) {
                     $_POST[ 'tsms' ] = array_map('sanitize_text_field', $_POST[ 'tsms' ]);
                 }
@@ -152,12 +89,26 @@ function op_admin_menu(string $context): void
                     $_POST[ 'ghasedaksms' ] = array_map('sanitize_text_field', $_POST[ 'ghasedaksms' ]);
                 }
 
-                op_update_option($_POST);
+                arma_update_option($_POST);
 
-                set_transient('success_mat', 'تغییر با موفقیت ثبت شد');
+                wp_admin_notice(
+                    'تغییر شما با موفقیت ثبت شد',
+                    [
+                        'id'          => 'message',
+                        'type'        => 'success',
+                        'dismissible' => true,
+                     ]
+                );
 
             } else {
-                set_transient('error_mat', 'ذخیره سازی به مشکل خورده دوباره تلاش کنید');
+                wp_admin_notice(
+                    'ذخیره سازی به مشکل خورده دوباره تلاش کنید',
+                    [
+                        'id'          => 'arma_message',
+                        'type'        => 'error',
+                        'dismissible' => true,
+                     ]
+                );
 
             }
 
@@ -165,41 +116,45 @@ function op_admin_menu(string $context): void
 
     }
 
-}
+    function arma__home_page()
+    {
 
+        if (isset($_POST[ 'arma_act' ]) && $_POST[ 'arma_act' ] == 'arma__home_page') {
 
+            if (wp_verify_nonce($_POST[ '_wpnonce' ], 'arma_nonce' . get_current_user_id())) {
+                
+                arma_update_option($_POST);
 
-
-
-
-
-
-function remove_duplicate_taxonomy_submenus() {
-    global $submenu;
-
-    // حذف زیرمنوی اضافی تاکسونومی از بخش پست تایپ‌های خاص
-    if (isset($submenu['edit.php?post_type=episode_cat'])) {
-
-
-        foreach ($submenu['edit.php?post_type=episode_cat'] as $key => $menu_item) {
-
-
-            if ($menu_item[2] == 'edit-tags.php?taxonomy=on_category&amp;post_type=episode_cat') {
-                unset($submenu['edit.php?post_type=episode_cat'][$key]);
-            }
-            if ($menu_item[2] == 'edit-tags.php?taxonomy=on_tag&amp;post_type=episode_cat') {
-                unset($submenu['edit.php?post_type=episode_cat'][$key]);
-            }
-            if ($menu_item[2] == 'edit-tags.php?taxonomy=on_agents&amp;post_type=episode_cat') {
-                unset($submenu['edit.php?post_type=episode_cat'][$key]);
-            }
-            if ($menu_item[2] == 'edit-tags.php?taxonomy=on_position&amp;post_type=episode_cat') {
-                unset($submenu['edit.php?post_type=episode_cat'][$key]);
             }
         }
 
-        
-        
+    }
+
+}
+
+function remove_duplicate_taxonomy_submenus()
+{
+    global $submenu;
+
+    // حذف زیرمنوی اضافی تاکسونومی از بخش پست تایپ‌های خاص
+    if (isset($submenu[ 'edit.php?post_type=episode_cat' ])) {
+
+        foreach ($submenu[ 'edit.php?post_type=episode_cat' ] as $key => $menu_item) {
+
+            if ($menu_item[ 2 ] == 'edit-tags.php?taxonomy=on_category&amp;post_type=episode_cat') {
+                unset($submenu[ 'edit.php?post_type=episode_cat' ][ $key ]);
+            }
+            if ($menu_item[ 2 ] == 'edit-tags.php?taxonomy=on_tag&amp;post_type=episode_cat') {
+                unset($submenu[ 'edit.php?post_type=episode_cat' ][ $key ]);
+            }
+            if ($menu_item[ 2 ] == 'edit-tags.php?taxonomy=on_agents&amp;post_type=episode_cat') {
+                unset($submenu[ 'edit.php?post_type=episode_cat' ][ $key ]);
+            }
+            if ($menu_item[ 2 ] == 'edit-tags.php?taxonomy=on_position&amp;post_type=episode_cat') {
+                unset($submenu[ 'edit.php?post_type=episode_cat' ][ $key ]);
+            }
+        }
+
     }
 }
 

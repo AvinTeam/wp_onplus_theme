@@ -9,24 +9,36 @@
 
             <tr>
                 <th>توضیحات مختصر</th>
-                <td>
-                    <?php
-                        wp_editor('', 'content', [
-                            'textarea_name' => 'post_content',
-                            'media_buttons' => true,
+                <td><?php
+
+                        $editor_array = [
+                            'media_buttons' => false,
+                            'textarea_name' => 'onplus[brief]',
                             'textarea_rows' => 10,
-                         ]);
-                    ?>
+                            'tinymce'       => [
+                                'wpautop'                 => true,
+                                'force_p_newlines'        => true,
+                                'br_in_pre'               => true,
+                                'valid_elements'          => '*[*]',
+                                'extended_valid_elements' => 'p[*],br[*],span[*]',
+                                'remove_linebreaks'       => false,
+
+                             ],
+                         ];
+
+                    wp_editor($arma_brief, 'brief', $editor_array)?>
+
                 </td>
             </tr>
 
             <tr>
                 <th>آدرس فایل w3u8</th>
-                <td><input class="regular-text" name="onplus[responsible]" value=""></td>
+                <td><input class="regular-text" name="onplus[video]" value="<?=$arma_video?>"></td>
+                
             </tr>
             <tr>
                 <th>تاریخ تولید</th>
-                <td><input data-jdp class="regular-text" name="onplus[responsible]" value=""></td>
+                <td><input data-jdp class="regular-text" name="onplus[production_date]" value="<?=$arma_production_date?>"></td>
             </tr>
         </table>
     </div>

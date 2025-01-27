@@ -21,29 +21,37 @@
   font-family: vazir;
 }
 
+.d-none {
+  display: none !important;
+}
+
+.w-100 {
+  width: 100%;
+}
+
 .menu-preview {
-    margin: 5px 0px;
-    padding: 10px;
-    border-radius: 10px;
-    width: 100%;
-  }
-  
-  .menu-preview input {
-    padding: 5px;
-  }
+  margin: 5px 0px;
+  padding: 10px;
+  border-radius: 10px;
+  width: 100%;
+}
 
-  .agents-row {
-    margin: 10px 0px;
-    display: flex;
-    gap: 1rem;
-  }
-  
-  #onplus-general-preview #wp-content-editor-container textarea {
-    color: #000;
+.menu-preview input {
+  padding: 5px;
+}
 
-  }
+.agents-row {
+  margin: 10px 0px;
+  display: flex;
+  gap: 1rem;
+}
 
-  
+#onplus-general-preview #wp-content-editor-container textarea {
+  color: #000;
+
+}
+
+
 .button-error {
   background: #b12222 !important;
   border-color: #b12222 !important;
@@ -64,4 +72,72 @@
 .button-success:hover {
   background: #139613 !important;
   border-color: #139613 !important;
+}
+
+
+.accordion {
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.accordion-content {
+  margin-top: 10px;
+  display: none;
+}
+
+.accordion input,
+.accordion textarea,
+.accordion select {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.accordion input[type="color"] {
+  width: 50px;
+  height: 30px;
+  padding: 0;
+}
+
+.accordion.active .accordion-content {
+  display: block;
+}
+
+#add-accordion-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#add-accordion-btn:hover {
+  background-color: #0056b3;
+}
+
+.delete-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background-color: #d11a1a;
 }

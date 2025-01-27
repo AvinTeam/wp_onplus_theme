@@ -143,6 +143,43 @@ function ajax_select_position()
 
 }
 
+add_action('wp_ajax_arma_send_category', 'arma_send_category');
+
+function arma_send_category()
+{
+
+    if (! wp_verify_nonce($_POST[ 'nonce' ], 'ajax-nonce' . arma_cookie())) {wp_send_json_error('خطا');}
+
+    $all_option = '<option value="0">انتخاب اپیزود</option>';
+
+    $args = [
+        'post_type' => 'episode',
+        'tax_query' => [
+            [
+                'taxonomy' => 'on_category',
+                'field'    => 'term_id',
+                'terms'    => absint($_POST[ 'cat_id' ]),
+             ],
+         ],
+     ];
+
+    $posts = get_posts($args);
+
+    if (! empty($posts)) {
+        foreach ($posts as $post) {
+            setup_postdata($post);
+            $all_option .= '<option value="' . $post->ID . '">' . get_the_title($post) . '</option>';
+        }
+        wp_send_json_success($all_option);
+
+        wp_reset_postdata();
+    } else {
+        wp_send_json_error('هیچ پستی پیدا نشد.');
+    }
+    wp_send_json_error('هیچ پستی پیدا نشد.');
+
+}
+
 // add_action('wp_ajax_nasr_sent_sms', 'nasr_sent_sms');
 // add_action('wp_ajax_nopriv_nasr_sent_sms', 'nasr_sent_sms');
 

@@ -1,13 +1,12 @@
 <?php
-(defined('ABSPATH')) || exit;
-global $title;
+    (defined('ABSPATH')) || exit;
+    global $title;
 
 ?>
 
 <div id="wpbody-content">
-    <div class="wrap">
+    <div class="wrap arma_menu">
         <h1><?php echo esc_html($title) ?></h1>
-
 
         <hr class="wp-header-end">
 
@@ -24,7 +23,7 @@ global $title;
         <?php set_transient('success_mat', '');}?>
 
         <form method="post" action="" novalidate="novalidate" class="ag_form">
-            <?php wp_nonce_field('nasr_nonce' . get_current_user_id());?>
+            <?php wp_nonce_field('arma_nonce' . get_current_user_id()); ?>
             <h2 class="title">نوتیویکیتور ( <a href="https://notificator.ir">لینک</a> )</h2>
             <table class="form-table" role="presentation">
                 <tbody>
@@ -32,7 +31,7 @@ global $title;
                         <th scope="row"><label for="notificator_token">توکن نوتیو</label></th>
                         <td>
                             <input name="notificator_token" type="text" id="notificator_token"
-                                value="<?=$nasr_option[ 'notificator_token' ]?>" class="regular-text">
+                                value="<?php echo $arma_option[ 'notificator_token' ]?>" class="regular-text">
                         </td>
                     </tr>
                 </tbody>
@@ -45,21 +44,21 @@ global $title;
                         <th scope="row"><label for="tsms_username">نام کاربری</label></th>
                         <td>
                             <input name="tsms[username]" type="text" id="tsms_username"
-                                value="<?=$nasr_option['tsms'][ 'username' ]?>" class="regular-text">
+                                value="<?php echo $arma_option[ 'tsms' ][ 'username' ]?>" class="regular-text">
                         </td>
                     </tr>
                     <tr>
                         <th scope="row"><label for="tsms_password">رمز عبور پنل پیامک</label></th>
                         <td>
                             <input name="tsms[password]" type="text" id="tsms_password"
-                                value="<?=$nasr_option['tsms'][ 'password' ]?>" class="regular-text">
+                                value="<?php echo $arma_option[ 'tsms' ][ 'password' ]?>" class="regular-text">
                         </td>
                     </tr>
                     <tr>
                         <th scope="row"><label for="tsms_number">شماره ارسال پیامک</label></th>
                         <td>
                             <input name="tsms[number]" type="text" id="tsms_number"
-                                value="<?=$nasr_option['tsms'][ 'number' ]?>" class="regular-text">
+                                value="<?php echo $arma_option[ 'tsms' ][ 'number' ]?>" class="regular-text">
                         </td>
                     </tr>
                 </tbody>
@@ -72,14 +71,14 @@ global $title;
                         <th scope="row"><label for="ghasedaksms_ApiKey">ApiKey</label></th>
                         <td>
                             <input name="ghasedaksms[ApiKey]" type="text" id="ghasedaksms_ApiKey"
-                                value="<?=$nasr_option['ghasedaksms'][ 'ApiKey' ]?>" class="regular-text">
+                                value="<?php echo $arma_option[ 'ghasedaksms' ][ 'ApiKey' ]?>" class="regular-text">
                         </td>
                     </tr>
                     <tr>
                         <th scope="row"><label for="ghasedaksms_number">شماره ارسال پیامک</label></th>
                         <td>
                             <input name="ghasedaksms[number]" type="text" id="ghasedaksms_number"
-                                value="<?=$nasr_option['ghasedaksms'][ 'number' ]?>" class="regular-text">
+                                value="<?php echo $arma_option[ 'ghasedaksms' ][ 'number' ]?>" class="regular-text">
                         </td>
                     </tr>
                 </tbody>
@@ -92,7 +91,7 @@ global $title;
 
 
             <p class="submit">
-                <button type="submit" name="nasr_act" value="nasr__submit" id="submit"
+                <button type="submit" name="arma_act" value="arma__submit" id="submit"
                     class="button button-primary">ذخیرهٔ
                     تغییرات</button>
             </p>

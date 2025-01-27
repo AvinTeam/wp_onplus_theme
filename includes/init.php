@@ -59,7 +59,7 @@
 
     add_action('init', 'action_init');
 
-    function op_title_filter($title)
+    function arma_title_filter($title)
     {
         if (is_home() || is_front_page()) {
             $title = get_bloginfo('name') . " | صفحه اصلی";
@@ -78,7 +78,7 @@
         }
         return $title;
     }
-    add_filter('wp_title', 'op_title_filter');
+    add_filter('wp_title', 'arma_title_filter');
 
     function change_admin_title_based_on_arg($admin_title, $title)
     {
@@ -118,7 +118,7 @@
             ?>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var customMetaBox = document.getElementById('op_episode');
+            var customMetaBox = document.getElementById('arma_episode');
             var categoriesBox = document.getElementById('on_categorydiv');
             var tagsBox = document.getElementById('tagsdiv-on_tag');
 

@@ -2,23 +2,22 @@
 
 (defined('ABSPATH')) || exit;
 
-function op_panel_js($path)
+function arma_panel_js($path)
 {
-    return OP_JS . $path . '?ver=' . OP_VERSION;
+    return ARMA_JS . $path . '?ver=' . ARMA_VERSION;
 }
 
-function op_panel_css($path)
+function arma_panel_css($path)
 {
-    return OP_CSS . $path . '?ver=' . OP_VERSION;
+    return ARMA_CSS . $path . '?ver=' . ARMA_VERSION;
 }
 
-function op_panel_image($path)
+function arma_panel_image($path)
 {
-    return OP_IMAGE . $path;
+    return ARMA_IMAGE . $path;
 }
 
-
-function op_remote(string $url)
+function arma_remote(string $url)
 {
     $res = wp_remote_get(
         $url,
@@ -28,12 +27,12 @@ function op_remote(string $url)
 
     if (is_wp_error($res)) {
         $result = [
-            'code' => 1,
+            'code'   => 1,
             'result' => $res->get_error_message(),
          ];
     } else {
         $result = [
-            'code' => 0,
+            'code'   => 0,
             'result' => json_decode($res[ 'body' ]),
          ];
     }
@@ -41,75 +40,72 @@ function op_remote(string $url)
     return $result;
 }
 
-function op_start_working(): array
+function arma_start_working(): array
 {
 
-    if (!isset($_GET[ 'avin_cron' ])) {
-        op_cookie();
-    }
-    $op_option = get_option('op_option');
+    arma_cookie();
 
-    if (!isset($op_option[ 'version' ]) || version_compare(OP_VERSION, $op_option[ 'version' ], '>')) {
+    $arma_option = get_option('arma_option');
+
+    if (! isset($arma_option[ 'version' ]) || version_compare(ARMA_VERSION, $arma_option[ 'version' ], '>')) {
 
         update_option(
-            'op_option',
+            'arma_option',
             [
-                'version' => OP_VERSION,
-                'tsms' => (isset($op_option[ 'tsms' ])) ? $op_option[ 'tsms' ] : [ 'username' => '', 'password' => '', 'number' => '' ],
-                'ghasedaksms' => (isset($op_option[ 'ghasedaksms' ])) ? $op_option[ 'ghasedaksms' ] : [ 'ApiKey' => '', 'number' => '' ],
-                'form' => (isset($op_option[ 'form' ])) ? $op_option[ 'form' ] : [ 'text' => '', 'ostan' => true, 'ostan_required' => false, 'avatar' => true, 'description' => true, 'signature' => true ],
-                'sms_text_otp' => (isset($op_option[ 'sms_text_otp' ])) ? $op_option[ 'sms_text_otp' ] : 'کد تأیید شما: %otp%',
-                'set_timer' => (isset($op_option[ 'set_timer' ])) ? $op_option[ 'set_timer' ] : 1,
-                'set_code_count' => (isset($op_option[ 'set_code_count' ])) ? $op_option[ 'set_code_count' ] : 4,
-                'show_signature' => (isset($op_option[ 'show_signature' ])) ? $op_option[ 'show_signature' ] : 12,
-                'start_signature' => (isset($op_option[ 'start_signature' ])) ? $op_option[ 'start_signature' ] : 0,
-                'sms_type' => (isset($op_option[ 'sms_type' ])) ? $op_option[ 'sms_type' ] : 'tsms',
-                'images_logo' => (isset($op_option[ 'images_logo' ])) ? intval($op_option[ 'images_logo' ]) : '/wp-content/themes/nasrollah/assets/image/wemen.jpg',
-                'notificator_token' => (isset($op_option[ 'notificator_token' ])) ? $op_option[ 'notificator_token' ] : '',
-                'target_word' => (isset($op_option[ 'target_word' ])) ? $op_option[ 'target_word' ] : 1,
+                'version'           => ARMA_VERSION,
+                'tsms'              => (isset($arma_option[ 'tsms' ])) ? $arma_option[ 'tsms' ] : [ 'username' => '', 'password' => '', 'number' => '' ],
+                'ghasedaksms'       => (isset($arma_option[ 'ghasedaksms' ])) ? $arma_option[ 'ghasedaksms' ] : [ 'ApiKey' => '', 'number' => '' ],
+                'form'              => (isset($arma_option[ 'form' ])) ? $arma_option[ 'form' ] : [ 'text' => '', 'ostan' => true, 'ostan_required' => false, 'avatar' => true, 'description' => true, 'signature' => true ],
+                'sms_text_otp'      => (isset($arma_option[ 'sms_text_otp' ])) ? $arma_option[ 'sms_text_otp' ] : 'کد تأیید شما: %otp%',
+                'set_timer'         => (isset($arma_option[ 'set_timer' ])) ? $arma_option[ 'set_timer' ] : 1,
+                'set_code_count'    => (isset($arma_option[ 'set_code_count' ])) ? $arma_option[ 'set_code_count' ] : 4,
+                'show_signature'    => (isset($arma_option[ 'show_signature' ])) ? $arma_option[ 'show_signature' ] : 12,
+                'start_signature'   => (isset($arma_option[ 'start_signature' ])) ? $arma_option[ 'start_signature' ] : 0,
+                'sms_type'          => (isset($arma_option[ 'sms_type' ])) ? $arma_option[ 'sms_type' ] : 'tsms',
+                'notificator_token' => (isset($arma_option[ 'notificator_token' ])) ? $arma_option[ 'notificator_token' ] : '',
+                'home_page'         => (isset($arma_option[ 'home_page' ])) ? $arma_option[ 'home_page' ] : '',
 
              ]
 
         );
     }
 
-    return get_option('op_option');
+    return get_option('arma_option');
 
 }
 
-function op_update_option($data)
+function arma_update_option($data)
 {
 
-    $op_option = get_option('op_option');
+    $arma_option = get_option('arma_option');
 
-    $op_option = [
-        'version' => OP_VERSION,
-        'tsms' => (isset($data[ 'tsms' ])) ? $data[ 'tsms' ] : $op_option[ 'tsms' ],
-        'ghasedaksms' => (isset($data[ 'ghasedaksms' ])) ? $data[ 'ghasedaksms' ] : $op_option[ 'ghasedaksms' ],
-        'form' => (isset($data[ 'form' ])) ? $data[ 'form' ] : $op_option[ 'form' ],
-        'set_timer' => (isset($data[ 'set_timer' ])) ? absint($data[ 'set_timer' ]) : $op_option[ 'set_timer' ],
-        'set_code_count' => (isset($data[ 'set_code_count' ])) ? absint($data[ 'set_code_count' ]) : $op_option[ 'set_code_count' ],
-        'show_signature' => (isset($data[ 'show_signature' ])) ? $data[ 'show_signature' ] : $op_option[ 'show_signature' ],
-        'start_signature' => (isset($data[ 'start_signature' ])) ? $data[ 'start_signature' ] : $op_option[ 'start_signature' ],
-        'sms_text_otp' => (isset($data[ 'sms_text_otp' ])) ? sanitize_textarea_field($data[ 'sms_text_otp' ]) : $op_option[ 'sms_text_otp' ],
-        'sms_type' => (isset($data[ 'sms_type' ])) ? sanitize_text_field($data[ 'sms_type' ]) : $op_option[ 'sms_type' ],
-        'images_logo' => (isset($data[ 'images_logo' ])) ? intval($data[ 'images_logo' ]) : $op_option[ 'images_logo' ],
-        'notificator_token' => (isset($data[ 'notificator_token' ])) ? sanitize_text_field($data[ 'notificator_token' ]) : $op_option[ 'notificator_token' ],
-        'target_word' => (isset($data[ 'target_word' ])) ? $data[ 'target_word' ] : $op_option[ 'target_word' ],
+    $arma_option = [
+        'version'           => ARMA_VERSION,
+        'tsms'              => (isset($data[ 'tsms' ])) ? $data[ 'tsms' ] : $arma_option[ 'tsms' ],
+        'ghasedaksms'       => (isset($data[ 'ghasedaksms' ])) ? $data[ 'ghasedaksms' ] : $arma_option[ 'ghasedaksms' ],
+        'form'              => (isset($data[ 'form' ])) ? $data[ 'form' ] : $arma_option[ 'form' ],
+        'set_timer'         => (isset($data[ 'set_timer' ])) ? absint($data[ 'set_timer' ]) : $arma_option[ 'set_timer' ],
+        'set_code_count'    => (isset($data[ 'set_code_count' ])) ? absint($data[ 'set_code_count' ]) : $arma_option[ 'set_code_count' ],
+        'show_signature'    => (isset($data[ 'show_signature' ])) ? $data[ 'show_signature' ] : $arma_option[ 'show_signature' ],
+        'start_signature'   => (isset($data[ 'start_signature' ])) ? $data[ 'start_signature' ] : $arma_option[ 'start_signature' ],
+        'sms_text_otp'      => (isset($data[ 'sms_text_otp' ])) ? sanitize_textarea_field($data[ 'sms_text_otp' ]) : $arma_option[ 'sms_text_otp' ],
+        'sms_type'          => (isset($data[ 'sms_type' ])) ? sanitize_text_field($data[ 'sms_type' ]) : $arma_option[ 'sms_type' ],
+        'notificator_token' => (isset($data[ 'notificator_token' ])) ? sanitize_text_field($data[ 'notificator_token' ]) : $arma_option[ 'notificator_token' ],
+        'home_page'         => (isset($data[ 'home_page' ])) ? $data[ 'home_page' ] : $arma_option[ 'home_page' ],
 
      ];
 
-    update_option('op_option', $op_option);
+    update_option('arma_option', $arma_option);
 
 }
 
-function op_massage_otp($otp)
+function arma_massage_otp($otp)
 {
-    global $op_option;
+    global $arma_option;
 
     $server_name = $_SERVER[ 'SERVER_NAME' ];
 
-    $finalMessage = str_replace('%otp%', $otp, $op_option[ 'sms_text_otp' ]);
+    $finalMessage = str_replace('%otp%', $otp, $arma_option[ 'sms_text_otp' ]);
 
     //$massage = $finalMessage . PHP_EOL . "@" . $server_name . " #" . $otp;
     $massage = $finalMessage;
@@ -118,13 +114,13 @@ function op_massage_otp($otp)
 
 }
 
-function op_massage_format($data)
+function arma_massage_format($data)
 {
-    global $op_option;
+    global $arma_option;
     $server_name = $_SERVER[ 'SERVER_NAME' ];
 
-    $finalMessage = str_replace([ '%username%', '%password%', '%url%' ], $data, $op_option[ 'sms_text_format' ]);
-    $massage = $finalMessage . PHP_EOL . $server_name;
+    $finalMessage = str_replace([ '%username%', '%password%', '%url%' ], $data, $arma_option[ 'sms_text_format' ]);
+    $massage      = $finalMessage . PHP_EOL . $server_name;
 
     return $massage;
 
@@ -132,10 +128,10 @@ function op_massage_format($data)
 
 function notificator($mobile, $massage)
 {
-    global $op_option;
+    global $arma_option;
 
     $data = [
-        'to' => $op_option[ 'notificator_token' ],
+        'to'   => $arma_option[ 'notificator_token' ],
         'text' => $mobile . PHP_EOL . $massage,
      ];
 
@@ -147,7 +143,7 @@ function notificator($mobile, $massage)
     $result = json_decode(wp_remote_retrieve_body($response));
 
     $result = [
-        'code' => $result->success,
+        'code'    => $result->success,
         'massage' => ($result->success) ? 'پیام با موفقیت ارسال شد' : 'پیام به خطا خورده است ',
      ];
 
@@ -158,19 +154,19 @@ function notificator($mobile, $massage)
 function tsms($mobile, $massage)
 {
 
-    global $op_option;
+    global $arma_option;
 
     $msg_array = [ $massage ];
 
     $data = [
-        'method' => 'sendSms',
-        'username' => $op_option[ 'tsms' ][ 'username' ],
-        'password' => $op_option[ 'tsms' ][ 'password' ],
-        'sms_number' => array($op_option[ 'tsms' ][ 'number' ]),
-        'mobile' => [ $mobile ],
-        'msg' => $msg_array,
-        'mclass' => array(''),
-        'messagid' => rand(),
+        'method'     => 'sendSms',
+        'username'   => $arma_option[ 'tsms' ][ 'username' ],
+        'password'   => $arma_option[ 'tsms' ][ 'password' ],
+        'sms_number' => [ $arma_option[ 'tsms' ][ 'number' ] ],
+        'mobile'     => [ $mobile ],
+        'msg'        => $msg_array,
+        'mclass'     => [ '' ],
+        'messagid'   => rand(),
      ];
 
     $response = wp_remote_post('https://www.tsms.ir/json/json.php', [
@@ -180,7 +176,7 @@ function tsms($mobile, $massage)
     $response = json_decode(wp_remote_retrieve_body($response));
 
     $result = [
-        'code' => ($response->code == 200) ? 1 : $response->code,
+        'code'    => ($response->code == 200) ? 1 : $response->code,
         'massage' => ($response->code == 200) ? 'پیام با موفقیت ارسال شد' : 'پیام به خطا خورده است',
      ];
     return $result;
@@ -190,46 +186,46 @@ function tsms($mobile, $massage)
 function ghasedaksms($mobile, $massage)
 {
 
-    global $op_option;
+    global $arma_option;
     $data = [
-        'message' => $massage,
-        'sender' => $op_option[ 'ghasedaksms' ][ 'number' ],
+        'message'  => $massage,
+        'sender'   => $arma_option[ 'ghasedaksms' ][ 'number' ],
         'receptor' => $mobile,
      ];
     $header = [
-        'ApiKey' => $op_option[ 'ghasedaksms' ][ 'ApiKey' ],
+        'ApiKey' => $arma_option[ 'ghasedaksms' ][ 'ApiKey' ],
      ];
 
     $response = wp_remote_post('http://api.ghasedaksms.com/v2/sms/send/bulk2', [
         'headers' => $header,
-        'body' => http_build_query($data),
+        'body'    => http_build_query($data),
      ]);
 
     $response = json_decode(wp_remote_retrieve_body($response));
 
     $result = [
-        'code' => ($response->result == 'success' && strlen($response->messageids) > 5) ? 1 : $response->messageids,
+        'code'    => ($response->result == 'success' && strlen($response->messageids) > 5) ? 1 : $response->messageids,
         'massage' => ($response->result == 'success' && strlen($response->messageids) > 5) ? 'پیام با موفقیت ارسال شد' : 'پیام به خطا خورده است',
      ];
     return $result;
 
 }
 
-function op_send_sms($mobile, $type, $data = [  ])
+function arma_send_sms($mobile, $type, $data = [  ])
 {
 
-    global $op_option;
+    global $arma_option;
     $massage = '';
 
     $result = [
-        'code' => 0,
+        'code'    => 0,
         'massage' => $mobile,
      ];
 
     // بررسی فرمت شماره موبایل
-    if (!preg_match('/^09[0-9]{9}$/', $mobile)) {
+    if (! preg_match('/^09[0-9]{9}$/', $mobile)) {
         $result = [
-            'code' => -1,
+            'code'    => -1,
             'massage' => 'شماره موبایل معتبر نیست.',
          ];
     }
@@ -237,20 +233,20 @@ function op_send_sms($mobile, $type, $data = [  ])
     if ($type == 'otp') {
         if (get_transient('otp_' . $mobile)) {
             $result = [
-                'code' => -2,
+                'code'    => -2,
                 'massage' => 'لطفا چند دقیقه دیگر تلاش کنید.',
              ];
         }
 
         $otp = '';
 
-        for ($i = 0; $i < $op_option[ 'set_code_count' ]; $i++) {
+        for ($i = 0; $i < $arma_option[ 'set_code_count' ]; $i++) {
             $otp .= rand(0, 9);
         }
-        set_transient('otp_' . $mobile, $otp, $op_option[ 'set_timer' ] * MINUTE_IN_SECONDS);
+        set_transient('otp_' . $mobile, $otp, $arma_option[ 'set_timer' ] * MINUTE_IN_SECONDS);
 
         if ($result[ 'code' ] == 0) {
-            $result = $op_option[ 'sms_type' ]($mobile, op_massage_otp($otp));
+            $result = $arma_option[ 'sms_type' ]($mobile, arma_massage_otp($otp));
             if ($result[ 'code' ] != 1) {
                 delete_transient('otp_' . $mobile);
 
@@ -259,8 +255,8 @@ function op_send_sms($mobile, $type, $data = [  ])
         }
     }
 
-    if ($type == 'forop_art') {
-        $result = $op_option[ 'sms_type' ]($mobile, op_massage_format($data));
+    if ($type == 'forarma_art') {
+        $result = $arma_option[ 'sms_type' ]($mobile, arma_massage_format($data));
 
     }
 
@@ -272,11 +268,11 @@ function sanitize_phone($phone)
     /**
      * Convert all chars to en digits
      */
-    $western = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+    $western = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ];
     $persian = [ '۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹' ];
-    $arabic = [ '٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩' ];
-    $phone = str_replace($persian, $western, $phone);
-    $phone = str_replace($arabic, $western, $phone);
+    $arabic  = [ '٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩' ];
+    $phone   = str_replace($persian, $western, $phone);
+    $phone   = str_replace($arabic, $western, $phone);
 
     //.9158636712   => 09158636712
     if (strpos($phone, '.') === 0) {
@@ -310,7 +306,7 @@ function sanitize_phone($phone)
     /**
      * check for all character was digit
      */
-    if (!ctype_digit($phone)) {
+    if (! ctype_digit($phone)) {
         return '';
     }
 
@@ -322,40 +318,46 @@ function sanitize_phone($phone)
 
 }
 
-function op_cookie(): string
+function arma_cookie(): string
 {
 
-    if (!isset($_COOKIE[ "setcookie_op_nonce" ])) {
+    if (! is_user_logged_in()) {
 
-        $is_key_cookie = op_rand_string(15);
-        ob_start();
+        if (! isset($_COOKIE[ "setcookie_arma_nonce" ])) {
 
-        setcookie("setcookie_op_nonce", $is_key_cookie, time() + 1800, "/");
+            $is_key_cookie = arma_rand_string(15);
+            ob_start();
 
-        ob_end_flush();
+            setcookie("setcookie_arma_nonce", $is_key_cookie, time() + 1800, "/");
 
-        header("Refresh:0");
-        exit;
+            ob_end_flush();
 
+            header("Refresh:0");
+            exit;
+
+        } else {
+            $is_key_cookie = $_COOKIE[ "setcookie_arma_nonce" ];
+        }
     } else {
-        $is_key_cookie = $_COOKIE[ "setcookie_op_nonce" ];
-    }
 
+        $is_key_cookie = get_current_user_id();
+
+    }
     return $is_key_cookie;
 }
 
-function op_rand_string($length = 20)
+function arma_rand_string($length = 20)
 {
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'; // اعداد و حروف
+    $characters       = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'; // اعداد و حروف
     $charactersLength = strlen($characters);
-    $randomString = '';
+    $randomString     = '';
     for ($i = 0; $i < $length; $i++) {
         $randomString .= $characters[ rand(0, $charactersLength - 1) ];
     }
     return $randomString;
 }
 
-function op_mask_mobile($mobile)
+function arma_mask_mobile($mobile)
 {
     // بررسی طول شماره موبایل
     if (strlen($mobile) === 11) {
@@ -368,46 +370,30 @@ function op_mask_mobile($mobile)
     return "شماره موبایل نامعتبر است.";
 }
 
-function tarikh($data, $time = "")
+function tarikh($data, $type = '')
 {
-    $data1 = "";
-    if (!empty($data)) {
-        $arr = explode(" ", $data);
-        $data = $arr[ 0 ];
 
-        $arrayData = [ '/', '-' ];
+    $data_array = explode(" ", $data);
 
-        foreach ($arrayData as $arrayData) {
-            $x = explode($arrayData, $data);
-            if (sizeof($x) == 3) {
+    $data = $data_array[ 0 ];
+    $time = (sizeof($data_array) >= 2) ? $data_array[ 1 ] : 0;
 
-                list($gy, $gm, $gd) = explode($arrayData, $data);
+    $has_mode = (strpos($data, '-')) ? '-' : '/';
 
-                if ($arrayData == '/') {
-                    $tagir = '-';
-                    $chen = 'jalali_to_gregorian';
-                }
-                if ($arrayData == '-') {
-                    $tagir = '/';
-                    $chen = 'gregorian_to_jalali';
-                }
+    list($y, $m, $d) = explode($has_mode, $data);
 
-                $data1 = $chen($gy, $gm, $gd, $tagir);
+    $ch_date = (strpos($data, '-')) ? gregorian_to_jalali($y, $m, $d, '/') : jalali_to_gregorian($y, $m, $d, '-');
 
-                break;
-            }
-
-        }
-
-        if ($time == "d") {
-            $data1 = $data1;
-        } elseif ($time == "t") {
-            $data1 = $arr[ 1 ];
-        } else {
-            $data1 = $data1 . " " . $arr[ 1 ];
-        }
+    if ($type == 'time') {
+        $new_date = $time;
+    } elseif ($type == 'date') {
+        $new_date = $ch_date;
+    } else {
+        $new_date = ($time === 0) ? $ch_date : $ch_date . ' ' . $time;
     }
-    return $data1;
+
+    return $new_date;
+
 }
 
 function get_current_relative_url()
@@ -415,8 +401,8 @@ function get_current_relative_url()
     // گرفتن مسیر فعلی بدون دامنه
     $path = esc_url_raw(wp_unslash($_SERVER[ 'REQUEST_URI' ]));
 
-    // حذف دامنه و فقط نگه داشتن مسیر نسبی + پارامترها
-    $relative_url = strtok($path, '?'); // مسیر قبل از پارامترها
+                                                // حذف دامنه و فقط نگه داشتن مسیر نسبی + پارامترها
+    $relative_url = strtok($path, '?');         // مسیر قبل از پارامترها
     $query_string = $_SERVER[ 'QUERY_STRING' ]; // پارامترهای GET
 
     // اگر پارامتر وجود داره، به مسیر اضافه کن
@@ -434,31 +420,44 @@ function get_name_by_id($data, $id)
     });
 
     // برگرداندن اولین مقدار پیدا شده
-    if (!empty($filtered)) {
+    if (! empty($filtered)) {
         return array_values($filtered)[ 0 ]->name;
     }
     return null;
 }
 
-function op_transient()
+function arma_transient()
 {
-    $op_transient = get_transient('op_transient');
+    $arma_transient = get_transient('arma_transient');
 
-    if ($op_transient) {
-        delete_transient('op_transient');
-        return $op_transient;
+    if ($arma_transient) {
+        delete_transient('arma_transient');
+        return $arma_transient;
     }
 
 }
 
-function op_to_enghlish($text)
+function arma_to_enghlish($text)
 {
 
-    $western = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+    $western = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ];
     $persian = [ '۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹' ];
-    $arabic = [ '٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩' ];
-    $text = str_replace($persian, $western, $text);
-    $text = str_replace($arabic, $western, $text);
+    $arabic  = [ '٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩' ];
+    $text    = str_replace($persian, $western, $text);
+    $text    = str_replace($arabic, $western, $text);
     return $text;
+
+}
+
+function sanitize_text_no_item($item)
+{
+    $new_item = [  ];
+
+    foreach ($item as $value) {
+        if (empty($value)) {continue;}
+        $new_item[  ] = sanitize_text_field($value);
+    }
+
+    return $new_item;
 
 }

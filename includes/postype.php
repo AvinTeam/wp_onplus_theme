@@ -7,7 +7,7 @@
  *
  * @see get_post_type_labels() for label keys.
  */
-function op_episode_init()
+function arma_episode_init()
 {
     $labels = array(
         'name' => 'اپیزود',
@@ -104,4 +104,4 @@ function op_episode_init()
 
 }
 
-add_action('init', 'op_episode_init');
+add_action('init', 'arma_episode_init');

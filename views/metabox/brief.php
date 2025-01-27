@@ -14,4 +14,4 @@ $editor_array = [
      ],
  ];
 
-wp_editor($op_brief, 'form_text', $editor_array)?>
+wp_editor($arma_brief, 'form_text', $editor_array)?>
