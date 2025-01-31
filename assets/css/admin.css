@@ -26,7 +26,11 @@
 }
 
 .w-100 {
-  width: 100%;
+  width: 100% !important;
+}
+
+.m-top-10{
+  margin-top: 10px;
 }
 
 .menu-preview {
@@ -95,8 +99,7 @@
   display: none;
 }
 
-.accordion input,
-.accordion textarea,
+.accordion input[type=text],
 .accordion select {
   width: 100%;
   margin-bottom: 10px;
@@ -105,6 +108,20 @@
   border-radius: 4px;
 }
 
+.accordion-box {
+  display: flex;
+  justify-content: center;
+}
+
+.accordion-right,
+.accordion-left {
+  width: 50%;
+
+}
+.list-all>div{
+  height: 300px;
+  overflow-y: auto;
+}
 .accordion input[type="color"] {
   width: 50px;
   height: 30px;

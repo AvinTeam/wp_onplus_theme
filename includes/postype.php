@@ -48,7 +48,7 @@ function arma_episode_init()
         'menu_icon' => 'dashicons-format-video',
         'capability_type' => 'onplus',
         'supports' => array('title', 'editor', 'author', 'thumbnail', 'comments','custom-fields'),
-        'rewrite' => array('slug' => 'on'),
+        'rewrite' => array('slug' => 'episode'),
         'has_archive' => true,
     );
 
@@ -94,11 +94,9 @@ function arma_episode_init()
         'menu_icon' => 'dashicons-format-video',
         'capability_type' => 'onplus',
         'supports' => array('title', 'editor', 'author', 'thumbnail', 'comments','custom-fields'),
-        'rewrite' => array('slug' => 'on'),
+        'rewrite' => array('slug' => 'episode_cat'),
         'has_archive' => true,
     );
-
-
     
     register_post_type('episode_cat', $args);
 

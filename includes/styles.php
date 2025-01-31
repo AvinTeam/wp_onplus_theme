@@ -39,7 +39,7 @@ function arma_admin_script()
         ARMA_JS . 'Sortable.min.js',
         [  ],
         '1.15.0',
-        
+
     );
 
     wp_enqueue_style(
@@ -54,10 +54,15 @@ function arma_admin_script()
     wp_enqueue_script(
         'arma_admin',
         ARMA_JS . 'admin.js',
-        [ 'jquery', 'select2', 'jalalidatepicker','sortable' ],
+        [ 'jquery', 'select2', 'jalalidatepicker', 'sortable' ],
         ARMA_VERSION,
         true
     );
+
+    $agents_term = [ [
+        'id'   => 0,
+        'text' => 'انتخاب همکار',
+     ] ];
 
     $agents_terms = get_terms([
         'taxonomy'   => 'on_agents',
@@ -66,10 +71,6 @@ function arma_admin_script()
 
     if (! empty($agents_terms) && ! is_wp_error($agents_terms)) {
 
-        $agents_term = [ [
-            'id'   => 0,
-            'text' => 'انتخاب همکار',
-         ] ];
         foreach ($agents_terms as $term) {
 
             $agents_term[  ] = [
@@ -80,6 +81,11 @@ function arma_admin_script()
 
     }
 
+    $position_term = [ [
+        'id'   => 0,
+        'text' => 'انتخاب سمت',
+     ] ];
+
     $position_terms = get_terms([
         'taxonomy'   => 'on_position',
         'hide_empty' => false,
@@ -87,10 +93,6 @@ function arma_admin_script()
 
     if (! empty($position_terms) && ! is_wp_error($position_terms)) {
 
-        $position_term = [ [
-            'id'   => 0,
-            'text' => 'انتخاب سمت',
-         ] ];
         foreach ($position_terms as $term) {
 
             $position_term[  ] = [
@@ -109,6 +111,7 @@ function arma_admin_script()
             'nonce'         => wp_create_nonce('ajax-nonce' . arma_cookie()),
             'agents_term'   => $agents_term,
             'position_term' => $position_term,
+            'option'        => arma_start_working(),
 
          ]
     );
@@ -133,6 +136,13 @@ function arma_style()
         '5.3.3'
     );
 
+    wp_register_style(
+        'bootstrap-icons',
+        ARMA_VENDOR . 'bootstrap/bootstrap-icons.css',
+        [ 'bootstrap' ],
+        '1.11.3',
+    );
+
     wp_register_script(
         'bootstrap',
         ARMA_VENDOR . 'bootstrap/bootstrap.min.js',
@@ -141,31 +151,18 @@ function arma_style()
         true
     );
 
-    wp_register_style(
-        'select2',
-        ARMA_VENDOR . 'select2/select2.min.css',
-        [ 'bootstrap' ],
-        '4.1.0-rc.0'
-    );
-    wp_register_script(
-        'select2',
-        ARMA_VENDOR . 'select2/select2.min.js',
-        [  ],
-        '4.1.0-rc.0',
-        true
-    );
 
     wp_enqueue_style(
         'arma_style',
         ARMA_CSS . 'public.css',
-        [ 'bootstrap.rtl', 'select2' ],
+        [ 'bootstrap.rtl', 'bootstrap-icons' ],
         ARMA_VERSION
     );
 
     wp_enqueue_script(
         'arma_js',
         ARMA_JS . 'public.js',
-        [ 'jquery', 'bootstrap', 'select2' ],
+        [ 'jquery', 'bootstrap' ],
         ARMA_VERSION,
         true
     );

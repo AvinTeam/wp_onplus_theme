@@ -180,6 +180,37 @@ function arma_send_category()
 
 }
 
+add_action('wp_ajax_arma_cat_tag', 'arma_cat_tag');
+
+function arma_cat_tag()
+{
+
+    if (! wp_verify_nonce($_POST[ 'nonce' ], 'ajax-nonce' . arma_cookie())) {wp_send_json_error('خطا');}
+    $title = "";
+
+    if ($_POST[ 'type' ] == "on_category") {$title = "برنامه";} elseif ($_POST[ 'type' ] == "on_tag") {$title = "برچسب";}
+
+    $all_option = '<option value="0">انتخاب ' . $title . '</option>';
+
+    $terms = get_terms([
+        'taxonomy'   => sanitize_text_field($_POST[ 'type' ]), // نام تکسونومی
+        'hide_empty' => false,                                 // نمایش تمام دسته‌ها، حتی اگر بدون نوشته باشند
+     ]);
+    if (! empty($terms)) {
+        foreach ($terms as $term) {
+
+            if ($term->term_id == $_POST[ 'selected' ]) {$selected = 'selected';} else { $selected = '';}
+            $all_option .= '<option ' . $selected . '  value="' . $term->term_id . '">' . esc_html($term->name) . '</option>';
+        }
+        wp_send_json_success($all_option);
+
+    } else {
+        wp_send_json_error('هیچ پستی پیدا نشد.');
+    }
+    wp_send_json_error('هیچ پستی پیدا نشد.');
+
+}
+
 // add_action('wp_ajax_nasr_sent_sms', 'nasr_sent_sms');
 // add_action('wp_ajax_nopriv_nasr_sent_sms', 'nasr_sent_sms');
 

@@ -55,7 +55,6 @@ function arma_start_working(): array
                 'version'           => ARMA_VERSION,
                 'tsms'              => (isset($arma_option[ 'tsms' ])) ? $arma_option[ 'tsms' ] : [ 'username' => '', 'password' => '', 'number' => '' ],
                 'ghasedaksms'       => (isset($arma_option[ 'ghasedaksms' ])) ? $arma_option[ 'ghasedaksms' ] : [ 'ApiKey' => '', 'number' => '' ],
-                'form'              => (isset($arma_option[ 'form' ])) ? $arma_option[ 'form' ] : [ 'text' => '', 'ostan' => true, 'ostan_required' => false, 'avatar' => true, 'description' => true, 'signature' => true ],
                 'sms_text_otp'      => (isset($arma_option[ 'sms_text_otp' ])) ? $arma_option[ 'sms_text_otp' ] : 'کد تأیید شما: %otp%',
                 'set_timer'         => (isset($arma_option[ 'set_timer' ])) ? $arma_option[ 'set_timer' ] : 1,
                 'set_code_count'    => (isset($arma_option[ 'set_code_count' ])) ? $arma_option[ 'set_code_count' ] : 4,
@@ -64,6 +63,8 @@ function arma_start_working(): array
                 'sms_type'          => (isset($arma_option[ 'sms_type' ])) ? $arma_option[ 'sms_type' ] : 'tsms',
                 'notificator_token' => (isset($arma_option[ 'notificator_token' ])) ? $arma_option[ 'notificator_token' ] : '',
                 'home_page'         => (isset($arma_option[ 'home_page' ])) ? $arma_option[ 'home_page' ] : '',
+                'light-logo'        => (isset($arma_option[ 'light-logo' ])) ? $arma_option[ 'light-logo' ] : arma_panel_image('Logo-Light.png'),
+                'dark-logo'         => (isset($arma_option[ 'dark-logo' ])) ? $arma_option[ 'dark-logo' ] : arma_panel_image('Logo-Dark.png'),
 
              ]
 
@@ -83,7 +84,6 @@ function arma_update_option($data)
         'version'           => ARMA_VERSION,
         'tsms'              => (isset($data[ 'tsms' ])) ? $data[ 'tsms' ] : $arma_option[ 'tsms' ],
         'ghasedaksms'       => (isset($data[ 'ghasedaksms' ])) ? $data[ 'ghasedaksms' ] : $arma_option[ 'ghasedaksms' ],
-        'form'              => (isset($data[ 'form' ])) ? $data[ 'form' ] : $arma_option[ 'form' ],
         'set_timer'         => (isset($data[ 'set_timer' ])) ? absint($data[ 'set_timer' ]) : $arma_option[ 'set_timer' ],
         'set_code_count'    => (isset($data[ 'set_code_count' ])) ? absint($data[ 'set_code_count' ]) : $arma_option[ 'set_code_count' ],
         'show_signature'    => (isset($data[ 'show_signature' ])) ? $data[ 'show_signature' ] : $arma_option[ 'show_signature' ],
@@ -92,8 +92,11 @@ function arma_update_option($data)
         'sms_type'          => (isset($data[ 'sms_type' ])) ? sanitize_text_field($data[ 'sms_type' ]) : $arma_option[ 'sms_type' ],
         'notificator_token' => (isset($data[ 'notificator_token' ])) ? sanitize_text_field($data[ 'notificator_token' ]) : $arma_option[ 'notificator_token' ],
         'home_page'         => (isset($data[ 'home_page' ])) ? $data[ 'home_page' ] : $arma_option[ 'home_page' ],
+        'light-logo'        => (isset($data[ 'light-logo' ])) ? $data[ 'light-logo' ] : $arma_option[ 'light-logo' ],
+        'dark-logo'         => (isset($data[ 'dark-logo' ])) ? $data[ 'dark-logo' ] : $arma_option[ 'dark-logo' ],
 
      ];
+    //json_encode($data[ 'home_page' ], JSON_UNESCAPED_UNICODE)
 
     update_option('arma_option', $arma_option);
 

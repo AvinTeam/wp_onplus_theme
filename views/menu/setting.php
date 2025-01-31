@@ -20,43 +20,26 @@
             <table class="form-table" role="presentation">
                 <tbody>
                     <tr>
-                        <th scope="row"><label for="set_timer">رمان اعتبار کد های ارسالی</label></th>
-                        <td><input name="set_timer" type="text" id="set_timer"
-                                value="<?php echo $arma_option[ 'set_timer' ] ?>" class="regular-text onlyNumbersInput"
-                                inputmode="numeric" pattern="\d*"> دقیقه
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><label for="set_code_count">تعداد کارکتر های پیامک</label></th>
-                        <td><input name="set_code_count" type="text" id="set_code_count"
-                                value="<?php echo $arma_option[ 'set_code_count' ] ?>"
-                                class="regular-text onlyNumbersInput" inputmode="numeric" pattern="\d*">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><label for="sms_text_otp">متن پیامک کد تایید</label></th>
+                        <th scope="row"><label for="light-logo">لوگو روز</label></th>
                         <td>
-                            <textarea rows="4" name="sms_text_otp" type="number" id="sms_text_otp"
-                                class="regular-text"><?php echo $arma_option[ 'sms_text_otp' ] ?></textarea>
+                            <img src="<?php echo $arma_option[ 'light-logo' ] ?>" style="max-width: 100px;">
+                            <br>
+                            <button type="button" class="button select-image">انتخاب لوگو</button>
+                            <input name="light-logo" type="text" id="light-logo"
+                                value="<?php echo $arma_option[ 'light-logo' ] ?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="dark-logo">لوگو روز</label></th>
+                        <td>
+                            <img src="<?php echo $arma_option[ 'dark-logo' ] ?>" style="max-width: 100px;"> 
+                            <br>
+                            <button type="button" class="button select-image">انتخاب لوگو</button>
+                            <input name="dark-logo" type="text" id="dark-logo"
+                                value="<?php echo $arma_option[ 'dark-logo' ] ?>">
                         </td>
                     </tr>
 
-                    <tr>
-                        <th scope="row">نوع پنل پیامک</th>
-                        <td class="radio-td">
-                            <fieldset>
-                                <label><input type="radio" name="sms_type"
-                                        <?php checked($arma_option[ 'sms_type' ], 'notificator')?> value="notificator">
-                                    <span class="date-time-text">notificator</span></label>
-                                <label><input type="radio" name="sms_type"
-                                        <?php checked($arma_option[ 'sms_type' ], 'tsms')?> value="tsms"> <span
-                                        class="date-time-text">tsms</span></label>
-                                <label><input type="radio" name="sms_type"
-                                        <?php checked($arma_option[ 'sms_type' ], 'ghasedaksms')?> value="ghasedaksms">
-                                    <span class="date-time-text">ghasedaksms</span></label>
-                            </fieldset>
-                        </td>
-                    </tr>
                 </tbody>
             </table>
 

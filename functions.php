@@ -1,7 +1,7 @@
 <?php
 
 (defined('ABSPATH')) || exit;
-define('ARMA_VERSION', '0.0.2');
+define('ARMA_VERSION', '0.0.5');
 
 define('ARMA_PATH', get_template_directory() . "/");
 define('ARMA_INCLUDES', ARMA_PATH . 'includes/');
@@ -17,10 +17,11 @@ define('ARMA_JS', ARMA_ASSETS . 'js/');
 define('ARMA_IMAGE', ARMA_ASSETS . 'image/');
 define('ARMA_VENDOR', ARMA_ASSETS . 'vendor/');
 
-
+require_once ARMA_INCLUDES . '/theme_filter.php';
 require_once ARMA_INCLUDES . '/postype.php';
 require_once ARMA_CORE . '/accesses.php';
 require_once ARMA_INCLUDES . '/taxonomies.php';
+require_once ARMA_INCLUDES . '/edittaxonomy.php';
 require_once ARMA_INCLUDES . '/meta_boxs.php';
 
 require_once ARMA_INCLUDES . '/init.php';
@@ -33,6 +34,8 @@ require_once ARMA_INCLUDES . '/ajax.php';
 
 // require_once ARMA_INCLUDES . '/cron.php';
 
+$arma_option = arma_start_working();
+
 if (is_admin()) {
     // require_once ARMA_CLASS . '/List_Table.php';
 
@@ -42,7 +45,3 @@ if (is_admin()) {
 }
 
 // exit;
-
-
-
-

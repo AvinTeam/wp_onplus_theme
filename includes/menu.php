@@ -122,7 +122,7 @@ function arma_admin_menu(string $context): void
         if (isset($_POST[ 'arma_act' ]) && $_POST[ 'arma_act' ] == 'arma__home_page') {
 
             if (wp_verify_nonce($_POST[ '_wpnonce' ], 'arma_nonce' . get_current_user_id())) {
-                
+
                 arma_update_option($_POST);
 
             }

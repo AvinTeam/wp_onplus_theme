@@ -39,6 +39,8 @@ function arma_meta_box()
 
         $arma_colleagues = get_post_meta($post->ID, '_arma_colleagues', true);
 
+        $arma_colleagues = (is_array($arma_colleagues)) ? $arma_colleagues : [  ];
+
         include_once ARMA_VIEWS . 'metabox/colleagues.php';
 
     }
@@ -93,7 +95,7 @@ function arma_meta_box()
                         'terms'    => $term_ids,     // آی‌دی دسته‌بندی‌ها
                      ],
                  ],
-                'posts_per_page' => -1,            // تعداد پست‌هایی که می‌خوای واکشی کنی (اینجا همه)
+                'posts_per_page' => -1, // تعداد پست‌هایی که می‌خوای واکشی کنی (اینجا همه)
              ];
 
             $related_posts = get_posts($args);
@@ -103,7 +105,7 @@ function arma_meta_box()
                 foreach ($related_posts as $post) {
                     setup_postdata($post);
 
-                    $selected= ($arma_episode== $post->ID)?  " selected='selected'" : ' ';
+                    $selected = ($arma_episode == $post->ID) ? " selected='selected'" : ' ';
 
                     $all_post_obtion .= '<option ' . $selected . '  value="' . $post->ID . '">' . get_the_title($post) . '</option>';
                 }
