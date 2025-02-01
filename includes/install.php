@@ -1,8 +1,10 @@
 <?php
 
 (defined('ABSPATH')) || exit;
-function nasr_row_install()
+function arma_row_install()
 {
+    arma_panel_rewrite();
+    flush_rewrite_rules();
 
 
     if (get_role('mat_user') == null) {
@@ -100,27 +102,8 @@ function nasr_row_install()
 
 
 
-    // global $wpdb;
-    // $tabel_nasr_row = $wpdb->prefix . 'nasr_row';
-    // $wpdb_collate_nasr_row = $wpdb->collate;
-    // $sql = "CREATE TABLE IF NOT EXISTS `$tabel_nasr_row` (
-    //         `ID` bigint unsigned NOT NULL AUTO_INCREMENT,
-    //         `full_name` varchar(50) CHARACTER SET utf8mb4 COLLATE $wpdb_collate_nasr_row NOT NULL DEFAULT '',
-    //         `mobile` varchar(11) COLLATE $wpdb_collate_nasr_row NOT NULL,
-    //         `avatar` varchar(20) CHARACTER SET utf8mb4 COLLATE $wpdb_collate_nasr_row NOT NULL DEFAULT 'no',
-    //         `ostan` int NOT NULL DEFAULT '0',
-    //         `description` text COLLATE $wpdb_collate_nasr_row,
-    //         `signature` longtext CHARACTER SET utf8mb4 COLLATE $wpdb_collate_nasr_row,
-    //         `status` varchar(20) COLLATE $wpdb_collate_nasr_row NOT NULL,
-    //         `created_at` timestamp NOT NULL,
-    //         PRIMARY KEY (`ID`),
-    //         UNIQUE KEY `mobile` (`mobile`)
-    //         ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=$wpdb_collate_nasr_row";
 
-    // require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-
-    // dbDelta($sql);
 
 }
 
-add_action('after_switch_theme', 'nasr_row_install');
+add_action('after_switch_theme', 'arma_row_install');

@@ -1,45 +1,57 @@
-
 @font-face {
-  font-family: "vazir";
-  src: url("../fonts/Vazir-FD.eot");
-  src: url("../fonts/Vazir-FD.eot?#iefix") format("embedded-opentype"),
-    url("../fonts/Vazir-FD.woff2") format("woff2"),
-    url("../fonts/Vazir-FD.woff") format("woff"),
-    url("../fonts/Vazir-FD.ttf") format("truetype");
+    font-family: "vazir";
+    src: url("../fonts/Vazir-FD.eot");
+    src: url("../fonts/Vazir-FD.eot?#iefix") format("embedded-opentype"),
+        url("../fonts/Vazir-FD.woff2") format("woff2"),
+        url("../fonts/Vazir-FD.woff") format("woff"),
+        url("../fonts/Vazir-FD.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: "vazir";
-  src: url("../fonts/Vazir-Bold-FD.eot");
-  src: url("../fonts/Vazir-Bold-FD.eot?#iefix") format("embedded-opentype"),
-    url("../fonts/Vazir-Bold-FD.woff2") format("woff2"),
-    url("../fonts/Vazir-Bold-FD.woff") format("woff"),
-    url("../fonts/Vazir-Bold-FD.ttf") format("truetype");
-  font-weight: bold;
+    font-family: "vazir";
+    src: url("../fonts/Vazir-Bold-FD.eot");
+    src: url("../fonts/Vazir-Bold-FD.eot?#iefix") format("embedded-opentype"),
+        url("../fonts/Vazir-Bold-FD.woff2") format("woff2"),
+        url("../fonts/Vazir-Bold-FD.woff") format("woff"),
+        url("../fonts/Vazir-Bold-FD.ttf") format("truetype");
+    font-weight: bold;
 }
 
 @font-face {
-  font-family: osmantaha;
-  src: url('../fonts/osmantaha.ttf');
-  src: url('../fonts/osmantaha.ttf') format('truetype');
-  font-weight: normal;
+    font-family: osmantaha;
+    src: url('../fonts/osmantaha.ttf');
+    src: url('../fonts/osmantaha.ttf') format('truetype');
+    font-weight: normal;
 }
-
 
 body {
     font-family: 'vazir';
 }
+
+a {
+    text-decoration: none;
+}
+
 .banner {
     height: 40vh;
     width: 100%;
     position: relative;
 }
+
 .banner img {
     width: 100%;
     height: 100%;
     object-fit: auto;
     object-position: center;
 }
+
+.taxonomy-banner {
+    background-size: cover !important;
+    background-position: center !important;
+    height: 500px;
+    padding: 50px 0;
+}
+
 /* .card {
     position: relative;
     overflow: hidden;
@@ -96,7 +108,7 @@ body {
 .carousel-control-prev, 
 .carousel-control-next {
     filter: invert(100%);
-} */ 
+} */
 .fullscreen-search {
     position: fixed;
     top: 0;
@@ -109,14 +121,17 @@ body {
     align-items: center;
     justify-content: center;
 }
+
 .search-box {
     width: 60%;
     max-width: 600px;
 }
+
 .search-input {
     font-size: 1.5rem;
     padding: 1rem;
 }
+
 .close-btn {
     position: absolute;
     top: 20px;
@@ -125,6 +140,7 @@ body {
     color: white;
     cursor: pointer;
 }
+
 /* برای تم روشن (Light mode) */
 @media (prefers-color-scheme: light) {
     .text-dynamic {
@@ -135,74 +151,96 @@ body {
 /* برای تم تیره (Dark mode) */
 @media (prefers-color-scheme: dark) {
     .text-dynamic {
-        color: #ccc; /* رنگ دلخواه برای تم تاریک */
+        color: #ccc;
+        /* رنگ دلخواه برای تم تاریک */
     }
 }
-html, body {
+
+html,
+body {
     height: 100%;
     margin: 0;
 }
+
 .footer {
     font-size: 10px;
     color: #E8E8E8;
-    background-color: #0F0F0F; 
+    background-color: #0F0F0F;
     padding: 6px 0;
     position: fixed;
-    bottom: 0; 
-    width: 100%; 
-    left: 0; 
+    bottom: 0;
+    width: 100%;
+    left: 0;
     z-index: 9999;
 }
+
 .footer .container {
     padding: 0 15px;
-    max-width: none; 
-    margin: 0 auto; 
-    height: 33px; 
+    max-width: none;
+    margin: 0 auto;
+    height: 33px;
     justify-content: center;
     align-items: center;
 }
+
 .footer .container div {
-    margin: 0 20px; /* فاصله بیشتر بین عنوان‌ها */
+    margin: 0 20px;
+    /* فاصله بیشتر بین عنوان‌ها */
 }
+
 .footer .container span {
-            margin: 0 5px; /* فاصله بیشتر بین span ها */
+    margin: 0 5px;
+    /* فاصله بیشتر بین span ها */
 }
+
 /* برای مرورگرهای WebKit (مانند Chrome و Edge و Safari) */
 ::-webkit-scrollbar {
-    width: 8px;  /* باریک شدن اسکرول بار */
+    width: 8px;
+    /* باریک شدن اسکرول بار */
 }
+
 /* رنگ پس زمینه اسکرول بار */
 ::-webkit-scrollbar-track {
-    background: #1a1a1a; /* پس‌زمینه مشکی تیره‌تر */
+    background: #1a1a1a;
+    /* پس‌زمینه مشکی تیره‌تر */
 }
+
 /* رنگ دستگیره اسکرول بار */
 ::-webkit-scrollbar-thumb {
-    background: #333333;  /* دستگیره کمی روشن‌تر از پس‌زمینه */
-    border-radius: 10px;  /* گرد کردن دستگیره */
+    background: #333333;
+    /* دستگیره کمی روشن‌تر از پس‌زمینه */
+    border-radius: 10px;
+    /* گرد کردن دستگیره */
 }
+
 /* افکت هاور روی دستگیره اسکرول بار */
 ::-webkit-scrollbar-thumb:hover {
-    background: #444444;  /* تغییر رنگ هنگام هاور */
+    background: #444444;
+    /* تغییر رنگ هنگام هاور */
 }
+
 /* اسکرول بار برای بخش‌های داخلی خاص */
 .container {
-    scrollbar-width: thin;  /* برای فایرفاکس */
-    scrollbar-color: #333333 #1a1a1a;  /* برای فایرفاکس: thumb, track */
+    scrollbar-width: thin;
+    scrollbar-color: #333333 #1a1a1a;
 }
-
-
 
 /* تغییر ابعاد تصاویر و کارت در موبایل */
-    @media (max-width: 576px) {
-        .on-normal-slider .swiper-slide {
-                width: auto !important; /* عرض کارت متناسب با تصویر */
+@media (max-width: 576px) {
+    .on-normal-slider .swiper-slide {
+        width: auto !important;
+        /* عرض کارت متناسب با تصویر */
     }
+
     .on-normal-slider .card img {
-                width: 125px; /* عرض کارت در موبایل */
-                height: 195px; /* ارتفاع کارت در موبایل */
-                object-fit: cover;
+        width: 125px;
+        /* عرض کارت در موبایل */
+        height: 195px;
+        /* ارتفاع کارت در موبایل */
+        object-fit: cover;
     }
 }
+
 .on-eight-slider {
     width: 100% !important;
     overflow: hidden;
@@ -219,19 +257,25 @@ html, body {
     flex-shrink: 0 !important;
     width: auto !important;
 }
+
 /* تنظیم اندازه ثابت تصاویر در اسلایدر هشت‌تایی */
 .on-eight-slider .swiper-slide img {
-    width: 213px;         /* عرض ثابت 213 پیکسل */
-    height: 320px;        /* ارتفاع ثابت 320 پیکسل */
-    object-fit: contain;  /* جلوگیری از برش تصویر و تنظیم تناسب */
-    object-position: center; /* مرکز قرار دادن تصویر در داخل کادر */
+    width: 213px;
+    /* عرض ثابت 213 پیکسل */
+    height: 320px;
+    /* ارتفاع ثابت 320 پیکسل */
+    object-fit: contain;
+    /* جلوگیری از برش تصویر و تنظیم تناسب */
+    object-position: center;
+    /* مرکز قرار دادن تصویر در داخل کادر */
 }
 
 .on-normal-slider {
     width: auto;
     overflow: hidden;
     box-sizing: border-box;
-    touch-action: pan-y; /* اجازه درگ افقی */
+    touch-action: pan-y;
+    /* اجازه درگ افقی */
 }
 
 .on-normal-slider .swiper-wrapper {
@@ -251,12 +295,237 @@ html, body {
     border-radius: 10px;
 }
 
+.sidebar-item {
+    margin-bottom: 15px
+}
 
+.single-sidebar .sidebar-item-title.mb-2 {
+    background-color: transparent;
+    font-size: 14px !important;
+    color: #fff
+}
 
+.sidebar-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px
+}
 
+.sidebar-item-details {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    font-size: .9rem
+}
 
+.sidebar-item-date,
+.single-sidebar .sidebar-item-title {
+    margin: 4px;
+    padding: 4px;
+    border-radius: 20px
+}
 
+.on_category .arma_duration,
+.on_category .arma_data,
+.sidebar-item-date,
+.single-sidebar .sidebar-item-title {
+    background-color: #312f44;
+    margin: 4px;
+    padding: 4px;
+    border-radius: 20px
+}
 
+.single-sidebar .sidebar-item-title {
+    font-size: 9px !important;
+    font-weight: 400;
+    color: #c2b0e4
+}
 
+html[data-bs-theme=light] .on_category .arma_duration,
+html[data-bs-theme=light] .on_category .arma_data,
+html[data-bs-theme=light] .sidebar-item-date,
+html[data-bs-theme=light] .single-sidebar .sidebar-item-title {
+    background-color: rgb(209 213 219/1);
+    color: rgb(69 69 69/1)
+}
 
-      
+.video-container {
+    aspect-ratio: 16/9;
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px
+}
+
+.video-container .video-title {
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-top: 10px
+}
+
+.social-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.social-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.social-container:hover .social-title {
+    background: #444;
+    color: white;
+}
+
+.arrow-icon {
+    transition: transform 0.3s ease;
+    width: 16px;
+    height: 16px;
+}
+
+.social-container:hover .arrow-icon {
+    transform: rotate(180deg);
+}
+
+.social-list {
+    width: 170px;
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    background: #444;
+    padding: 10px;
+    border-radius: 8px;
+    list-style: none;
+    margin: 0;
+    display: none;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.social-container:hover .social-list {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.social-list li {
+    padding: 5px 0;
+}
+
+.social-list a {
+    display: flex;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+}
+
+.social-list img {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+}
+
+.dropdown-button {
+    background: none;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: rgb(15 15 15 / var(--tw-bg-opacity));
+    border: 1px solid rgba(40, 40, 40, 1);
+    border-radius: 5px;
+    min-width: 160px;
+    padding: 10px 0;
+    text-align: left;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-item {
+    text-align: right;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* استایل محفظه آیکن */
+.bookmark-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+/* استایل متن توضیحی (ابتدا مخفی) */
+.bookmark-tooltip {
+    position: absolute;
+    bottom: 120%;
+    /* نمایش متن بالای آیکن */
+    left: 50%;
+    transform: translateX(-50%);
+    background: #3899a0;
+    /* رنگ پس‌زمینه هم‌رنگ آیکن */
+    color: black;
+    /* رنگ متن مشکی */
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* فلش کوچک زیر متن توضیحی */
+.tooltip-arrow {
+    position: absolute;
+    top: 100%;
+    /* نمایش زیر متن توضیحی */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #3899a0;
+    /* همرنگ پس‌زمینه */
+}
+
+/* نمایش متن و فلش هنگام هاور روی آیکن */
+.bookmark-container:hover .bookmark-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(-5px);
+}
+
+.arma-comment input {
+    padding-right: 10px;
+    padding-left: 40px;
+}
+
+.arma-comment .comment-button {
+    z-index: 10;
+    left: 5px;
+    top: 5px;
+}

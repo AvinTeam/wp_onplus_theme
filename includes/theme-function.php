@@ -2,6 +2,47 @@
 
 (defined('ABSPATH')) || exit;
 
+function arma_template_path($arma_page = false)
+{
+    if (! $arma_page) {return;}
+
+    if ($arma_page) {
+        switch ($arma_page) {
+            case 'dashboard':
+                $view = (is_user_logged_in()) ? 'dashboard' : 'login';
+                break;
+            case 'province':
+                $view = 'city';
+            case 'all':
+                $view = 'city';
+            case 'search':
+                $view = 'city';
+                break;
+            case 'logout':
+                $view = 'logout';
+                break;
+            case 'panel':
+                $view = (is_user_logged_in()) ? 'dashboard' : 'login';
+                break;
+            default:
+                $view = '404';
+                break;
+        }
+
+        return ARMA_VIEWS . 'layout/panel/' . $view . '.php';
+
+    }
+
+    return false;
+
+}
+
+function arma_base_url($base = '')
+{
+    return site_url() . '/' . ARMA_PANEL_BASE . '/' . $base;
+
+}
+
 function arma_panel_js($path)
 {
     return ARMA_JS . $path . '?ver=' . ARMA_VERSION;
@@ -387,9 +428,9 @@ function tarikh($data, $type = '')
 
     $ch_date = (strpos($data, '-')) ? gregorian_to_jalali($y, $m, $d, '/') : jalali_to_gregorian($y, $m, $d, '-');
 
-    if ($type == 'time') {
+    if ($type == 't') {
         $new_date = $time;
-    } elseif ($type == 'date') {
+    } elseif ($type == 'd') {
         $new_date = $ch_date;
     } else {
         $new_date = ($time === 0) ? $ch_date : $ch_date . ' ' . $time;
@@ -462,5 +503,138 @@ function sanitize_text_no_item($item)
     }
 
     return $new_item;
+
+}
+
+function getVideoDuration($masterUrl)
+{
+    // دریافت محتوای لیست مستر
+    $masterContent = file_get_contents($masterUrl);
+    if ($masterContent === false) {
+        return -1;
+    }
+
+    // استخراج URL اولین کیفیت (مثلاً بالاترین کیفیت را بگیر)
+    preg_match_all('/(index-[^\\s]+\\.m3u8)/', $masterContent, $matches);
+
+    if (! isset($matches[ 1 ]) || empty($matches[ 1 ])) {
+        return -2;
+    }
+
+    // انتخاب کیفیت آخر (معمولاً بالاترین کیفیت)
+    $playlistUrl = dirname($masterUrl) . "/" . end($matches[ 1 ]);
+
+    // دریافت محتوای لیست کیفیت انتخاب شده
+    $playlistContent = file_get_contents($playlistUrl);
+    if ($playlistContent === false) {
+        return -3;
+    }
+
+    // استخراج مدت زمان هر سگمنت
+    preg_match_all('/#EXTINF:([\d\.]+)/', $playlistContent, $durations);
+
+    if (! isset($durations[ 1 ]) || empty($durations[ 1 ])) {
+        return -4;
+    }
+
+    // جمع کردن تمام مدت زمان‌ها
+    $totalDuration = array_sum($durations[ 1 ]);
+
+    // تبدیل به فرمت ساعت:دقیقه:ثانیه
+    $hours   = floor($totalDuration / 3600);
+    $minutes = floor(($totalDuration % 3600) / 60);
+    $seconds = $totalDuration % 60;
+
+    return sprintf("%02d:%02d:%02d", $hours, $minutes, $seconds);
+}
+
+function getVideoQualities($masterUrl)
+{
+    if (! $masterUrl) {return;}
+    // دریافت محتوای لیست مستر
+    $masterContent = file_get_contents($masterUrl);
+    if ($masterContent === false) {
+        return "خطا در دریافت لیست پخش اصلی";
+    }
+
+    // استخراج کیفیت‌ها و لینک‌های مربوطه
+    preg_match_all('/#EXT-X-STREAM-INF:.*RESOLUTION=(\d+)x(\d+).*?\n([^\n]+)/', $masterContent, $matches, PREG_SET_ORDER);
+
+    if (empty($matches)) {
+        return "لیست کیفیت‌ها پیدا نشد!";
+    }
+
+    // تطبیق رزولوشن‌ها با کیفیت‌های استاندارد
+    $qualityMap = [
+        "144"  => "144p",
+        "240"  => "240p",
+        "360"  => "360p",
+        "480"  => "480p",
+        "720"  => "720p",
+        "1080" => "1080p",
+     ];
+
+    $qualities = [  ];
+    foreach ($matches as $match) {
+        $height = $match[ 2 ];                       // ارتفاع رزولوشن (مثلاً 1080)
+        $file   = trim($match[ 3 ]);                 // نام فایل M3U8 (مثلاً index-f6-v1-a1.m3u8)
+        $url    = dirname($masterUrl) . "/" . $file; // ساخت لینک کامل
+
+        // اگه کیفیت توی لیست استانداردها باشه، اسم استاندارد رو استفاده کن
+        $qualityName = isset($qualityMap[ $height ]) ? $qualityMap[ $height ] : "{$height}p";
+
+        $qualities[ $qualityName ] = $url;
+    }
+
+    return $qualities;
+}
+
+function arma_upload_file($file)
+{
+
+    $massage = '';
+
+    // پردازش و ذخیره عکس
+    if (! empty($file[ 'name' ])) {
+
+        $maxFileSize = 2048 * 1024 * 1024; // 10MB
+
+        if ($file[ 'size' ] > $maxFileSize) {
+            $massage .= '<div class="alert alert-danger" role="alert">خطایی در زمان بارگزاری رخ داده لطفا دوباره تلاش کنید.</div>';
+        } else {
+
+            if (! function_exists('wp_handle_upload')) {
+                require_once ABSPATH . 'wp-admin/includes/file.php';
+            }
+            $uploadedfile = $file;
+
+            $upload_overrides = ['test_form' => false];
+
+            $movefile = wp_handle_upload($uploadedfile, $upload_overrides);
+
+            if ($movefile && ! isset($movefile[ 'error' ])) {
+
+                $wp_upload_dir = wp_upload_dir();
+                $attachment    = [
+                    'guid'           => $wp_upload_dir[ 'url' ] . '/' . basename($movefile[ 'file' ]),
+                    'post_mime_type' => $movefile[ 'type' ],
+                    'post_title'     => preg_replace('/\.[^.]+$/', '', basename($movefile[ 'file' ])),
+                    'post_content'   => '',
+                    'post_status'    => 'inherit',
+                ];
+
+                $attach_id = wp_insert_attachment($attachment, $movefile[ 'file' ]);
+
+            } else {
+                $massage .= '<div class="alert alert-danger" role="alert">خطایی در زمان بارگزاری رخ داده لطفا دوباره تلاش کنید.</div>';
+
+            }
+        }
+    } else {
+        $massage .= '<div class="alert alert-danger" role="alert">لطفاً یک فایل انتخاب کنید.</div>';
+
+    }
+
+    return ($massage == '') ? [ 'code' => 1, 'massage' => $attach_id ] : [ 'code' => 0, 'massage' => $massage ];
 
 }

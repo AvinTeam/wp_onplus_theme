@@ -7,13 +7,13 @@ global $title;?>
 
     <?php
 
-//$nasrListTable->nasr_res($row);
-$nasrListTable->prepare_items();
+//$armaListTable->arma_res($row);
+$armaListTable->prepare_items();
 
-echo '<form method="post" action="" class="nasr-table" >';
-$nasrListTable->views();
+echo '<form method="post" action="" class="arma-table" >';
+$armaListTable->views();
 
-$nasrListTable->display();
+$armaListTable->display();
 
 wp_nonce_field('mph_nonce' . get_current_user_id());
 
@@ -22,7 +22,7 @@ wp_nonce_field('mph_nonce' . get_current_user_id());
     </form>
 
 </div>
-<div class="nasr-loader"></div>
+<div class="arma-loader"></div>
 
 <div class="clear"></div>
 

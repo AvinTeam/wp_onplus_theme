@@ -131,6 +131,7 @@ function arma_save_bax($post_id, $post, $updata)
         update_post_meta($post_id, '_arma_brief', wp_kses_post(wp_unslash(nl2br($POST[ 'brief' ]))));
         update_post_meta($post_id, '_arma_production_date', sanitize_text_field($POST[ 'production_date' ]));
         update_post_meta($post_id, '_arma_video', sanitize_url($POST[ 'video' ]));
+        update_post_meta($post_id, '_arma_video_duration', getVideoDuration(sanitize_url($POST[ 'video' ])));
 
         if (isset($POST[ 'colleagues' ])) {
             foreach ($POST[ 'colleagues' ] as $index => $value) {

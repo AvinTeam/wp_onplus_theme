@@ -1,7 +1,7 @@
 <?php
 (defined('ABSPATH')) || exit;
 
-function atlas_title_filter($title)
+function arma_title_filter($title)
 {
     if (is_home() || is_front_page()) {
         $title = get_bloginfo('name') . " | صفحه اصلی";
@@ -20,7 +20,7 @@ function atlas_title_filter($title)
     }
     return $title;
 }
-add_filter('wp_title', 'atlas_title_filter');
+add_filter('wp_title', 'arma_title_filter');
 
 function custom_single_template($single)
 {
@@ -36,3 +36,29 @@ function custom_single_template($single)
     return $single;
 }
 add_filter('single_template', 'custom_single_template');
+
+
+function custom_avatar_with_attachment($avatar, $id_or_email, $size, $default, $alt)
+{
+    $user = false;
+    if (is_numeric($id_or_email)) {
+        $user = get_user_by('id', $id_or_email);
+    } elseif (is_object($id_or_email) && !empty($id_or_email->user_id)) {
+        $user = get_user_by('id', $id_or_email->user_id);
+    } elseif (is_email($id_or_email)) {
+        $user = get_user_by('email', $id_or_email);
+    }
+
+    if ($user) {
+        $attachment_id = get_user_meta($user->ID, 'user_avatar', true);
+        if (!empty($attachment_id)) {
+            $attachment_url = wp_get_attachment_image_url($attachment_id, [ $size, $size ]); // دریافت URL تصویر
+            if ($attachment_url) {
+                return "<img src='" . esc_url($attachment_url) . "' alt='" . esc_attr($alt) . "' class='avatar avatar-$size' height='$size' width='$size' />";
+            }
+        }
+    }
+
+    return $avatar;
+}
+add_filter('get_avatar', 'custom_avatar_with_attachment', 10, 5);

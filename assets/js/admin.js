@@ -3,6 +3,18 @@ jalaliDatepicker.startWatch({
     maxDate: "attr"
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    var customMetaBox = document.getElementById('arma_episode');
+    var categoriesBox = document.getElementById('on_categorydiv');
+    var tagsBox = document.getElementById('tagsdiv-on_tag');
+
+    if (customMetaBox && categoriesBox && tagsBox) {
+        // قرار دادن متاباکس بین دسته‌بندی‌ها و برچسب‌ها
+        categoriesBox.parentNode.insertBefore(customMetaBox, tagsBox);
+    }
+});
+
+
 
 const accordionContainer = document.getElementById("accordion-container");
 const accordionDataInput = document.getElementById("accordionData");
@@ -220,6 +232,11 @@ if (accordionContainer) {
 
 //انتخاب همکار باقی مانده
 jQuery(document).ready(function ($) {
+
+    $('.onlyNumbersInput').on('input paste', function () {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
 
 
     $('.select2').select2({
@@ -489,12 +506,12 @@ jQuery(document).ready(function ($) {
         setImageField("", "");
     });
 
-    function setImageFieldBaner(imageUrl, imageId) {
-        $("#category_baner_preview").html('<img src="' + imageUrl + '" style="max-width: 150px; height: auto;">');
-        $("#category_baner").val(imageId);
+    function setImageFieldbanner(imageUrl, imageId) {
+        $("#category_banner_preview").html('<img src="' + imageUrl + '" style="max-width: 150px; height: auto;">');
+        $("#category_banner").val(imageId);
     }
 
-    $(".category_baner_upload").click(function (e) {
+    $(".category_banner_upload").click(function (e) {
         e.preventDefault();
 
         let mediaUploader = wp.media({
@@ -504,20 +521,20 @@ jQuery(document).ready(function ($) {
             multiple: false
         }).on("select", function () {
             let attachment = mediaUploader.state().get("selection").first().toJSON();
-            setImageFieldBaner(attachment.url, attachment.id);
+            setImageFieldbanner(attachment.url, attachment.id);
         }).open();
     });
 
-    $(".category_baner_remove").click(function (e) {
+    $(".category_banner_remove").click(function (e) {
         e.preventDefault();
-        setImageFieldBaner("", "");
+        setImageFieldbanner("", "");
     });
 
     $('#addtag #submit').click(function (e) {
 
         setTimeout(function () {
             $('#category_image_preview img').attr('src', '');
-            $('#category_baner_preview img').attr('src', '');
+            $('#category_banner_preview img').attr('src', '');
         }, 1000);
 
     });

@@ -151,18 +151,46 @@ function arma_style()
         true
     );
 
+    wp_register_style(
+        'videojs',
+        ARMA_VENDOR . 'videojs/video-js.min.css',
+        [  ],
+        '8.7.0',
+    );
+
+    wp_register_script(
+        'videojs',
+        ARMA_VENDOR . 'videojs/video.min.js',
+        [  ],
+        '8.7.0',
+
+    );
+    wp_register_style(
+        'swiper',
+        ARMA_VENDOR . 'swiper/swiper-bundle.min.css',
+        [  ],
+        '11.2.2',
+    );
+
+    wp_register_script(
+        'swiper',
+        ARMA_VENDOR . 'swiper/swiper-bundle.min.js',
+        [  ],
+        '11.2.2',
+
+    );
 
     wp_enqueue_style(
         'arma_style',
         ARMA_CSS . 'public.css',
-        [ 'bootstrap.rtl', 'bootstrap-icons' ],
+        [ 'bootstrap.rtl', 'bootstrap-icons', 'videojs', 'swiper' ],
         ARMA_VERSION
     );
 
     wp_enqueue_script(
         'arma_js',
         ARMA_JS . 'public.js',
-        [ 'jquery', 'bootstrap' ],
+        [ 'jquery', 'bootstrap', 'videojs', 'swiper' ],
         ARMA_VERSION,
         true
     );

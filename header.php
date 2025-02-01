@@ -7,31 +7,20 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     <title><?php wp_title('|', true, 'right'); ?></title>
     <?php wp_head(); ?>
-
-
-    <!--
-\    <link href="css/swiper-bundle.min.css" rel="stylesheet">
-\    <link href="css/video-js.css" rel="stylesheet">
-\    <script src="js/video.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/swiper-bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-     -->
 
 </head>
 
 <body dir="rtl">
     <!-- Header Section -->
-    <header class="border-bottom">
+    <header class="border-bottom position-sticky top-0 bg-body z-3">
         <div class="container-fluid d-flex justify-content-between align-items-center py-2">
             <!-- Logo -->
             <div class="d-flex">
-                <a href="#" class="navbar-brand d-flex align-items-center">
+                <a href="/" class="navbar-brand d-flex align-items-center">
                     <img src="<?php echo $arma_option[ 'light-logo' ] ?>" alt="لوگو نسخه روشن"
                         class="rounded me-2 logo-light" id="logo-light">
                     <img src="<?php echo $arma_option[ 'dark-logo' ] ?>" alt="لوگو نسخه تیره"
@@ -66,11 +55,11 @@
             </div>
             <!-- Buttons -->
             <div class="d-flex align-items-center">
-                <button id="toggleTheme" class="btn btn-outline-secondary mx-2">
+                <button id="toggleTheme" class="btn border-0 mx-2">
                     <i id="themeIcon" class="bi bi-sun"></i>
                 </button>
                 <!-- متن ورود/ثبت نام اضافه شده -->
-                <span class="ms-4">ورود/ثبت نام</span>
+                <a href="/panel" class="ms-4 btn btn-dark"><?php echo (is_user_logged_in()) ? 'پنل کاربری' : 'ورود/ثبت نام'?></a>
             </div>
         </div>
     </header>
