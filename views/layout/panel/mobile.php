@@ -1,4 +1,4 @@
-<div id="content6" class="content-box" style="display: none;">
+<div id="mobile" class="content-box" style=" <?=(get_query_var('arma') != 'mobile')?'display: none;' : ''?> ">
     <h5 class="m-0 text-center">تغییر شماره موبایل</h5>
     <div class="container mt-5">
         <div class="card mx-auto"
@@ -23,8 +23,4 @@
             </div>
         </div>
     </div>
-    <div id="content7" class="content-box" style="display: none;">
-        <p>خروج از حساب کاربری</p>
-    </div>
-
 </div>

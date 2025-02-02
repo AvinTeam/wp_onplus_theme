@@ -180,17 +180,31 @@ function arma_style()
 
     );
 
+    wp_register_style(
+        'jalalidatepicker',
+        ARMA_VENDOR . 'jalalidatepicker/jalalidatepicker.min.css',
+        [  ],
+        '0.9.6'
+    );
+    wp_register_script(
+        'jalalidatepicker',
+        ARMA_VENDOR . 'jalalidatepicker/jalalidatepicker.min.js',
+        [  ],
+        '0.9.6',
+        true
+    );
+
     wp_enqueue_style(
         'arma_style',
         ARMA_CSS . 'public.css',
-        [ 'bootstrap.rtl', 'bootstrap-icons', 'videojs', 'swiper' ],
+        [ 'bootstrap.rtl', 'bootstrap-icons', 'videojs', 'swiper', 'jalalidatepicker' ],
         ARMA_VERSION
     );
 
     wp_enqueue_script(
         'arma_js',
         ARMA_JS . 'public.js',
-        [ 'jquery', 'bootstrap', 'videojs', 'swiper' ],
+        [ 'jquery', 'bootstrap', 'videojs', 'swiper', 'jalalidatepicker' ],
         ARMA_VERSION,
         true
     );

@@ -1,7 +1,7 @@
 <?php
 
 (defined('ABSPATH')) || exit;
-define('ARMA_VERSION', '0.0.6');
+define('ARMA_VERSION', '1.0.0');
 
 define('ARMA_PATH', get_template_directory() . "/");
 define('ARMA_INCLUDES', ARMA_PATH . 'includes/');
@@ -21,6 +21,8 @@ if (! defined('ARMA_PANEL_BASE')) {
     define('ARMA_PANEL_BASE', 'panel');
 }
 
+require_once ARMA_CLASS . '/ARMADB.php';
+
 require_once ARMA_INCLUDES . '/theme_filter.php';
 require_once ARMA_INCLUDES . '/postype.php';
 require_once ARMA_CORE . '/accesses.php';
@@ -35,8 +37,6 @@ require_once ARMA_INCLUDES . '/jdf.php';
 require_once ARMA_INCLUDES . '/ajax.php';
 require_once ARMA_INCLUDES . '/form-submit.php';
 
-// require_once ARMA_CLASS . '/Nasr.php';
-
 // require_once ARMA_INCLUDES . '/cron.php';
 
 $arma_option = arma_start_working();
@@ -47,7 +47,10 @@ if (is_admin()) {
     require_once ARMA_INCLUDES . '/menu.php';
     require_once ARMA_INCLUDES . '/install.php';
     require_once ARMA_INCLUDES . '/edit_column_episode.php';
+    require_once ARMA_INCLUDES . '/edit_user_table.php';
+    require_once ARMA_INCLUDES . '/user_filed.php';
 
 }
+
 
 //exit;

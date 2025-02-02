@@ -1,4 +1,7 @@
 <?php
+
+use oniclass\ARMADB;
+
 add_action('wp_ajax_ajax_select_colleagues', 'ajax_select_colleagues');
 
 function ajax_select_colleagues()
@@ -304,86 +307,120 @@ function arma_sent_verify()
 
 }
 
+add_action("wp_ajax_arma_bookmark", "arma_bookmark");
+add_action("wp_ajax_nopriv_arma_bookmark", "arma_bookmark");
+function arma_bookmark()
+{
+    if (! is_user_logged_in()) {
 
+        wp_send_json_error('<p>برای افزودن به لیست نشان شده‌ها باید وارد پنل کاربری شوید</p>
+                          <a href="/panel" class="btn btn-primary">ورود به سایت</a>');
+    }
 
+    $armadb = new ARMADB('bookmark');
 
+    $isbookmark = ($armadb->num([
+        'iduser' => get_current_user_id(),
+        'idpost' => absint($_POST[ 'postId' ]),
+     ])) ? true : false;
 
+    if (! $isbookmark && $_POST[ 'status' ] === "add") {
 
+        $armadb->insert([
+            'idpost' => absint($_POST[ 'postId' ]),
+            'iduser' => get_current_user_id(),
+         ]);
 
+        wp_send_json_success('<p>با موفقیت به لیست نشان شده‌ها اضافه شد</p>
+                            <button onclick="location.reload();" class="btn btn-primary">تایید</button>');
 
+    }
 
+    if ($isbookmark && $_POST[ 'status' ] === "remove") {
 
+        $armadb->delete([
+            'idpost' => absint($_POST[ 'postId' ]),
+            'iduser' => get_current_user_id(),
+         ]);
 
+        wp_send_json_success('<p>با موفقیت از لیست نشان شده‌ها حذف شد</p>
+                            <button onclick="location.reload();" class="btn btn-primary">تایید</button>');
+
+    }
+
+}
 
 // بررسی لاگین بودن کاربر
-function check_user_login() {
+function check_user_login()
+{
     if (is_user_logged_in()) {
-        wp_send_json_success(["logged_in" => true]);
+        wp_send_json_success([ "logged_in" => true ]);
     } else {
-        wp_send_json_success(["logged_in" => false]);
+        wp_send_json_success([ "logged_in" => false ]);
     }
 }
 add_action("wp_ajax_check_user_login", "check_user_login");
 add_action("wp_ajax_nopriv_check_user_login", "check_user_login");
 
 // ارسال نظر
-function submit_comment() {
-    if (!isset($_POST["security"]) || !wp_verify_nonce($_POST["security"], 'ajax-nonce' . arma_cookie())) {
-        wp_send_json_error(["message" => "مشکل امنیتی رخ داده است."]);
+function submit_comment()
+{
+    if (! isset($_POST[ "security" ]) || ! wp_verify_nonce($_POST[ "security" ], 'ajax-nonce' . arma_cookie())) {
+        wp_send_json_error([ "message" => "مشکل امنیتی رخ داده است." ]);
     }
 
-    if (!is_user_logged_in()) {
-        wp_send_json_error(["message" => "شما باید وارد شوید!"]);
+    if (! is_user_logged_in()) {
+        wp_send_json_error([ "message" => "شما باید وارد شوید!" ]);
     }
 
-    $user_id  = get_current_user_id();
-    $comment  = sanitize_text_field($_POST["comment"]);
-    $post_id  = intval($_POST["post_id"]);
+    $user_id = get_current_user_id();
+    $comment = sanitize_text_field($_POST[ "comment" ]);
+    $post_id = intval($_POST[ "post_id" ]);
 
     if (empty($comment)) {
-        wp_send_json_error(["message" => "نظر شما نمی‌تواند خالی باشد."]);
+        wp_send_json_error([ "message" => "نظر شما نمی‌تواند خالی باشد." ]);
     }
 
-    $comment_data = array(
+    $comment_data = [
         "comment_post_ID"      => $post_id,
         "comment_author"       => wp_get_current_user()->display_name,
         "comment_author_email" => wp_get_current_user()->user_email,
         "comment_content"      => $comment,
         "user_id"              => $user_id,
         "comment_approved"     => 1, // اگر بخوای تایید خودکار بشه
-    );
+     ];
 
     $comment_id = wp_insert_comment($comment_data);
 
     if ($comment_id) {
-        wp_send_json_success(["message" => "نظر شما ثبت شد!"]);
+        wp_send_json_success([ "message" => "نظر شما ثبت شد!" ]);
     } else {
-        wp_send_json_error(["message" => "خطا در ثبت نظر!"]);
+        wp_send_json_error([ "message" => "خطا در ثبت نظر!" ]);
     }
 }
 add_action("wp_ajax_submit_comment", "submit_comment");
 add_action("wp_ajax_nopriv_submit_comment", "submit_comment");
 
-
-function submit_reply() {
-    if (!isset($_POST["security"]) || !wp_verify_nonce($_POST["security"], 'ajax-nonce' . arma_cookie())) {
-        wp_send_json_error(["message" => "مشکل امنیتی رخ داده است."]);
+function submit_reply()
+{
+    if (! isset($_POST[ "security" ]) || ! wp_verify_nonce($_POST[ "security" ], 'ajax-nonce' . arma_cookie())) {
+        wp_send_json_error([ "message" => "مشکل امنیتی رخ داده است." ]);
     }
 
-    if (!is_user_logged_in()) {
-        wp_send_json_error(["message" => "شما باید وارد شوید!"]);
+    if (! is_user_logged_in()) {
+        wp_send_json_error([ "message" => "شما باید وارد شوید!" ]);
     }
 
-    $user_id  = get_current_user_id();
-    $comment  = sanitize_text_field($_POST["comment"]);
-    $post_id  = intval($_POST["post_id"]);
-    $parent_id = intval($_POST["parent_comment_id"]);
+    $user_id   = get_current_user_id();
+    $comment   = sanitize_text_field($_POST[ "comment" ]);
+    $post_id   = intval($_POST[ "post_id" ]);
+    $parent_id = intval($_POST[ "parent_comment_id" ]);
 
     if (empty($comment)) {
-        wp_send_json_error(["message" => "نظر شما نمی‌تواند خالی باشد."]);
+        wp_send_json_error([ "message" => "نظر شما نمی‌تواند خالی باشد." ]);
     }
 
-    $comment_data = array(
+    $comment_data = [
         "comment_post_ID"      => $post_id,
         "comment_author"       => wp_get_current_user()->display_name,
         "comment_author_email" => wp_get_current_user()->user_email,
@@ -391,31 +428,20 @@ function submit_reply() {
         "user_id"              => $user_id,
         "comment_parent"       => $parent_id,
         "comment_approved"     => 1,
-    );
+     ];
 
     $comment_id = wp_insert_comment($comment_data);
 
     if ($comment_id) {
         wp_send_json_success([
             "message" => "پاسخ شما ثبت شد!",
-        ]);
+         ]);
     } else {
-        wp_send_json_error(["message" => "خطا در ثبت نظر!"]);
+        wp_send_json_error([ "message" => "خطا در ثبت نظر!" ]);
     }
 }
 add_action("wp_ajax_submit_reply", "submit_reply");
 add_action("wp_ajax_nopriv_submit_reply", "submit_reply");
-
-
-
-
-
-
-
-
-
-
-
 
 // add_action('wp_ajax_nasr_sent_sms', 'nasr_sent_sms');
 // add_action('wp_ajax_nopriv_nasr_sent_sms', 'nasr_sent_sms');

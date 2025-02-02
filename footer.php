@@ -1,7 +1,10 @@
 <?php wp_footer()?>
-<hr class="mt-5">
+<!-- لودر تمام صفحه -->
+<div class="overlay" id="overlay">
+    <div class="loader"></div>
+</div>
 <!-- فوتر -->
-<footer class="footer">
+<footer class="footer mt-5">
     <div class="container d-flex justify-content-between">
         <div>
             <span><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="gray" viewBox="0 0 24 24">
@@ -23,7 +26,8 @@
             </span>
             <ul class="social-list">
                 <li><a href="#"><img src="https://web.bale.ai/logo82.png" alt="bale">بله</a></li>
-                <li><a href="#"><img src="https://web.rubika.ir/assets/icons/icon-192x192.png" alt="rubika">روبیکا</a></li>
+                <li><a href="#"><img src="https://web.rubika.ir/assets/icons/icon-192x192.png" alt="rubika">روبیکا</a>
+                </li>
                 <li><a href="#"><img src="https://www.aparat.com/static/img/eitaa.svg" alt="eita">ایتا</a></li>
                 <li><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="15" fill="gray"
                             viewBox="0 0 24 24">

@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid px-5">
     <div class="row">
         <!-- Sidebar -->
         <div class="col-md-4 col-lg-3 order-md-last single-sidebar mt-2">
@@ -68,30 +68,52 @@
                 <!-- Left  Section with Icon and Titles (Horizontally) -->
                 <div class="d-flex flex-row align-items-center ms-4">
                     <!-- Icon for Adding to Favorites -->
+
+
+
+
+                    <?php if ($bookmark): ?>
+
+
                     <div class="d-flex align-items-center me-3 bookmark-container">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none"
-                            stroke="#3899a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-bookmark">
+                        <svg id="post_bookmark" data-bookmark-status="remove"
+                            data-post-id="<?php echo $episode_data[ 'id' ] ?>" xmlns="http://www.w3.org/2000/svg"
+                            width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#3899a0" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark">
+                            <path fill="#3899a0" d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path>
+                        </svg>
+                        <span class="bookmark-tooltip fw-bold text-white">
+                            حذف از لیست نشان شده‌ها
+                            <span class="tooltip-arrow"></span>
+                        </span>
+                    </div>
+
+
+
+                    <?php else: ?>
+
+                    <div class="d-flex align-items-center me-3 bookmark-container">
+                        <svg id="post_bookmark" data-bookmark-status="add"
+                            data-post-id="<?php echo $episode_data[ 'id' ] ?>" xmlns="http://www.w3.org/2000/svg"
+                            width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#3899a0" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark">
                             <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path>
                         </svg>
-                        <span class="bookmark-tooltip">
+                        <span class="bookmark-tooltip fw-bold text-white">
                             افزودن به لیست نشان شده‌ها
                             <span class="tooltip-arrow"></span>
                         </span>
                     </div>
 
+                    <?php endif; ?>
+
                     <!-- Icon for Download -->
                     <div class="dropdown-container">
                         <button class="dropdown-button">دانلود</button>
                         <div class="dropdown-menu mb-5">
-
-
-
                             <?php foreach ($episode_data[ 'download_list' ] as $p => $link): ?>
                             <div class="dropdown-item"><a class="nav-link" href="<?php echo $link ?>">دانلود با کیفیت
                                     <?php echo $p ?></a></div>
-
-
                             <?php endforeach; ?>
                         </div>
                     </div>
@@ -165,11 +187,18 @@
 
                     function display_comment($comment)
                     {
+                        $attachment_url = "";
+                        $attachment_id  = get_user_meta($comment->user_id, 'user_avatar', true);
+                        if (! empty($attachment_id)) {
+                            $attachment_url = wp_get_attachment_image_url($attachment_id); // دریافت URL تصویر
+
+                        }
+
                         $comment_id = $comment->comment_ID;
                         $author     = get_comment_author($comment_id);
                         $date       = tarikh(get_comment_date('Y-m-d', $comment_id));
                         $content    = get_comment_text($comment_id);
-                        $avatar     = get_avatar_url($comment->user_id, [ 'size' => 40 ]);
+                        $avatar = $attachment_url;
 
                     ?>
                 <div class="d-flex flex-row gap-2 w-75 comment-box" data-comment-id="<?php echo $comment_id; ?>">
@@ -184,7 +213,7 @@
                             </div>
                             <?php if (is_user_logged_in()): ?>
                             <button class="btn btn-light reply-btn" data-comment-id="<?php echo $comment_id; ?>"
-                                data-post-id="<?php echo get_the_ID()?>">پاسخ</button>
+                                data-post-id="<?php echo get_the_ID() ?>">پاسخ</button>
                             <?php endif; ?>
 
                         </div>
@@ -256,6 +285,21 @@
             <div class="modal-body">
                 <p>برای ثبت نظر باید وارد حساب خود شوید.</p>
                 <a href="/panel" class="btn btn-primary">ورود به سایت</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="bookmark-modal" tabindex="-1" aria-labelledby="bookmark-modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="bookmark-modalLabel">اطلاعیه</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ...
             </div>
         </div>
     </div>

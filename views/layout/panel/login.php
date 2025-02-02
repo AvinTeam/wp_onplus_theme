@@ -14,7 +14,7 @@ get_header(); ?>
 <div class="h-100 mt-5 p-5">
     <div class="d-flex justify-content-center align-content-center  login-box">
 
-        <form id="loginForm" class="w-50">
+        <form id="loginForm" class="w-25">
 
             <div id="mobileForm">
                 <h3 class="text-center mt-2">ورود / ثبت نام</h3>

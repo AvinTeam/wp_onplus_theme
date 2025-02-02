@@ -1,3 +1,7 @@
+jalaliDatepicker.startWatch({
+    minDate: "attr",
+    maxDate: "attr"
+});
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -138,21 +142,9 @@ if (pageLogin) {
                         document.getElementById('codeVerification').style.display = 'block';
                         document.getElementById('resendCode').disabled = true;
                         startTimer();
-
-
-
                         let otpInput = document.getElementById('verificationCode');
-
                         // اعمال فوکوس روی فیلد
                         otpInput.focus();
-
-
-
-
-
-
-
-
                     }
                 } else {
 
@@ -313,9 +305,6 @@ jQuery(document).ready(function ($) {
 
     });
 
-
-
-
     $("#close-reply-form").click(function () {
         $("#reply-form-container").slideUp();
     });
@@ -368,6 +357,48 @@ jQuery(document).ready(function ($) {
         });
     });
 
+
+
+    $('#post_bookmark').click(function (e) {
+        e.preventDefault();
+
+
+        $("#overlay").css("display", "flex").hide().fadeIn();
+        $("body").addClass("no-scroll");
+
+
+        let status = $(this).data("bookmark-status");
+        let postId = $(this).data("post-id");
+
+
+        $.ajax({
+            type: "post",
+            async: false,
+            url: arma_js.ajaxurl,
+            dataType: "json",
+            data: {
+                action: 'arma_bookmark',
+                status: status,
+                postId: postId,
+
+            },
+            success: function (response) {
+                $("#bookmark-modal .modal-body").html(response.data);
+
+                $("#overlay").fadeOut();
+                $("body").removeClass("no-scroll");
+
+                $("#bookmark-modal").modal("show");
+
+            },
+            error: function (response) {
+                console.error(response.responseText);
+
+            },
+
+        });
+
+    });
 
 
 

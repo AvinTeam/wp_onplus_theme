@@ -155,3 +155,59 @@ function arma_save_bax($post_id, $post, $updata)
     }
 
 }
+
+function custom_page_metabox()
+{
+    add_meta_box(
+        'custom_page_fields',
+        'اطلاعات اضافی صفحه',
+        'custom_page_metabox_callback',
+        'page',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'custom_page_metabox');
+
+function custom_page_metabox_callback($post)
+{
+    $page_template = get_page_template_slug($post->ID);
+
+    if ($page_template !== 'page-contact.php' && $page_template !== 'page-about.php') {
+        echo '<p>این متاباکس فقط برای صفحه "تماس با ما" فعال است.</p>';
+        return;
+    }
+
+    $phone         = get_post_meta($post->ID, 'contact_phone', true);
+    $phone_support = get_post_meta($post->ID, 'contact_phone_support', true);
+
+    wp_nonce_field('custom_page_meta_nonce', 'custom_page_nonce');
+
+    if ($page_template == 'page-contact.php') {
+        echo '<p><label>شماره تماس پیشنهادات و انتقادات:</label>';
+        echo '<input type="text" name="contact_phone" value="' . esc_attr($phone) . '" class="widefat"></p>';
+
+        echo '<p><label>شماره تماس پشتیبانی سایت:</label>';
+        echo '<input type="text" name="contact_phone_support" value="' . esc_attr($phone_support) . '" class="widefat"></p>';
+    }
+}
+
+function save_custom_page_meta($post_id)
+{
+    if (! isset($_POST[ 'custom_page_nonce' ]) || ! wp_verify_nonce($_POST[ 'custom_page_nonce' ], 'custom_page_meta_nonce')) {
+        return;
+    }
+
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    if (isset($_POST[ 'contact_phone' ])) {
+        update_post_meta($post_id, 'contact_phone', sanitize_text_field($_POST[ 'contact_phone' ]));
+    }
+    if (isset($_POST[ 'contact_phone_support' ])) {
+        update_post_meta($post_id, 'contact_phone_support', sanitize_text_field($_POST[ 'contact_phone_support' ]));
+    }
+
+}
+add_action('save_post', 'save_custom_page_meta');

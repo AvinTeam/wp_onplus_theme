@@ -1,21 +1,25 @@
-<div id="content2" class="content-box" style="display: none;">
+<div id="edit-profile" class="content-box"
+    style="                       <?php echo(get_query_var('arma') != 'edit-profile') ? 'display: none;' : '' ?> ">
     <h5 class="m-0 text-center">ویرایش پروفایل</h5>
     <div class="card mx-auto mt-5"
         style="max-width: 500px; position: relative; border-radius: 10px; overflow: hidden; background-color: #242323;">
         <div class="card-header bg-primary text-white text-center py-3">
             ***
         </div>
-        <form accept="" method="POST">
+        <form accept="" method="POST" enctype="multipart/form-data">
+            <?php wp_nonce_field('arma_nonce' . arma_cookie()); ?>
+
             <div class="card-body p-4" style="background-color: #242323; color: #fff;">
                 <!-- Profile Image -->
                 <div class="text-center mb-3">
-                    <img id="profileImage" src="<?php echo arma_panel_image('panel/placeHolderUserImage.png') ?>"
+                    <img id="profileImage"
+                        src="<?php echo($this_user->user_avatar) ? wp_get_attachment_image_url($this_user->user_avatar) : arma_panel_image('panel/placeHolderUserImage.png') ?>"
                         alt="Profile Image" class="img-fluid rounded-circle mb-2"
                         style="width: 70px; height: 70px; object-fit: cover; border: 5px solid #3899a0;">
                     <div>
-                        <button class="btn btn-link text-white mt-2"
+                        <button class="btn btn-link text-white mt-2" type="button"
                             onclick="document.getElementById('fileInput').click();">انتخاب تصویر</button>
-                        <input type="file" id="fileInput" style="display: none;" accept="image/*"
+                        <input type="file" id="fileInput" style="display: none;" name="user_image" accept="image/*"
                             onchange="updateImage(event)">
                     </div>
                 </div>
@@ -23,83 +27,34 @@
                 <!-- Name Field -->
                 <div class="mb-3">
                     <label for="profileName" class="form-label d-block text-white">نام پروفایل</label>
-                    <input type="text" id="profileName" class="form-control" placeholder="نام پروفایل خود را وارد کنید"
-                        style="background-color: #333; color: #fff; border: 1px solid #444;">
+                    <input type="text" id="profileName" name="profileName" class="form-control"
+                        placeholder="نام پروفایل خود را وارد کنید"
+                        style="background-color: #333; color: #fff; border: 1px solid #444;"
+                        value="<?php echo $this_user->display_name ?>">
                 </div>
 
                 <!-- Gender Field -->
                 <div class="mb-3">
                     <label for="gender" class="form-label d-block text-white">جنسیت</label>
-                    <select id="gender" class="form-select w-100"
+                    <select id="gender" class="form-select w-100" name="gender"
                         style="background-color: #333; color: #fff; border: 1px solid #444;">
-                        <option selected>آقا</option>
-                        <option>خانم</option>
-                        <option>ترجیح میدهم اعلام نکنم</option>
+                        <option <?php selected('man', $this_user->gender)?> value="man" selected>آقا</option>
+                        <option <?php selected('woman', $this_user->gender)?> value="woman">خانم</option>
+                        <option <?php selected('know', $this_user->gender)?> value="know">ترجیح میدهم اعلام نکنم
+                        </option>
                     </select>
                 </div>
 
                 <!-- Date of Birth Field -->
                 <div class="mb-3">
-                    <label class="form-label d-block text-white">تاریخ تولد</label>
+                    <label class="form-label d-block text-white" for="birthday">تاریخ تولد</label>
                     <div class="d-flex justify-content-between">
-                        <select id="daySelect" class="form-select">
-                            <option selected>روز</option>
-                        </select>
-                        <select id="monthSelect" class="form-select">
-                            <option selected>ماه</option>
-                        </select>
-                        <select id="yearSelect" class="form-select">
-                            <option selected>سال</option>
-                        </select>
+                        <input data-jdp id="birthday" name="birthday" type="text" class="form-control"
+                            placeholder="تاریخ تولد خود را وارد کنید"
+                            style="background-color: #333; color: #fff; border: 1px solid #444;"
+                            value="<?php echo($this_user->birthday) ? tarikh($this_user->birthday) : '' ?>">
                     </div>
                 </div>
-
-                <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    // افزودن گزینه‌های روز
-                    const daySelect = document.getElementById("daySelect");
-                    for (let day = 1; day <= 31; day++) {
-                        let option = document.createElement("option");
-                        option.value = day;
-                        option.textContent = day;
-                        daySelect.appendChild(option);
-                    }
-
-                    // افزودن گزینه‌های ماه
-                    const months = [
-                        "فروردین", "اردیبهشت", "خرداد", "تیر",
-                        "مرداد", "شهریور", "مهر", "آبان",
-                        "آذر", "دی", "بهمن", "اسفند"
-                    ];
-                    const monthSelect = document.getElementById("monthSelect");
-                    months.forEach((month, index) => {
-                        let option = document.createElement("option");
-                        option.value = index + 1;
-                        option.textContent = month;
-                        monthSelect.appendChild(option);
-                    });
-
-                    // افزودن گزینه‌های سال
-                    const yearSelect = document.getElementById("yearSelect");
-                    for (let year = 1403; year >= 1303; year--) {
-                        let option = document.createElement("option");
-                        option.value = year;
-                        option.textContent = year;
-                        yearSelect.appendChild(option);
-                    }
-                });
-                </script>
-                <style>
-                .form-select {
-                    width: 32%;
-                    background-color: #333;
-                    color: #fff;
-                    border: 1px solid #444;
-                    text-align: right;
-                    padding: 5px;
-                }
-                </style>
-
 
 
                 <!-- Action Buttons (Half-width buttons) -->

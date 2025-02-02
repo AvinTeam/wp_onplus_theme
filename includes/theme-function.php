@@ -11,12 +11,17 @@ function arma_template_path($arma_page = false)
             case 'dashboard':
                 $view = (is_user_logged_in()) ? 'dashboard' : 'login';
                 break;
-            case 'province':
-                $view = 'city';
-            case 'all':
-                $view = 'city';
-            case 'search':
-                $view = 'city';
+            case 'edit-profile':
+                $view = (is_user_logged_in()) ? 'dashboard' : 'login';
+                break;
+            case 'bookmark':
+                $view = (is_user_logged_in()) ? 'dashboard' : 'login';
+                break;
+            case 'mobile':
+                $view = (is_user_logged_in()) ? 'dashboard' : 'login';
+                break;
+            case 'show':
+                $view = (is_user_logged_in()) ? 'dashboard' : 'login';
                 break;
             case 'logout':
                 $view = 'logout';
@@ -550,7 +555,7 @@ function getVideoDuration($masterUrl)
 
 function getVideoQualities($masterUrl)
 {
-    if (! $masterUrl) {return;}
+    if (! $masterUrl) {return [];}
     // دریافت محتوای لیست مستر
     $masterContent = file_get_contents($masterUrl);
     if ($masterContent === false) {
@@ -591,6 +596,8 @@ function getVideoQualities($masterUrl)
 
 function arma_upload_file($file)
 {
+    $this_user = wp_get_current_user();
+
 
     $massage = '';
 
@@ -608,7 +615,7 @@ function arma_upload_file($file)
             }
             $uploadedfile = $file;
 
-            $upload_overrides = ['test_form' => false];
+            $upload_overrides = [ 'test_form' => false ];
 
             $movefile = wp_handle_upload($uploadedfile, $upload_overrides);
 
@@ -621,9 +628,13 @@ function arma_upload_file($file)
                     'post_title'     => preg_replace('/\.[^.]+$/', '', basename($movefile[ 'file' ])),
                     'post_content'   => '',
                     'post_status'    => 'inherit',
-                ];
+                 ];
 
                 $attach_id = wp_insert_attachment($attachment, $movefile[ 'file' ]);
+
+                if (get_post_type($this_user->user_avatar) === 'attachment') {
+                    wp_delete_attachment($this_user->user_avatar, true);
+                }
 
             } else {
                 $massage .= '<div class="alert alert-danger" role="alert">خطایی در زمان بارگزاری رخ داده لطفا دوباره تلاش کنید.</div>';

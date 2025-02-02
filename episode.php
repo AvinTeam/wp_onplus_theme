@@ -1,4 +1,8 @@
-<?php get_header();
+<?php
+
+use oniclass\ARMADB;
+
+get_header();
 
 if (have_posts()):
     the_post();
@@ -21,7 +25,7 @@ if (have_posts()):
         'image'           => (has_post_thumbnail()) ? get_the_post_thumbnail_url($current_post_id, 'full') : '',
         'categories'      => wp_get_post_terms($current_post_id, 'on_category', [ 'fields' => 'names' ]),
         'date'            => tarikh(get_the_date('Y-m-d')),
-        'relative_time'   => human_time_diff(get_the_time('U'), current_time('timestamp')) . ' قبل', 
+        'relative_time'   => human_time_diff(get_the_time('U'), current_time('timestamp')) . ' قبل',
         'brief'           => get_post_meta($current_post_id, '_arma_brief', true),
         'production_date' => get_post_meta($current_post_id, '_arma_production_date', true),
         'video'           => $video,
@@ -29,8 +33,8 @@ if (have_posts()):
         'download_list'   => getVideoQualities($video),
      ];
 
-    $term_id   = $categories[ 0 ]->term_id; // آی‌دی دسته
-    $term_name = $categories[ 0 ]->name;    // نام دسته
+    $term_id       = $categories[ 0 ]->term_id; // آی‌دی دسته
+    $term_name     = $categories[ 0 ]->name;    // نام دسته
     $category_link = get_term_link($categories[ 0 ]);
 
     $image_id  = get_term_meta($term_id, 'category_image', true);
@@ -39,7 +43,7 @@ if (have_posts()):
     // تنظیمات کوئری برای دریافت پست‌های مرتبط
     $args = [
         'post_type'      => 'episode',
-        'posts_per_page' => 10,                    // تعداد پست‌های مرتبط
+        'posts_per_page' => 10,                   // تعداد پست‌های مرتبط
         'post__not_in'   => [ $current_post_id ], // حذف پست فعلی
         'tax_query'      => [
             [
@@ -56,12 +60,12 @@ if (have_posts()):
     if ($related_query->have_posts()):
         while ($related_query->have_posts()): $related_query->the_post();
             $related_episodes[  ] = [
-                'id'        => get_the_ID(),
-                'title'     => get_the_title(),
-                'permalink' => get_permalink(),
-                'excerpt'   => get_the_excerpt(),
-                'image'     => (has_post_thumbnail()) ? get_the_post_thumbnail_url(get_the_ID(), 'medium') : '',
-                'date'      => tarikh(get_the_date('Y-m-d')),
+                'id'            => get_the_ID(),
+                'title'         => get_the_title(),
+                'permalink'     => get_permalink(),
+                'excerpt'       => get_the_excerpt(),
+                'image'         => (has_post_thumbnail()) ? get_the_post_thumbnail_url(get_the_ID(), 'medium') : '',
+                'date'          => tarikh(get_the_date('Y-m-d')),
                 'relative_time' => human_time_diff(get_the_time('U'), current_time('timestamp')) . ' قبل',
              ];
         endwhile;
@@ -69,6 +73,21 @@ if (have_posts()):
     endif;
 
 endif;
+
+$bookmark = false;
+
+if (is_user_logged_in()) {
+
+    $armadb = new ARMADB('bookmark');
+
+    if ($armadb->num([
+        'iduser' => get_current_user_id(),
+        'idpost' => $episode_data[ 'id' ],
+
+     ])) {$bookmark = true;}
+
+}
+
 require_once ARMA_VIEWS . 'layout/single.php';
 
 get_footer();

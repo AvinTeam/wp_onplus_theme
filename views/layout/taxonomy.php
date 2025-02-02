@@ -103,6 +103,7 @@ if ($query->max_num_pages > 1): ?>
 ?>
 
 </ul>
+</nav>
 <?php endif; ?>
 
 <div class="container-fluid my-5 p-0 d-none">
