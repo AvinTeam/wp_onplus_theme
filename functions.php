@@ -1,7 +1,7 @@
 <?php
 
 (defined('ABSPATH')) || exit;
-define('ARMA_VERSION', '1.0.0');
+define('ARMA_VERSION', '1.0.10');
 
 define('ARMA_PATH', get_template_directory() . "/");
 define('ARMA_INCLUDES', ARMA_PATH . 'includes/');

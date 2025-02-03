@@ -1,90 +1,3 @@
-<?php
-
-    use oniclass\ARMADB;
-
-    $armadb = new ARMADB('bookmark');
-
-    $bookmarked_posts = $armadb->select([
-        'data' => [ 'iduser' => get_current_user_id() ],
-        'star' => "idpost",
-     ]);
-
-    // استخراج ID پست‌ها از آرایه
-    $post_ids = array_map(function ($item) {
-        return $item->idpost;
-    }, $bookmarked_posts);
-
-    if (! empty($post_ids)) {
-        $args = [
-            'post_type'      => 'episode',
-            'post__in'       => $post_ids,
-            'orderby'        => 'post__in',
-            'posts_per_page' => -1,
-         ];
-
-    $query = new WP_Query($args); ?>
-
-
-
-
-<style>
-.post-card {
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.3s ease-in-out;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.post-card img {
-    width: 100%;
-    height: auto;
-    transition: transform 0.3s ease-in-out;
-    display: block;
-    border-radius: 10px;
-}
-
-.post-card:hover img {
-    transform: scale(1.05);
-}
-
-.title-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
-    color: white;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    padding: 15px;
-    font-size: 1rem;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-    border-radius: 10px;
-}
-
-.post-card:hover .title-overlay {
-    opacity: 1;
-}
-
-.card-body {
-    text-align: center;
-    padding: 10px;
-}
-
-.category-list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    font-size: 0.9rem;
-    color: #555;
-}
-</style>
-
-
 <div id="bookmark" class="content-box"
     style="<?php echo(get_query_var('arma') != 'bookmark') ? 'display: none;' : '' ?> ">
     <div class="card mx-auto"
@@ -93,16 +6,34 @@
         <div style="background-color: #333; padding: 20px; text-align: center; width: 100%; position: relative;">
             <h5 class="m-0" style="font-size: 24px; color: white;">لیست نشان شده‌ها</h5>
         </div>
-
-
-
-
-
-
-
-
         <?php
-            if ($query->have_posts()):
+
+            use oniclass\ARMADB;
+
+            $armadb = new ARMADB('bookmark');
+
+            $bookmarked_posts = $armadb->select([
+                'data' => [ 'iduser' => get_current_user_id() ],
+                'star' => "idpost",
+             ]);
+
+            // استخراج ID پست‌ها از آرایه
+            $post_ids = array_map(function ($item) {
+                return $item->idpost;
+            }, $bookmarked_posts);
+            
+
+            if (! empty($post_ids)) {
+                $args = [
+                    'post_type'      => 'any',
+                    'post__in'       => $post_ids,
+                    'orderby'        => 'post__in',
+                    'posts_per_page' => -1,
+                 ];
+
+                $query = new WP_Query($args);
+
+                if ($query->have_posts()):
                     echo '<div class="container">';
                     echo '<div class="row">';
 
@@ -113,27 +44,29 @@
 
                         $thumbnail = get_the_post_thumbnail_url(get_the_ID(), 'medium');
 
-                        $image_id = get_term_meta($categories[ 0 ]->term_id, 'category_image', true);
+                        $image_id  = get_term_meta($categories[ 0 ]->term_id, 'category_image', true);
                         $thumbnail = $image_id ? wp_get_attachment_url($image_id) : '';
                     ?>
         <div class="col-lg-2 col-md-2 col-sm-4 col-6 mb-4">
             <div class="card post-card">
                 <div style="position: relative;">
-                    <?php if ($thumbnail): ?>
-                    <img src="<?php echo esc_url($thumbnail); ?>" class="card-img-top" alt="<?php the_title(); ?>">
-                    <?php else: ?>
-                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="بدون تصویر">
-                    <?php endif; ?>
+                    <a href="<?php echo get_permalink() ?>">
+                        <?php if ($thumbnail): ?>
+                        <img src="<?php echo esc_url($thumbnail); ?>" class="card-img-top" alt="<?php the_title(); ?>">
+                        <?php else: ?>
+                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="بدون تصویر">
+                        <?php endif; ?>
 
-                    <div class="title-overlay">
-                        <span><?php the_title(); ?></span>
-                    </div>
-
+                        <div class="title-overlay">
+                            <span><?php the_title(); ?></span>
+                        </div>
+                    </a>
 
                 </div>
                 <div class="card-body">
                     <ul class="category-list">
-                        <li><?php echo esc_html($categories[ 0 ]->name); ?> - <?php echo tarikh(get_the_date('Y-m-d')); ?> </li>
+                        <li><?php echo esc_html($categories[ 0 ]->name); ?>
+                            -<?php echo tarikh(get_the_date('Y-m-d')); ?> </li>
                     </ul>
                 </div>
             </div>

@@ -1,4 +1,7 @@
 <?php
+
+use oniclass\ARMADB;
+
 (defined('ABSPATH')) || exit;
 
 add_action('add_meta_boxes', 'arma_meta_box');
@@ -57,7 +60,9 @@ function arma_meta_box()
     function arma_statistics_metabox_callback($post)
     {
 
-        $arma_video = get_post_meta($post->ID, '_arma_like', true);
+
+        $bookmarkdb     = new ARMADB('bookmark');
+        $bookmark_count = $bookmarkdb->num([ 'idpost' => $post->ID ]);
 
         include_once ARMA_VIEWS . 'metabox/statistics.php';
 
@@ -131,7 +136,10 @@ function arma_save_bax($post_id, $post, $updata)
         update_post_meta($post_id, '_arma_brief', wp_kses_post(wp_unslash(nl2br($POST[ 'brief' ]))));
         update_post_meta($post_id, '_arma_production_date', sanitize_text_field($POST[ 'production_date' ]));
         update_post_meta($post_id, '_arma_video', sanitize_url($POST[ 'video' ]));
-        update_post_meta($post_id, '_arma_video_duration', getVideoDuration(sanitize_url($POST[ 'video' ])));
+
+        $video_time = (empty($POST[ 'video' ])) ? '00:00:00' : getVideoDuration(sanitize_url($POST[ 'video' ]));
+
+        update_post_meta($post_id, '_arma_video_duration', $video_time);
 
         if (isset($POST[ 'colleagues' ])) {
             foreach ($POST[ 'colleagues' ] as $index => $value) {

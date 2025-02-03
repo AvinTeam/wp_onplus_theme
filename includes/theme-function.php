@@ -109,8 +109,8 @@ function arma_start_working(): array
                 'sms_type'          => (isset($arma_option[ 'sms_type' ])) ? $arma_option[ 'sms_type' ] : 'tsms',
                 'notificator_token' => (isset($arma_option[ 'notificator_token' ])) ? $arma_option[ 'notificator_token' ] : '',
                 'home_page'         => (isset($arma_option[ 'home_page' ])) ? $arma_option[ 'home_page' ] : '',
-                'light-logo'        => (isset($arma_option[ 'light-logo' ])) ? $arma_option[ 'light-logo' ] : arma_panel_image('Logo-Light.png'),
-                'dark-logo'         => (isset($arma_option[ 'dark-logo' ])) ? $arma_option[ 'dark-logo' ] : arma_panel_image('Logo-Dark.png'),
+                'light-logo'        => (isset($arma_option[ 'light-logo' ])) ? $arma_option[ 'light-logo' ] : arma_panel_image('logo-light.png'),
+                'dark-logo'         => (isset($arma_option[ 'dark-logo' ])) ? $arma_option[ 'dark-logo' ] : arma_panel_image('logo-dark.png'),
 
              ]
 
@@ -513,17 +513,20 @@ function sanitize_text_no_item($item)
 
 function getVideoDuration($masterUrl)
 {
+
+    $error = 0;
+
     // دریافت محتوای لیست مستر
     $masterContent = file_get_contents($masterUrl);
     if ($masterContent === false) {
-        return -1;
+        $error = -1;
     }
 
     // استخراج URL اولین کیفیت (مثلاً بالاترین کیفیت را بگیر)
     preg_match_all('/(index-[^\\s]+\\.m3u8)/', $masterContent, $matches);
 
     if (! isset($matches[ 1 ]) || empty($matches[ 1 ])) {
-        return -2;
+        $error = -2;
     }
 
     // انتخاب کیفیت آخر (معمولاً بالاترین کیفیت)
@@ -532,30 +535,34 @@ function getVideoDuration($masterUrl)
     // دریافت محتوای لیست کیفیت انتخاب شده
     $playlistContent = file_get_contents($playlistUrl);
     if ($playlistContent === false) {
-        return -3;
+        $error = -3;
     }
 
     // استخراج مدت زمان هر سگمنت
     preg_match_all('/#EXTINF:([\d\.]+)/', $playlistContent, $durations);
 
     if (! isset($durations[ 1 ]) || empty($durations[ 1 ])) {
-        return -4;
+        $error = -4;
     }
 
-    // جمع کردن تمام مدت زمان‌ها
-    $totalDuration = array_sum($durations[ 1 ]);
+    if ($error == 0) {
+        // جمع کردن تمام مدت زمان‌ها
+        $totalDuration = array_sum($durations[ 1 ]);
 
-    // تبدیل به فرمت ساعت:دقیقه:ثانیه
-    $hours   = floor($totalDuration / 3600);
-    $minutes = floor(($totalDuration % 3600) / 60);
-    $seconds = $totalDuration % 60;
+        // تبدیل به فرمت ساعت:دقیقه:ثانیه
+        $hours   = floor($totalDuration / 3600);
+        $minutes = floor(($totalDuration % 3600) / 60);
+        $seconds = $totalDuration % 60;
 
-    return sprintf("%02d:%02d:%02d", $hours, $minutes, $seconds);
+        return (absint($hours) || absint($minutes) || absint($seconds)) ? '00:00:00' : sprintf("%02d:%02d:%02d", $hours, $minutes, $seconds);
+    }
+
+    return '00:00:00';
 }
 
 function getVideoQualities($masterUrl)
 {
-    if (! $masterUrl) {return [];}
+    if (! $masterUrl) {return [  ];}
     // دریافت محتوای لیست مستر
     $masterContent = file_get_contents($masterUrl);
     if ($masterContent === false) {
@@ -597,7 +604,6 @@ function getVideoQualities($masterUrl)
 function arma_upload_file($file)
 {
     $this_user = wp_get_current_user();
-
 
     $massage = '';
 

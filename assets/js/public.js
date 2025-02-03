@@ -247,7 +247,28 @@ if (pageLogin) {
 }
 
 
+document.addEventListener("DOMContentLoaded", () => {
+    const button = document.querySelector(".dropdown-button");
+    const menu = document.querySelector(".dropdown-menu");
+    if (button) {
+        button.addEventListener("click", (event) => {
+            event.stopPropagation(); // جلوگیری از بسته شدن لیست هنگام کلیک روی دکمه
+            menu.classList.toggle("show");
+        });
+
+        document.addEventListener("click", (event) => {
+            if (!menu.contains(event.target) && !button.contains(event.target)) {
+                menu.classList.remove("show");
+            }
+        });
+    }
+});
+
+
+
+
 jQuery(document).ready(function ($) {
+
 
     $('.onlyNumbersInput').on('input paste', function () {
         this.value = this.value.replace(/[^0-9]/g, '');
@@ -359,17 +380,97 @@ jQuery(document).ready(function ($) {
 
 
 
-    $('#post_bookmark').click(function (e) {
+    $('#sharingBtn').click(function (e) {
+        e.preventDefault();
+
+        let postId = $(this).data("post-id");
+        let title = $(this).data("post-title");
+
+
+        let pageLink = window.location.protocol + '//' + window.location.hostname + '/?p=' + postId
+        let eitaaLink = 'https://www.eitaa.com/share/url?url=' + pageLink;
+        let rubikaLink = 'https://rubika.ir/onnewsmedia';
+        let telegramLink = 'https://t.me/share/url?url=' + pageLink + '&text=' + title;
+        let whatsappLink = 'https://wa.me/?text=' + pageLink;
+        let baleLink = 'https://web.bale.ai/onnewsmedia1';
+        let instagramLink = 'https://www.instagram.com/onnewsmedia';
+
+
+        $('#sharing-popup #sharing_input').val(pageLink);
+
+        $('#sharing-popup #sharing_eitaa').attr('href', eitaaLink);
+        $('#sharing-popup #sharing_rubika').attr('href', rubikaLink);
+        $('#sharing-popup #sharing_telegram').attr('href', telegramLink);
+        $('#sharing-popup #sharing_whatsapp').attr('href', whatsappLink);
+        $('#sharing-popup #sharing_bale').attr('href', baleLink);
+        $('#sharing-popup #sharing_instagram').attr('href', instagramLink);
+
+        $("#sharing-popup").modal("show");
+
+
+    });
+
+
+    $('#sharing_button').click(function (e) {
+        e.preventDefault();
+
+        let htmlBtn = $(this).html();
+        let _this = this;
+        const text = $('#sharing-popup #sharing_input').val();
+
+        if (navigator.clipboard && window.isSecureContext) {
+            // روش جدید برای مرورگرهای مدرن
+            navigator.clipboard.writeText(text).then(() => {
+                $(_this).html('<p class="text-nowrap fw-bold text-success-emphasis m-0 p-0">کپی شد!</p>');
+            }).catch(err => {
+                console.error("مشکل در کپی متن:", err);
+            });
+        } else {
+            // روش قدیمی برای پشتیبانی از مرورگرهای قدیمی‌تر
+            $('#sharing-popup #sharing_input').select();
+            try {
+                document.execCommand('copy');
+                $(_this).html('<p class="text-nowrap fw-bold text-success-emphasis m-0 p-0">کپی شد!</p>');
+            } catch (err) {
+                console.error("مشکل در کپی متن:", err);
+            }
+            window.getSelection().removeAllRanges();
+        }
+
+
+
+
+        setTimeout(function () {
+            $(_this).html(htmlBtn);
+        }, 1000);
+
+
+
+
+
+
+
+
+
+
+
+
+    });
+
+
+
+
+    $(document).on("click", "#post_bookmark", function (e) {
         e.preventDefault();
 
 
         $("#overlay").css("display", "flex").hide().fadeIn();
         $("body").addClass("no-scroll");
 
+        const status = $(this).attr('data-bookmark-status');;
+        const postId = $(this).data("post-id");
 
-        let status = $(this).data("bookmark-status");
-        let postId = $(this).data("post-id");
-
+        const _this = this;
 
         $.ajax({
             type: "post",
@@ -388,7 +489,26 @@ jQuery(document).ready(function ($) {
                 $("#overlay").fadeOut();
                 $("body").removeClass("no-scroll");
 
-                $("#bookmark-modal").modal("show");
+
+                if (status === "remove") {
+
+                    $(_this).attr('fill', 'none');
+                    $(_this).attr('data-bookmark-status', 'add');
+                    $(_this).closest('div').find("span").html('افزودن به لیست نشان شده‌ها');
+
+                }
+
+
+                if (status === "add") {
+
+
+                    $(_this).attr('fill', '#3899a0');
+                    $(_this).attr('data-bookmark-status', 'remove');
+                    $(_this).closest('div').find("span").html('حذف از لیست نشان شده‌ها');
+                }
+
+
+                //$("#bookmark-modal").modal("show");
 
             },
             error: function (response) {
@@ -398,19 +518,13 @@ jQuery(document).ready(function ($) {
 
         });
 
+
+
+
+
+
+
     });
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

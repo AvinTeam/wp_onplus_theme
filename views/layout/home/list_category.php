@@ -1,5 +1,5 @@
 <div class="d-flex g-1 mx-auto p-4 gx-2 gy-0">
-        <div class="swiper mySwiper">
+        <div class="swiper mySwiper w-100">
             <div class="swiper-wrapper">
                 <?php
                     $terms = get_terms([

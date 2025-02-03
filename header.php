@@ -38,9 +38,9 @@
                             <ul class="navbar-nav me-auto">
                                 <?php wp_nav_menu([
                                         'theme_location' => 'main-menu',
-                                        'container'      => false,                             // حذف `div` اضافی
-                                        'menu_class'     => 'navbar-nav ms-auto mb-2 mb-lg-0', // کلاس‌های سفارشی
-                                        'walker'         => new Custom_Nav_Walker(),           // استفاده از Walker سفارشی
+                                        'container'      => false,                            
+                                        'menu_class'     => 'navbar-nav ms-auto mb-2 mb-lg-0',
+                                        'walker'         => new Custom_Nav_Walker(),         
                                  ]); ?>
 
                                 <li onclick="openSearch()" role="button"

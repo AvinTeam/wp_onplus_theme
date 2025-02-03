@@ -88,6 +88,38 @@ if (is_user_logged_in()) {
 
 }
 
+$args = [
+    'post_type'      => 'episode_cat', // یا هر پست تایپ دیگه مثل 'episode'
+    'posts_per_page' => -1,     // دریافت همه پست‌ها
+    'meta_query'     => [
+        [
+            'key'     => '_arma_episode',
+            'value'   => absint($episode_data['id']),
+            'compare' => '=',
+        ],
+    ],
+];
+
+$query_episode_cat = new WP_Query($args);
+$episode_cat       = [];
+
+if ($query_episode_cat->have_posts()) {
+    while ($query_episode_cat->have_posts()) {
+        $query_episode_cat->the_post();
+        $episode_cat[  ] = [
+            'id'            => get_the_ID(),
+            'title'         => get_the_title(),
+            'permalink'     => get_permalink(),
+            'excerpt'       => get_the_excerpt(),
+            'image'         => (has_post_thumbnail()) ? get_the_post_thumbnail_url(get_the_ID(), 'medium') : '',
+            'date'          => tarikh(get_the_date('Y-m-d')),
+            'relative_time' => human_time_diff(get_the_time('U'), current_time('timestamp')) . ' قبل',
+         ];
+    }
+}
+
+wp_reset_postdata(); // ریست کوئری
+
 require_once ARMA_VIEWS . 'layout/single.php';
 
 get_footer();

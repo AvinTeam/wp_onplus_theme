@@ -1,7 +1,7 @@
-<div class="container-fluid px-5">
+<div class="container-fluid px-5 mb-5">
     <div class="row">
         <!-- Sidebar -->
-        <div class="col-md-4 col-lg-3 order-md-last single-sidebar mt-2">
+        <div class="col-md-4 col-lg-3 order-md-last single-sidebar mt-2 d-sm-none">
             <h5 class="mb-3">سایر قسمت‌ها</h5>
             <div class="overflow-auto" style="max-height: 100vh;">
 
@@ -51,6 +51,9 @@
             <p class="video-title"><?php echo $episode_data[ 'title' ] ?></p>
             <p class="video-description">🔍 <?php echo $episode_data[ 'brief' ] ?></p>
             <div class="video-description"><?php echo $episode_data[ 'content' ] ?></div>
+
+
+
             <!-- New Section with Image and Titles in Horizontal Layout -->
             <div class="d-flex justify-content-between align-items-center my-4">
                 <!-- Right Section with Image and Titles -->
@@ -66,33 +69,23 @@
                     </div>
                 </div>
                 <!-- Left  Section with Icon and Titles (Horizontally) -->
-                <div class="d-flex flex-row align-items-center ms-4">
+                <div class="d-flex flex-row align-items-center justify-content-sm-end gap-2">
                     <!-- Icon for Adding to Favorites -->
-
-
-
-
                     <?php if ($bookmark): ?>
-
-
-                    <div class="d-flex align-items-center me-3 bookmark-container">
+                    <div class="d-flex align-items-center bookmark-container">
                         <svg id="post_bookmark" data-bookmark-status="remove"
                             data-post-id="<?php echo $episode_data[ 'id' ] ?>" xmlns="http://www.w3.org/2000/svg"
-                            width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#3899a0" stroke-width="2"
+                            width="25" height="25" viewBox="0 0 24 24" fill="#3899a0" stroke="#3899a0" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark">
-                            <path fill="#3899a0" d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path>
+                            <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path>
                         </svg>
                         <span class="bookmark-tooltip fw-bold text-white">
                             حذف از لیست نشان شده‌ها
                             <span class="tooltip-arrow"></span>
                         </span>
                     </div>
-
-
-
                     <?php else: ?>
-
-                    <div class="d-flex align-items-center me-3 bookmark-container">
+                    <div class="d-flex align-items-center bookmark-container">
                         <svg id="post_bookmark" data-bookmark-status="add"
                             data-post-id="<?php echo $episode_data[ 'id' ] ?>" xmlns="http://www.w3.org/2000/svg"
                             width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#3899a0" stroke-width="2"
@@ -104,12 +97,20 @@
                             <span class="tooltip-arrow"></span>
                         </span>
                     </div>
-
                     <?php endif; ?>
 
+                    <?php if (! empty($episode_data[ 'download_list' ])): ?>
                     <!-- Icon for Download -->
                     <div class="dropdown-container">
-                        <button class="dropdown-button">دانلود</button>
+                        <button class="dropdown-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24"
+                                fill="none">
+                                <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-miterlimit="10" stroke-width="1.5"
+                                    d="M18.07 14.43L12 20.5l-6.07-6.07M12 3.5v16.83"></path>
+                            </svg>
+                            <span class="d-sm-none">دانلود</span>
+                        </button>
                         <div class="dropdown-menu mb-5">
                             <?php foreach ($episode_data[ 'download_list' ] as $p => $link): ?>
                             <div class="dropdown-item"><a class="nav-link" href="<?php echo $link ?>">دانلود با کیفیت
@@ -117,41 +118,116 @@
                             <?php endforeach; ?>
                         </div>
                     </div>
+                    <?php endif; ?>
 
-
-                    <script>
-                    document.addEventListener("DOMContentLoaded", () => {
-                        const button = document.querySelector(".dropdown-button");
-                        const menu = document.querySelector(".dropdown-menu");
-
-                        button.addEventListener("click", (event) => {
-                            event.stopPropagation(); // جلوگیری از بسته شدن لیست هنگام کلیک روی دکمه
-                            menu.classList.toggle("show");
-                        });
-
-                        document.addEventListener("click", (event) => {
-                            if (!menu.contains(event.target) && !button.contains(event.target)) {
-                                menu.classList.remove("show");
-                            }
-                        });
-                    });
-                    </script>
 
                     <!-- Icon for Sharing -->
-                    <div class="d-flex align-items-center me-3">
+                    <div class="d-flex align-items-center " id="sharingBtn"
+                        data-post-id="<?php echo $episode_data[ 'id' ] ?>"
+                        data-post-title="<?php echo $episode_data[ 'title' ] ?>">
                         <i class="bi bi-share-fill me-2"></i> <!-- آیکن اشتراک گذاری -->
-                        <span>اشتراک گذاری</span>
+                        <span class="d-sm-none">اشتراک گذاری</span>
                     </div>
                     <!-- Icon for Time -->
-                    <div class="d-flex align-items-center me-3 bg-dark-subtle rounded-pill">
-                        <span class="p-2"><?php echo human_time_diff(get_the_time('U'), current_time('timestamp')) ?>
+                    <div class="d-flex align-items-center bg-dark-subtle rounded-pill">
+                        <span class="p-2 small"><?php echo human_time_diff(get_the_time('U'), current_time('timestamp')) ?>
                             قبل</span>
 
                     </div>
 
                 </div>
             </div>
-            <div id="top" class="pt-9"></div>
+
+            <?php if (! empty($episode_cat)): ?>
+            <div class="mx-auto p-4 swiper arma-swiper">
+                <!-- عنوان و دکمه "نمایش همه" -->
+                <div class="view-all d-flex justify-content-between align-items-center px-4">
+                    <p class="fw-bold small">بخش های منتخب</p>
+                    <a href="#" class="ms-3 d-none" style="font-size: 13px; color: #3FB1D9; text-decoration: none;">
+                        نمایش همه
+                        <svg fill="#3FB2DA" height="8px" width="8px" viewBox="0 0 512.005 512.005">
+                            <path d="M123.586,240.923L358.253,6.256c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165L168.834,256.005
+                l219.584,219.584c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251
+                L123.586,271.747C115.245,263.406,115.245,249.923,123.586,240.923z">
+                            </path>
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="swiper cat-swiper">
+                    <div class="swiper-wrapper">
+
+                        <?php
+                            foreach ($episode_cat as $cat):
+                        ?>
+                        <div class="swiper-slide">
+                            <div class="card position-relative">
+                                <a href="<?php echo $cat[ 'permalink' ] ?>">
+                                    <img src="<?php echo $cat[ 'image' ] ?>" class="card-img-top"
+                                        alt="<?php echo $cat[ 'title' ] ?>">
+                                </a>
+                            </div>
+                            <p class="card-text text-first mt-2">
+                                <a class="nav-link"
+                                    href="<?php echo $cat[ 'permalink' ] ?>"><?php echo $cat[ 'title' ] . ' - ' . $cat[ 'date' ] ?></a>
+                            </p>
+                        </div>
+                        <?php
+                            endforeach;
+                        ?>
+                    </div>
+
+                </div>
+
+
+            </div>
+            <?php endif; ?>
+
+            <div class="mx-auto p-4 swiper arma-swiper">
+                <!-- عنوان و دکمه "نمایش همه" -->
+                <div class="view-all d-none d-sm-flex justify-content-between align-items-center px-4">
+                    <p class="fw-bold small">سایر قسمت‌ها</p>
+                    <a href="<?php echo $category_link ?>" class="ms-3"
+                        style="font-size: 13px; color: #3FB1D9; text-decoration: none;">
+                        نمایش همه
+                        <svg fill="#3FB2DA" height="8px" width="8px" viewBox="0 0 512.005 512.005">
+                            <path d="M123.586,240.923L358.253,6.256c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165L168.834,256.005
+                l219.584,219.584c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251
+                L123.586,271.747C115.245,263.406,115.245,249.923,123.586,240.923z">
+                            </path>
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="swiper cat-swiper">
+                    <div class="swiper-wrapper">
+
+                        <?php
+                            foreach ($related_episodes as $episode):
+                        ?>
+                        <div class="swiper-slide">
+                            <div class="card position-relative">
+                                <a href="<?php echo $episode[ 'permalink' ] ?>">
+                                    <img src="<?php echo $episode[ 'image' ] ?>" class="card-img-top"
+                                        alt="<?php echo $episode[ 'title' ] ?>">
+                                </a>
+                            </div>
+                            <p class="card-text text-first mt-2">
+                                <a class="nav-link"
+                                    href="<?php echo $episode[ 'permalink' ] ?>"><small><?php echo $episode[ 'title' ] ?></small></a>
+                            </p>
+                        </div>
+                        <?php
+                            endforeach;
+                        ?>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
             <div class="d-flex flex-row justify-content-start align-items-center my-4 gap-2 ">
                 <div class="text-end">
                     <img alt="profile" loading="lazy" decoding="async" class="rounded-circle bg-dark-subtle p-1 w-25"
@@ -198,7 +274,7 @@
                         $author     = get_comment_author($comment_id);
                         $date       = tarikh(get_comment_date('Y-m-d', $comment_id));
                         $content    = get_comment_text($comment_id);
-                        $avatar = $attachment_url;
+                        $avatar     = $attachment_url;
 
                     ?>
                 <div class="d-flex flex-row gap-2 w-75 comment-box" data-comment-id="<?php echo $comment_id; ?>">
@@ -276,7 +352,7 @@
 
 
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="loginModalLabel">ورود به حساب</h5>
@@ -292,7 +368,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="bookmark-modal" tabindex="-1" aria-labelledby="bookmark-modalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="bookmark-modalLabel">اطلاعیه</h1>
@@ -300,6 +376,55 @@
             </div>
             <div class="modal-body">
                 ...
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="sharing-popup" tabindex="-1" aria-labelledby="sharing-popup_Label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="sharing-popup_Label">اشتراک در شبکه های اجتماعی</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-bodyd-flex flex-column justify-content-center align-content-center text-center m-3 ">
+                <div class="d-flex flex-row row-cols-6 justify-content-center align-content-center gap-2 w-75 mx-auto">
+
+                    <a class="col sharing-logo d-flex flex-column align-content-center  justify-content-center "
+                        id="sharing_eitaa" href="#">
+                        <img src="<?php echo arma_panel_image('eitaa.svg') ?>">
+                        <span class="text-body">ایتا</span>
+                    </a><a class="col sharing-logo d-flex flex-column align-content-center  justify-content-center "
+                        id="sharing_rubika" href="#">
+                        <img src="<?php echo arma_panel_image('rubika.png') ?>">
+                        <span class="text-body">روبیکا</span>
+                    </a><a class="col sharing-logo d-flex flex-column align-content-center  justify-content-center "
+                        id="sharing_telegram" href="#">
+                        <img src="<?php echo arma_panel_image('telegram.svg') ?>">
+                        <span class="text-body">تلگرام</span>
+                    </a><a class="col sharing-logo d-flex flex-column align-content-center  justify-content-center "
+                        id="sharing_whatsapp" href="#">
+                        <img src="<?php echo arma_panel_image('whatsapp.png') ?>">
+                        <span class="text-body">واتس اپ</span>
+                    </a><a class="col sharing-logo d-flex flex-column align-content-center  justify-content-center "
+                        id="sharing_bale" href="#">
+                        <img src="<?php echo arma_panel_image('Bale.png') ?>">
+                        <span class="text-body">بله</span>
+                    </a><a class="col sharing-logo d-flex flex-column align-content-center  justify-content-center "
+                        id="sharing_instagram" href="#">
+                        <img src="<?php echo arma_panel_image('instagram.png') ?>">
+                        <span class="text-body">اینستاگرام</span>
+                    </a>
+
+
+                </div>
+                <div class="d-flex flex-row justify-content-center align-content-center mt-4 gap-2">
+                    <button class="btn btn-secondary" id="sharing_button"><i
+                            class="bi h5 bi-copy fw-bold text-success-emphasis m-0 p-0"></i></button>
+                    <input class="form-control" id="sharing_input" class="" disabled="" style="direction: ltr;"
+                        readonly="" type="text" value="#">
+                </div>
             </div>
         </div>
     </div>

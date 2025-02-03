@@ -32,8 +32,8 @@
             </tr>
 
             <tr>
-                <th>آدرس فایل w3u8</th>
-                <td><input class="regular-text" name="onplus[video]" value="<?=$arma_video?>"></td>
+                <th>آدرس فایل m3u8</th>
+                <td><input class="regular-text w-100" name="onplus[video]" value="<?=$arma_video?>"></td>
                 
             </tr>
             <tr>

@@ -10,16 +10,16 @@
                background-position: center;
                height: 500px;
                padding: 50px 0;">
-        <div class="row h-100 align-items-center justify-content-start text-white">
-            <div class="col-md-3 text-end">
+        <div class="row h-100 align-items-center justify-content-center justify-content-md-start text-white">
+            <div class="col-md-3 col-12 text-center text-md-end mt-2 d-sm-none ">
                 <img src="<?php echo $image_url ?>" class="img-fluid" alt="Thumbnail">
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 col-7 px-5">
                 <div class="d-flex align-items-center justify-content-between">
                     <h3><?php echo $term_name ?></h3>
                     <i class="bi bi-heart text-danger fs-4"></i>
                 </div>
-                <p><?php echo $term_description ?></p>
+                <p class="text-justify"><?php echo $term_description ?></p>
                 <div class="d-flex align-items-center">
                     <i class="bi bi-hand-thumbs-up-fill text-success me-2"></i>
                     <span>123 پسند</span>
@@ -40,7 +40,7 @@
     <div class="view-all d-flex justify-content-between align-items-center px-3 my-2">
         <h5>قسمت ها</h5>
     </div>
-    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-4 mx-0" id="video-cards">
+    <div class="row row-cols-2 row-cols-sm-1 row-cols-md-4 row-cols-lg-5 g-4 mx-0" id="video-cards">
         <!-- Card 1 -->
 
 
@@ -48,12 +48,12 @@
 
         <div class="col on_category">
             <div class="card position-relative">
-                <a href="<?php echo $episode[ 'permalink' ] ?>"><img src="<?php echo $episode[ 'image' ] ?>" class="card-img-top" alt="<?php echo $episode[ 'title' ] ?>"></a>
+                <a href="<?php echo $episode[ 'permalink' ] ?>"><img src="<?php echo $episode[ 'image' ] ?>" class="card-img-top rounded-2" alt="<?php echo $episode[ 'title' ] ?>"></a>
   
             </div>
             <div class="card-body d-flex justify-content-between">
-                <span class="text-secondary arma_duration"><?php echo $episode[ 'duration' ]?></span>
-                <h6 class="text-right arma_data"><?php echo $term_name ?> -<?php echo $episode[ 'data' ] ?></h6>
+                <h6 class="text-right px-3 pt-2 arma_data"><?php echo $term_name ?> -<?php echo $episode[ 'data' ] ?></h6>
+                <span class="text-secondary px-3 pt-2 arma_duration"><?php echo $episode[ 'duration' ]?></span>
             </div>
             <a class="nav-link" href="<?php echo $episode[ 'permalink' ] ?>"><p class="card-text text-first text-right"><?php echo $episode[ 'title' ] ?></p></a>
         </div>
