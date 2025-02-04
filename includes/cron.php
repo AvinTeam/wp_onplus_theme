@@ -1,59 +1,41 @@
 <?php
 (defined('ABSPATH')) || exit;
 
-// افزودن اکشن کرون
-add_action('avin_it_cron_job', 'avin_it_cron_function');
-
-function avin_it_cron_function()
+function update_video_status_function()
 {
-    // notificator('cron', time());
+    $args = [
+        'post_type'      => [ 'episode', 'episode_cat' ], // می‌توان نوع پست را تغییر داد
+        'posts_per_page' => -1,                           // دریافت تمام پست‌های دارای شرط
+        'meta_query'     => [
+            [
+                'key'     => '_arma_video_status',
+                'value'   => 'complete',
+                'compare' => '!=', // پست‌هایی که مقدارشان "complete" نیست
+             ],
+         ],
+     ];
 
-    $nasr_option = get_option('nasr_option');
+    $query = new WP_Query($args);
 
-    $nasrdb = new NasrDB();
-
-    $url = add_query_arg([
-        'username' => $nasr_option[ 'tsms' ][ 'username' ],
-        'password' => $nasr_option[ 'tsms' ][ 'password' ],
-        'from' => $nasr_option[ 'tsms' ][ 'number' ],
-     ], 'http://www.tsms.ir/url/recived_sms_xml.php');
-
-    $response = wp_remote_get($url, [
-        'timeout' => 15,
-     ]);
-
-    if (is_wp_error($response)) {
-        error_log('خطا در درخواست: ' . $response->get_error_message());
-    }
-
-    $xml_string = wp_remote_retrieve_body($response);
-
-    if (simplexml_load_string($xml_string)) {
-        $xml_content = simplexml_load_string($xml_string);
-
-        foreach ($xml_content->msg as $value) {
-
-            if (nasr_to_enghlish($value->text) == nasr_to_enghlish($nasr_option[ 'target_word' ])) {
-
-                $mobile = sanitize_phone($value->from);
-
-                $num = $nasrdb->num($mobile);
-
-                if (!absint($num)) {
-
-                    $frm = [
-                        'mobile' => $mobile,
-                        'status' => 'sms',
-
-                     ];
-
-                    $nasrdb->insert($frm, [ '%s', '%s' ]);
-
-                }
-
-            }
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            $post_id = get_the_ID();
+            $url     = get_post_meta($post_id, '_arma_video', true);
+            if (empty($url)) {continue;}
+            arma_set_video_post($post_id, $url);
 
         }
     }
 
+    wp_reset_postdata();
+}
+
+$arma_cron = absint(get_option('arma_cron'));
+
+if ($arma_cron < time()) {
+    update_video_status_function();
+    update_option('arma_cron', (time() + (15 * 60)));
+
+    exit;
 }

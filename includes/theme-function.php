@@ -65,29 +65,6 @@ function arma_panel_image($path)
     return ARMA_IMAGE . $path;
 }
 
-function arma_remote(string $url)
-{
-    $res = wp_remote_get(
-        $url,
-        [
-            'timeout' => 1000,
-         ]);
-
-    if (is_wp_error($res)) {
-        $result = [
-            'code'   => 1,
-            'result' => $res->get_error_message(),
-         ];
-    } else {
-        $result = [
-            'code'   => 0,
-            'result' => json_decode($res[ 'body' ]),
-         ];
-    }
-
-    return $result;
-}
-
 function arma_start_working(): array
 {
     $arma_option = get_option('arma_option');
@@ -488,51 +465,12 @@ function sanitize_text_no_item($item)
 
 function getVideoDuration($masterUrl)
 {
+    // تبدیل به فرمت ساعت:دقیقه:ثانیه
+    $hours   = floor($masterUrl / 3600);
+    $minutes = floor(($masterUrl % 3600) / 60);
+    $seconds = $masterUrl % 60;
 
-    $error = 0;
-
-    // دریافت محتوای لیست مستر
-    $masterContent = file_get_contents($masterUrl);
-    if ($masterContent === false) {
-        $error = -1;
-    }
-
-    // استخراج URL اولین کیفیت (مثلاً بالاترین کیفیت را بگیر)
-    preg_match_all('/(index-[^\\s]+\\.m3u8)/', $masterContent, $matches);
-
-    if (! isset($matches[ 1 ]) || empty($matches[ 1 ])) {
-        $error = -2;
-    }
-
-    // انتخاب کیفیت آخر (معمولاً بالاترین کیفیت)
-    $playlistUrl = dirname($masterUrl) . "/" . end($matches[ 1 ]);
-
-    // دریافت محتوای لیست کیفیت انتخاب شده
-    $playlistContent = file_get_contents($playlistUrl);
-    if ($playlistContent === false) {
-        $error = -3;
-    }
-
-    // استخراج مدت زمان هر سگمنت
-    preg_match_all('/#EXTINF:([\d\.]+)/', $playlistContent, $durations);
-
-    if (! isset($durations[ 1 ]) || empty($durations[ 1 ])) {
-        $error = -4;
-    }
-
-    if ($error == 0) {
-        // جمع کردن تمام مدت زمان‌ها
-        $totalDuration = array_sum($durations[ 1 ]);
-
-        // تبدیل به فرمت ساعت:دقیقه:ثانیه
-        $hours   = floor($totalDuration / 3600);
-        $minutes = floor(($totalDuration % 3600) / 60);
-        $seconds = $totalDuration % 60;
-
-        return (absint($hours) || absint($minutes) || absint($seconds)) ? '00:00:00' : sprintf("%02d:%02d:%02d", $hours, $minutes, $seconds);
-    }
-
-    return '00:00:00';
+    return (absint($hours) && absint($minutes) && absint($seconds)) ? '00:00:00' : sprintf("%02d:%02d:%02d", $hours, $minutes, $seconds);
 }
 
 function getVideoQualities($masterUrl)
@@ -718,4 +656,92 @@ function arma_show_visited(): array
         'date'  => $date_array,
         'count' => $count_array,
      ];
+}
+
+function arma_arvancloud(string $url)
+{
+
+    $arma_option = arma_start_working();
+
+    preg_match('/videos\/([a-f0-9\-]+)\?/', $url, $matches);
+
+    if (! empty($matches[ 1 ])) {
+
+        $url = "https://napi.arvancloud.ir/vod/2.0/videos/" . $matches[ 1 ]; // آدرس API
+
+        $response = wp_remote_get($url, [
+            'headers' => [ 'Authorization' => $arma_option[ 'arvancloud_key' ] ],
+            'timeout' => 1000,
+         ]);
+
+        if (is_wp_error($response)) {
+            $result = [
+                'success' => 0,
+                'result'  => $response->get_error_message(),
+             ];
+        } else {
+
+            $res        = json_decode($response[ 'body' ]);
+            $mp4_videos = [  ];
+            foreach ($res->data->mp4_videos as $video) {
+                if (preg_match('/h_(\d+)_\d+k\.mp4/', $video, $matches)) {
+                    $resolution                = $matches[ 1 ] . "p";
+                    $mp4_videos[ $resolution ] = $video;
+                }
+
+            }
+
+            $endpoint = [
+                'status' => $res->data->status,
+                'time'   => getVideoDuration($res->data->file_info->general->duration),
+                'm3u8'   => $res->data->hls_playlist,
+                'mp4'    => $mp4_videos,
+                'img'    => $res->data->thumbnail_url,
+                'video'  => $res->data->video_url,
+                'player' => $res->data->player_url,
+             ];
+
+            $result = [
+                'success' => 1,
+                'result'  => $endpoint,
+             ];
+        }
+
+        return $result;
+
+    }
+
+    return false;
+
+}
+
+function arma_set_video_post($post_id, $url): string | null | false
+{
+    $status = false;
+
+    if (! empty($url)) {
+
+        $res = arma_arvancloud($url);
+
+        if ($res) {
+
+            if (is_array($res) && $res[ 'success' ] == 1) {
+
+                $status = $res[ 'result' ][ 'status' ];
+                update_post_meta($post_id, '_arma_video', $url);
+                update_post_meta($post_id, '_arma_video_res', $res[ 'result' ]);
+                update_post_meta($post_id, '_arma_video_duration', $res[ 'result' ][ 'time' ]);
+                update_post_meta($post_id, '_arma_video_status', $status);
+            }
+        }
+        $post_status = ($status != 'complete') ? 'pending' : 'publish';
+
+        wp_update_post([
+            'ID'          => $post_id,
+            'post_status' => $post_status,
+         ]);
+
+    }
+    return $status;
+
 }

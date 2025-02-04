@@ -3,7 +3,14 @@
     // تنظیمات کوئری برای دریافت پست‌های مرتبط
     $args = [
         'post_type'      => 'episode',
-        'posts_per_page' => 5, // تعداد پست‌های مرتبط
+        'posts_per_page' => 5,
+        'meta_query'     => [
+            [
+                'key'     => '_arma_video_status', // کلید متا
+                'value'   => 'complete',           // مقدار متا که باید برابر باشد
+                'compare' => '=',                  // شرط بررسی برابری
+             ],
+         ],
         'tax_query'      => [
             [
                 'taxonomy' => trim($row[ 'type' ]),
@@ -43,22 +50,22 @@
                 if ($related_query->have_posts()):
                     while ($related_query->have_posts()): $related_query->the_post();
                     ?>
-		            <div class="swiper-slide">
-		                <div class="card position-relative">
-		                    <a href="<?php echo get_permalink() ?>">
-		                        <img src="<?php echo(has_post_thumbnail()) ? get_the_post_thumbnail_url(get_the_ID(), 'medium') : '' ?>"
-		                            class="card-img-top rounded-3" alt="<?php echo get_the_title() ?>">
-		                    </a>
-		                </div>
-		                <p class="card-text text-first mt-2">
-		                    <a class="nav-link" href="<?php echo get_permalink()?>"><?php echo get_the_title() . ' - ' . tarikh(get_the_date('Y-m-d')) ?></a>
-		                </p>
-		            </div>
-		            <?php
-                            endwhile;
-                            wp_reset_postdata();
-                        endif;
-                    ?>
+				            <div class="swiper-slide">
+				                <div class="card position-relative">
+				                    <a href="<?php echo get_permalink() ?>">
+				                        <img src="<?php echo(has_post_thumbnail()) ? get_the_post_thumbnail_url(get_the_ID(), 'medium') : '' ?>"
+				                            class="card-img-top rounded-3" alt="<?php echo get_the_title() ?>">
+				                    </a>
+				                </div>
+				                <p class="card-text text-first mt-2">
+				                    <a class="nav-link" href="<?php echo get_permalink() ?>"><?php echo get_the_title() . ' - ' . tarikh(get_the_date('Y-m-d')) ?></a>
+				                </p>
+				            </div>
+				            <?php
+                                    endwhile;
+                                    wp_reset_postdata();
+                                endif;
+                            ?>
         </div>
 
     </div>

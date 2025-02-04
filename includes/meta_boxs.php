@@ -63,9 +63,9 @@ function arma_meta_box()
         $all_visited = intval(get_post_meta($post->ID, '_arma_visited', true));
 
         $bookmarkdb     = new ARMADB('bookmark');
-        $bookmark_count = $bookmarkdb->num([ 
+        $bookmark_count = $bookmarkdb->num([
             'post_type' => get_post_type($post->ID),
-            'idpost' => $post->ID,
+            'idpost'    => $post->ID,
          ]);
 
         $visitdb = new ARMADB('visit');
@@ -149,11 +149,11 @@ function arma_save_bax($post_id, $post, $updata)
 
         update_post_meta($post_id, '_arma_brief', wp_kses_post(wp_unslash(nl2br($POST[ 'brief' ]))));
         update_post_meta($post_id, '_arma_production_date', sanitize_text_field($POST[ 'production_date' ]));
-        update_post_meta($post_id, '_arma_video', sanitize_text_field($POST[ 'video' ]));
 
-        $video_time = (empty($POST[ 'video' ])) ? '00:00:00' : getVideoDuration(sanitize_url($POST[ 'video' ]));
+        remove_action('save_post', 'arma_save_bax');
 
-        update_post_meta($post_id, '_arma_video_duration', $video_time);
+
+        arma_set_video_post($post_id, sanitize_text_field($POST[ 'video' ]));
 
         if (isset($POST[ 'colleagues' ])) {
             foreach ($POST[ 'colleagues' ] as $index => $value) {
@@ -173,8 +173,11 @@ function arma_save_bax($post_id, $post, $updata)
             update_post_meta($post_id, '_arma_episode', absint($POST[ 'episode' ]));
 
         }
+        add_action('save_post', 'arma_save_bax');
 
     }
+
+
 
 }
 

@@ -30,9 +30,9 @@
             <div class="video-container mb-3">
 
                 <video id="my-video" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto"
-                    poster="<?php echo $episode_data[ 'image' ] ?>" width="100%" height="360"
+                    poster="<?php echo $episode_data[ 'image' ]?>" width="100%" height="360"
                     style="border-radius: 7px; width: 100%; ">
-                    <source src="<?php echo $episode_data[ 'video' ] ?>" type="application/x-mpegURL">
+                    <source src="<?php echo $episode_data[ 'video' ][ 'm3u8' ] ?>" type="application/x-mpegURL">
                     مرورگر شما از پخش ویدئو پشتیبانی نمی‌کند.
 
                 </video>
@@ -49,9 +49,8 @@
                 </script>
             </div>
             <p class="video-title"><?php echo $episode_data[ 'title' ] ?></p>
-            <p class="video-description">🔍 <?php echo $episode_data[ 'brief' ] ?></p>
+            <p class="video-description">🔍                                              <?php echo $episode_data[ 'brief' ] ?></p>
             <div class="video-description"><?php echo $episode_data[ 'content' ] ?></div>
-
 
 
             <!-- New Section with Image and Titles in Horizontal Layout -->
@@ -101,7 +100,7 @@
                     </div>
                     <?php endif; ?>
 
-                    <?php if (! empty($episode_data[ 'download_list' ])): ?>
+                    <?php if (! empty($episode_data[ 'video' ][ 'mp4' ])): ?>
                     <!-- Icon for Download -->
                     <div class="dropdown-container">
                         <button class="dropdown-button d-flex align-items-center">
@@ -113,8 +112,8 @@
                             </svg>
                             <span class="d-none d-md-block">دانلود</span>
                         </button>
-                        <div class="dropdown-menu mb-5">
-                            <?php foreach ($episode_data[ 'download_list' ] as $p => $link): ?>
+                        <div class="dropdown-menu mb-5 bg-body">
+                            <?php foreach ($episode_data[ 'video' ][ 'mp4' ] as $p => $link): ?>
                             <div class="dropdown-item"><a class="nav-link" href="<?php echo $link ?>">دانلود با کیفیت
                                     <?php echo $p ?></a></div>
                             <?php endforeach; ?>
@@ -125,7 +124,7 @@
 
                     <!-- Icon for Sharing -->
                     <div class="d-flex align-items-center " id="sharingBtn"
-                        data-link="<?php echo wp_get_shortlink($episode_data[ 'id' ] )?>"
+                        data-link="<?php echo wp_get_shortlink($episode_data[ 'id' ]) ?>"
                         data-title="<?php echo $episode_data[ 'title' ] ?>">
                         <i class="bi bi-share-fill me-2"></i> <!-- آیکن اشتراک گذاری -->
                         <span class="d-none d-md-block">اشتراک گذاری</span>

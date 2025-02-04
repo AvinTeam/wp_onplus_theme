@@ -55,13 +55,8 @@ $user_like = $likedb->get([
     'idpost'    => $term_id,
  ]);
 
-$like_btn_class = ($user_like && $user_like->like_type == "like") ? "text-success" : "";
+$like_btn_class    = ($user_like && $user_like->like_type == "like") ? "text-success" : "";
 $dislike_btn_class = ($user_like && $user_like->like_type == "dislike") ? "text-danger" : "";
-
-// $[
-//     'percentage' => $percentage,
-//     'type'       => $all_like_type,
-//  ];
 
 function atlas_title_filter_cat($title)
 {
@@ -91,6 +86,13 @@ $paged = (get_query_var('paged') > 1) ? get_query_var('paged') : (get_query_var(
 
 $args = [
     'post_type'      => 'episode',
+    'meta_query'     => [
+        [
+            'key'     => '_arma_video_status', // کلید متا
+            'value'   => 'complete',           // مقدار متا که باید برابر باشد
+            'compare' => '=',                  // شرط بررسی برابری
+         ],
+     ],
     'tax_query'      => [
         [
             'taxonomy' => 'on_category',
@@ -119,16 +121,22 @@ if ($query->have_posts()):
             'excerpt'   => get_the_excerpt(),
             'image'     => $image,
             'data'      => tarikh($query->post->post_date, 'd'),
-            'duration'  => (is_string($duration)) ? $duration : 0,
+            'duration'  => (is_string($duration)) ? $duration : '00:00:00',
          ];
     endwhile;
-    wp_reset_postdata();
-
 endif;
+wp_reset_postdata();
 
 $args_agents = [
     'post_type'      => 'episode',
-    'posts_per_page' => -1, // دریافت همه پست‌ها
+    'posts_per_page' => -1,
+    'meta_query'     => [
+        [
+            'key'     => '_arma_video_status',
+            'value'   => 'complete',
+            'compare' => '=',
+         ],
+     ],
     'tax_query'      => [
         [
             'taxonomy' => 'on_category',

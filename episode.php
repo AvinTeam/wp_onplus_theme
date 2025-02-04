@@ -13,7 +13,15 @@ if (have_posts()):
     // دریافت دسته‌های پست فعلی
     $categories = wp_get_post_terms($current_post_id, 'on_category');
 
-    $video = get_post_meta($current_post_id, '_arma_video', true);
+    $video_status = get_post_meta($current_post_id, '_arma_video_status', true);
+    $show_post    = true;
+    if ($video_status != 'complete') {
+        $status = arma_set_video_post($current_post_id, get_post_meta($current_post_id, '_arma_video', true));
+        if ($status != 'complete') {
+            $show_post = false;
+            echo '<div class="alert alert-warning text-center mt-4" role="alert">ویدئو این قسمت هنوز تکیمل نشده است</div>';
+        }
+    }
 
     // دریافت اطلاعات پست فعلی
     $episode_data = [
@@ -28,9 +36,8 @@ if (have_posts()):
         'relative_time'   => human_time_diff(get_the_time('U'), current_time('timestamp')) . ' قبل',
         'brief'           => get_post_meta($current_post_id, '_arma_brief', true),
         'production_date' => get_post_meta($current_post_id, '_arma_production_date', true),
-        'video'           => $video,
+        'video'           => get_post_meta($current_post_id, '_arma_video_res', true),
         'colleagues'      => get_post_meta($current_post_id, '_arma_colleagues', true),
-        'download_list'   => getVideoQualities($video),
         'type'            => get_post_type($current_post_id),
      ];
 
@@ -121,7 +128,7 @@ if ($query_episode_cat->have_posts()) {
 }
 
 wp_reset_postdata(); // ریست کوئری
-
-require_once ARMA_VIEWS . 'layout/single.php';
-
+if ($show_post) {
+    require_once ARMA_VIEWS . 'layout/single.php';
+}
 get_footer();
