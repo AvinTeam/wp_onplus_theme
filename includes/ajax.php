@@ -313,22 +313,23 @@ function arma_bookmark()
 {
     if (! is_user_logged_in()) {
 
-        wp_send_json_error('<p>برای افزودن به لیست نشان شده‌ها باید وارد پنل کاربری شوید</p>
-                          <a href="/panel" class="btn btn-primary">ورود به سایت</a>');
+        wp_send_json_error('<p>برای افزودن به لیست نشان شده‌ها باید وارد پنل کاربری شوید</p><a href="/panel" class="btn btn-primary">ورود به سایت</a>');
     }
 
     $armadb = new ARMADB('bookmark');
 
     $isbookmark = ($armadb->num([
-        'iduser' => get_current_user_id(),
-        'idpost' => absint($_POST[ 'postId' ]),
+        'post_type' => sanitize_text_field($_POST[ 'post_type' ]),
+        'iduser'    => get_current_user_id(),
+        'idpost'    => absint($_POST[ 'postId' ]),
      ])) ? true : false;
 
     if (! $isbookmark && $_POST[ 'status' ] === "add") {
 
         $armadb->insert([
-            'idpost' => absint($_POST[ 'postId' ]),
-            'iduser' => get_current_user_id(),
+            'post_type' => sanitize_text_field($_POST[ 'post_type' ]),
+            'idpost'    => absint($_POST[ 'postId' ]),
+            'iduser'    => get_current_user_id(),
          ]);
 
         wp_send_json_success('<p>با موفقیت به لیست نشان شده‌ها اضافه شد</p>
@@ -339,14 +340,124 @@ function arma_bookmark()
     if ($isbookmark && $_POST[ 'status' ] === "remove") {
 
         $armadb->delete([
-            'idpost' => absint($_POST[ 'postId' ]),
-            'iduser' => get_current_user_id(),
+            'post_type' => sanitize_text_field($_POST[ 'post_type' ]),
+            'idpost'    => absint($_POST[ 'postId' ]),
+            'iduser'    => get_current_user_id(),
          ]);
 
         wp_send_json_success('<p>با موفقیت از لیست نشان شده‌ها حذف شد</p>
                             <button onclick="location.reload();" class="btn btn-primary">تایید</button>');
 
     }
+
+}
+
+add_action("wp_ajax_arma_likes", "arma_likes");
+add_action("wp_ajax_nopriv_arma_likes", "arma_likes");
+function arma_likes()
+{
+    if (! is_user_logged_in()) {
+
+        wp_send_json_error('<p>برای ثبت نظر باید وارد پنل کاربری شوید</p><a href="/panel" class="btn btn-primary">ورود به سایت</a>');
+    }
+
+    $armadb = new ARMADB('like');
+
+    $user_like = $armadb->get([
+        'post_type' => sanitize_text_field($_POST[ 'post_type' ]),
+        'iduser'    => get_current_user_id(),
+        'idpost'    => absint($_POST[ 'postId' ]),
+     ]);
+
+    //up
+//down
+
+    $islike = ($user_like) ? true : false;
+    $status = '';
+    if ($islike) {
+        if ($user_like->like_type == sanitize_text_field($_POST[ 'status' ])) {
+            $armadb->delete([
+                'id'        => $user_like->id,
+                'post_type' => sanitize_text_field($_POST[ 'post_type' ]),
+                'iduser'    => get_current_user_id(),
+                'idpost'    => absint($_POST[ 'postId' ]),
+             ]);
+
+        } else {
+
+            $res = $armadb->update([ 'like_type' => sanitize_text_field($_POST[ 'status' ]) ], [ 'id' => $user_like->id ]);
+            if ($res) {$status = sanitize_text_field($_POST[ 'status' ]);}
+
+        }
+
+    } else {
+        $res = $armadb->insert([
+            'post_type' => sanitize_text_field($_POST[ 'post_type' ]),
+            'idpost'    => absint($_POST[ 'postId' ]),
+            'iduser'    => get_current_user_id(),
+            'like_type' => sanitize_text_field($_POST[ 'status' ]),
+         ]);
+        if ($res) {$status = sanitize_text_field($_POST[ 'status' ]);}
+    }
+
+    $like_conut = $armadb->num([
+        'post_type' => sanitize_text_field($_POST[ 'post_type' ]),
+        'like_type' => 'like',
+        'idpost'    => absint($_POST[ 'postId' ]),
+     ]);
+    $dislike_conut = $armadb->num([
+        'post_type' => sanitize_text_field($_POST[ 'post_type' ]),
+        'like_type' => 'dislike',
+        'idpost'    => absint($_POST[ 'postId' ]),
+     ]);
+
+    $total_votes = $like_conut + $dislike_conut; // مجموع کل آرا
+
+    $percentage    = 0; // درصد لایک
+    $all_like_type = "up";
+
+    if ($total_votes > 0) {
+        if ($like_conut >= $dislike_conut) {
+            $percentage    = round(($like_conut / $total_votes) * 100); // درصد لایک
+            $all_like_type = "up";
+        } else {
+            $percentage    = round(($dislike_conut / $total_votes) * 100); // درصد دیس‌لایک
+            $all_like_type = "down";
+        }
+
+    }
+
+    wp_send_json_success([
+        'status'     => $status,
+        'percentage' => $percentage,
+        'type'       => $all_like_type,
+     ]);
+
+    //  if (! $isbookmark && $_POST[ 'status' ] === "add") {
+
+    //     $armadb->insert([
+    //         'post_type' => sanitize_text_field($_POST[ 'post_type' ]),
+    //         'idpost'    => absint($_POST[ 'postId' ]),
+    //         'iduser'    => get_current_user_id(),
+    //      ]);
+
+    //     wp_send_json_success('<p>با موفقیت به لیست نشان شده‌ها اضافه شد</p>
+    //                         <button onclick="location.reload();" class="btn btn-primary">تایید</button>');
+
+    // }
+
+    // if ($isbookmark && $_POST[ 'status' ] === "remove") {
+
+    //     $armadb->delete([
+    //         'post_type' => sanitize_text_field($_POST[ 'post_type' ]),
+    //         'idpost'    => absint($_POST[ 'postId' ]),
+    //         'iduser'    => get_current_user_id(),
+    //      ]);
+
+    //     wp_send_json_success('<p>با موفقیت از لیست نشان شده‌ها حذف شد</p>
+    //                         <button onclick="location.reload();" class="btn btn-primary">تایید</button>');
+
+    // }
 
 }
 

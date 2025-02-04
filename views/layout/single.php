@@ -1,7 +1,7 @@
-<div class="container-fluid px-5 mb-5">
+<div class="container-fluid px-5">
     <div class="row">
         <!-- Sidebar -->
-        <div class="col-md-4 col-lg-3 order-md-last single-sidebar mt-2 d-sm-none">
+        <div class="col-md-4 col-lg-3 order-md-last single-sidebar mt-2 d-none d-md-block">
             <h5 class="mb-3">سایر قسمت‌ها</h5>
             <div class="overflow-auto" style="max-height: 100vh;">
 
@@ -74,7 +74,8 @@
                     <?php if ($bookmark): ?>
                     <div class="d-flex align-items-center bookmark-container">
                         <svg id="post_bookmark" data-bookmark-status="remove"
-                            data-post-id="<?php echo $episode_data[ 'id' ] ?>" xmlns="http://www.w3.org/2000/svg"
+                            data-post-id="<?php echo $episode_data[ 'id' ] ?>"
+                            data-type="<?php echo $episode_data[ 'type' ] ?>" xmlns="http://www.w3.org/2000/svg"
                             width="25" height="25" viewBox="0 0 24 24" fill="#3899a0" stroke="#3899a0" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark">
                             <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path>
@@ -87,7 +88,8 @@
                     <?php else: ?>
                     <div class="d-flex align-items-center bookmark-container">
                         <svg id="post_bookmark" data-bookmark-status="add"
-                            data-post-id="<?php echo $episode_data[ 'id' ] ?>" xmlns="http://www.w3.org/2000/svg"
+                            data-post-id="<?php echo $episode_data[ 'id' ] ?>"
+                            data-type="<?php echo $episode_data[ 'type' ] ?>" xmlns="http://www.w3.org/2000/svg"
                             width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#3899a0" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark">
                             <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path>
@@ -102,14 +104,14 @@
                     <?php if (! empty($episode_data[ 'download_list' ])): ?>
                     <!-- Icon for Download -->
                     <div class="dropdown-container">
-                        <button class="dropdown-button">
+                        <button class="dropdown-button d-flex align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24"
                                 fill="none">
-                                <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
+                                <path id="download-svg" stroke="" stroke-linecap="round" stroke-linejoin="round"
                                     stroke-miterlimit="10" stroke-width="1.5"
                                     d="M18.07 14.43L12 20.5l-6.07-6.07M12 3.5v16.83"></path>
                             </svg>
-                            <span class="d-sm-none">دانلود</span>
+                            <span class="d-none d-md-block">دانلود</span>
                         </button>
                         <div class="dropdown-menu mb-5">
                             <?php foreach ($episode_data[ 'download_list' ] as $p => $link): ?>
@@ -123,14 +125,15 @@
 
                     <!-- Icon for Sharing -->
                     <div class="d-flex align-items-center " id="sharingBtn"
-                        data-post-id="<?php echo $episode_data[ 'id' ] ?>"
-                        data-post-title="<?php echo $episode_data[ 'title' ] ?>">
+                        data-link="<?php echo wp_get_shortlink($episode_data[ 'id' ] )?>"
+                        data-title="<?php echo $episode_data[ 'title' ] ?>">
                         <i class="bi bi-share-fill me-2"></i> <!-- آیکن اشتراک گذاری -->
-                        <span class="d-sm-none">اشتراک گذاری</span>
+                        <span class="d-none d-md-block">اشتراک گذاری</span>
                     </div>
                     <!-- Icon for Time -->
                     <div class="d-flex align-items-center bg-dark-subtle rounded-pill">
-                        <span class="p-2 small"><?php echo human_time_diff(get_the_time('U'), current_time('timestamp')) ?>
+                        <span
+                            class="p-2 small"><?php echo human_time_diff(get_the_time('U'), current_time('timestamp')) ?>
                             قبل</span>
 
                     </div>
@@ -183,9 +186,9 @@
             </div>
             <?php endif; ?>
 
-            <div class="mx-auto p-4 swiper arma-swiper">
+            <div class="mx-auto p-4 swiper arma-swiper d-md-none d-block">
                 <!-- عنوان و دکمه "نمایش همه" -->
-                <div class="view-all d-none d-sm-flex justify-content-between align-items-center px-4">
+                <div class="view-all d-flex  justify-content-between align-items-center px-4">
                     <p class="fw-bold small">سایر قسمت‌ها</p>
                     <a href="<?php echo $category_link ?>" class="ms-3"
                         style="font-size: 13px; color: #3FB1D9; text-decoration: none;">
@@ -229,11 +232,8 @@
 
 
             <div class="d-flex flex-row justify-content-start align-items-center my-4 gap-2 ">
-                <div class="text-end">
-                    <img alt="profile" loading="lazy" decoding="async" class="rounded-circle bg-dark-subtle p-1 w-25"
-                        src="<?php echo arma_panel_image('comment.png') ?>">
-                </div>
-
+                <img alt="profile" loading="lazy" decoding="async" class="rounded-circle bg-dark-subtle p-1"
+                    style="width: 40px;" src="<?php echo arma_panel_image('comment.png') ?>">
                 <div class="w-100 d-flex flex-row justify-content-start align-items-center my-4 gap-2">
                     <form method="POST" action="" id="comment-header"
                         class="arma-comment w-100 w-md-75 d-flex position-relative" data-post-id="<?php the_ID(); ?>">
@@ -277,7 +277,7 @@
                         $avatar     = $attachment_url;
 
                     ?>
-                <div class="d-flex flex-row gap-2 w-75 comment-box" data-comment-id="<?php echo $comment_id; ?>">
+                <div class="d-flex flex-row gap-2 w-100 comment-box" data-comment-id="<?php echo $comment_id; ?>">
                     <img alt="profile" loading="lazy" decoding="async" class="rounded-circle bg-dark-subtle p-1"
                         style="width: 40px; height: 40px;"
                         src="<?php echo $avatar ? $avatar : arma_panel_image('comment.png'); ?>">
@@ -366,66 +366,3 @@
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="bookmark-modal" tabindex="-1" aria-labelledby="bookmark-modalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="bookmark-modalLabel">اطلاعیه</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="sharing-popup" tabindex="-1" aria-labelledby="sharing-popup_Label" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="sharing-popup_Label">اشتراک در شبکه های اجتماعی</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-bodyd-flex flex-column justify-content-center align-content-center text-center m-3 ">
-                <div class="d-flex flex-row row-cols-6 justify-content-center align-content-center gap-2 w-75 mx-auto">
-
-                    <a class="col sharing-logo d-flex flex-column align-content-center  justify-content-center "
-                        id="sharing_eitaa" href="#">
-                        <img src="<?php echo arma_panel_image('eitaa.svg') ?>">
-                        <span class="text-body">ایتا</span>
-                    </a><a class="col sharing-logo d-flex flex-column align-content-center  justify-content-center "
-                        id="sharing_rubika" href="#">
-                        <img src="<?php echo arma_panel_image('rubika.png') ?>">
-                        <span class="text-body">روبیکا</span>
-                    </a><a class="col sharing-logo d-flex flex-column align-content-center  justify-content-center "
-                        id="sharing_telegram" href="#">
-                        <img src="<?php echo arma_panel_image('telegram.svg') ?>">
-                        <span class="text-body">تلگرام</span>
-                    </a><a class="col sharing-logo d-flex flex-column align-content-center  justify-content-center "
-                        id="sharing_whatsapp" href="#">
-                        <img src="<?php echo arma_panel_image('whatsapp.png') ?>">
-                        <span class="text-body">واتس اپ</span>
-                    </a><a class="col sharing-logo d-flex flex-column align-content-center  justify-content-center "
-                        id="sharing_bale" href="#">
-                        <img src="<?php echo arma_panel_image('Bale.png') ?>">
-                        <span class="text-body">بله</span>
-                    </a><a class="col sharing-logo d-flex flex-column align-content-center  justify-content-center "
-                        id="sharing_instagram" href="#">
-                        <img src="<?php echo arma_panel_image('instagram.png') ?>">
-                        <span class="text-body">اینستاگرام</span>
-                    </a>
-
-
-                </div>
-                <div class="d-flex flex-row justify-content-center align-content-center mt-4 gap-2">
-                    <button class="btn btn-secondary" id="sharing_button"><i
-                            class="bi h5 bi-copy fw-bold text-success-emphasis m-0 p-0"></i></button>
-                    <input class="form-control" id="sharing_input" class="" disabled="" style="direction: ltr;"
-                        readonly="" type="text" value="#">
-                </div>
-            </div>
-        </div>
-    </div>
-</div>

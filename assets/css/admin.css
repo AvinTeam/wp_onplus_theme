@@ -33,6 +33,9 @@
   margin-top: 10px;
 }
 
+.dir-ltr{
+  direction: ltr;
+}
 .menu-preview {
   margin: 5px 0px;
   padding: 10px;

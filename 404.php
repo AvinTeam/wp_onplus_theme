@@ -1,3 +1,7 @@
+<?php 
+print_r( '');
+?>
+
 <!DOCTYPE html>
 <html lang="fa">
 <head>

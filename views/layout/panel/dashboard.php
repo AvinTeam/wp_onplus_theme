@@ -66,7 +66,7 @@
             style="max-height: 100vh; overflow-y: auto; background-color: #171717;">
             <div class="d-flex flex-column">
                 <div class="text-center mb-4" style="background-color: #171717;">
-                    <img src="<?php echo($this_user->user_avatar) ? wp_get_attachment_image_url($this_user->user_avatar) : arma_panel_image('panel/placeHolderUserImage.png') ?>" alt="User Avatar"
+                    <img src="<?php echo($this_user->user_avatar) ? wp_get_attachment_image_url($this_user->user_avatar) : arma_panel_image('panel/placeHolderUserImage.png') ?>" alt="<?php echo($this_user->display_name) ? $this_user->display_name : 'کاربر جدید' ?>"
                         class="rounded-circle" width="100">
                     <h5 class="mt-2 text-white">
                         <?php echo($this_user->display_name) ? $this_user->display_name : 'کاربر جدید' ?></h5>

@@ -31,6 +31,7 @@ if (have_posts()):
         'video'           => $video,
         'colleagues'      => get_post_meta($current_post_id, '_arma_colleagues', true),
         'download_list'   => getVideoQualities($video),
+        'type'            => get_post_type($current_post_id),
      ];
 
     $term_id       = $categories[ 0 ]->term_id; // آی‌دی دسته
@@ -81,8 +82,9 @@ if (is_user_logged_in()) {
     $armadb = new ARMADB('bookmark');
 
     if ($armadb->num([
-        'iduser' => get_current_user_id(),
-        'idpost' => $episode_data[ 'id' ],
+        'post_type' => get_post_type($current_post_id),
+        'iduser'    => get_current_user_id(),
+        'idpost'    => $current_post_id,
 
      ])) {$bookmark = true;}
 
@@ -90,18 +92,18 @@ if (is_user_logged_in()) {
 
 $args = [
     'post_type'      => 'episode_cat', // یا هر پست تایپ دیگه مثل 'episode'
-    'posts_per_page' => -1,     // دریافت همه پست‌ها
+    'posts_per_page' => -1,            // دریافت همه پست‌ها
     'meta_query'     => [
         [
             'key'     => '_arma_episode',
-            'value'   => absint($episode_data['id']),
+            'value'   => absint($episode_data[ 'id' ]),
             'compare' => '=',
-        ],
-    ],
-];
+         ],
+     ],
+ ];
 
 $query_episode_cat = new WP_Query($args);
-$episode_cat       = [];
+$episode_cat       = [  ];
 
 if ($query_episode_cat->have_posts()) {
     while ($query_episode_cat->have_posts()) {

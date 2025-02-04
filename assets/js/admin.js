@@ -3,7 +3,7 @@ jalaliDatepicker.startWatch({
     maxDate: "attr"
 });
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     var customMetaBox = document.getElementById('arma_episode');
     var categoriesBox = document.getElementById('on_categorydiv');
     var tagsBox = document.getElementById('tagsdiv-on_tag');
@@ -227,6 +227,40 @@ if (accordionContainer) {
     renderAccordions();
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+    var ctx = document.getElementById('viewsChart');
+
+    if (ctx) {
+        ctx = ctx.getContext('2d');
+
+        // داده‌ها رو اینجا دستی تعریف کن
+        var postTitles = arma_js.visited.date;
+        var postViews = arma_js.visited.count;
+
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: postTitles, // عنوان‌های پست‌ها
+                datasets: [{
+                    label: 'تعداد بازدید',
+                    data: postViews, // تعداد بازدیدها
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+    }
+});
 
 
 
@@ -440,13 +474,11 @@ jQuery(document).ready(function ($) {
 
         let isIndex = $(this).attr('data-index');
 
-        console.log(isIndex);
-
         if (background_uploader !== undefined) {
             background_uploader.open();
             return;
         }
-
+        
         background_uploader = wp.media({
             title: 'انتخاب تصویر',
             button: {

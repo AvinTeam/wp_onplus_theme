@@ -34,12 +34,20 @@ function arma_admin_script()
         '0.9.6',
         true
     );
+
     wp_register_script(
         'sortable',
         ARMA_JS . 'Sortable.min.js',
         [  ],
         '1.15.0',
 
+    );
+
+    wp_register_script(
+        'chartjs',
+        ARMA_VENDOR . 'chartjs/chart.js',
+        [  ],
+        '4.4.7',
     );
 
     wp_enqueue_style(
@@ -54,7 +62,7 @@ function arma_admin_script()
     wp_enqueue_script(
         'arma_admin',
         ARMA_JS . 'admin.js',
-        [ 'jquery', 'select2', 'jalalidatepicker', 'sortable' ],
+        [ 'jquery', 'select2', 'jalalidatepicker', 'sortable', 'chartjs' ],
         ARMA_VERSION,
         true
     );
@@ -112,6 +120,7 @@ function arma_admin_script()
             'agents_term'   => $agents_term,
             'position_term' => $position_term,
             'option'        => arma_start_working(),
+            'visited'        => arma_show_visited(),
 
          ]
     );

@@ -18,7 +18,7 @@ function mat_taxonomies()
         'choose_from_most_used' => 'از میان برنامه ها پرکاربرد انتخاب کنید',
         'not_found'             => 'برنامه ی را یافت نشد',
         'menu_name'             => 'برنامه ها',
-    ];
+     ];
 
     $args = [
         'hierarchical'      => true,
@@ -28,8 +28,8 @@ function mat_taxonomies()
         'show_in_rest'      => true,
         'show_admin_column' => true,
         'query_var'         => true,
-        'rewrite'           => ['slug' => 'on_category'],
-    ];
+        'rewrite'           => [ 'slug' => 'on_category', 'with_front' => false ],
+     ];
 
     register_taxonomy('on_category', [ 'episode', 'episode_cat' ], $args);
 
@@ -47,7 +47,7 @@ function mat_taxonomies()
         'choose_from_most_used' => 'از میان برچسب ها پرکاربرد انتخاب کنید',
         'not_found'             => 'برچسبی را یافت نشد',
         'menu_name'             => 'برچسب ها',
-    ];
+     ];
 
     $subject = [
         'hierarchical'      => false,
@@ -56,8 +56,8 @@ function mat_taxonomies()
         'show_in_rest'      => false,
         'show_admin_column' => true,
         'query_var'         => true,
-        'rewrite'           => ['slug' => 'on_tag'],
-    ];
+        'rewrite'           => [ 'slug' => 'on_tag' ],
+     ];
 
     register_taxonomy('on_tag', [ 'episode', 'episode_cat' ], $subject);
 
@@ -75,7 +75,7 @@ function mat_taxonomies()
         'choose_from_most_used' => 'از میان عوامل پرکاربرد انتخاب کنید',
         'not_found'             => 'عاملی را یافت نشد',
         'menu_name'             => 'عوامل',
-    ];
+     ];
 //style="direction: ltr;"
     $agents = [
         'hierarchical'       => false,
@@ -90,7 +90,7 @@ function mat_taxonomies()
         'show_tagcloud'      => false,
         'show_in_quick_edit' => false,
         'meta_box_cb'        => false,
-    ];
+     ];
 
     register_taxonomy('on_agents', [ 'episode', 'episode_cat' ], $agents);
 
@@ -108,7 +108,7 @@ function mat_taxonomies()
         'choose_from_most_used' => 'از میان سمت ها پرکاربرد انتخاب کنید',
         'not_found'             => 'سمتی را یافت نشد',
         'menu_name'             => 'سمت ها',
-    ];
+     ];
 
     $position = [
         'hierarchical'       => false,
@@ -123,7 +123,7 @@ function mat_taxonomies()
         'show_tagcloud'      => false,
         'show_in_quick_edit' => false,
         'meta_box_cb'        => false,
-    ];
+     ];
 
     register_taxonomy('on_position', [ 'episode', 'episode_cat' ], $position);
 

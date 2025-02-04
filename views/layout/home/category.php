@@ -35,13 +35,6 @@
         </a>
     </div>
 
-    <!-- اسلایدر Swiper -->
-    <div class="swiper-wrapper">
-
-
-
-    </div>
-
     <div class="swiper cat-swiper">
         <div class="swiper-wrapper">
 
@@ -54,7 +47,7 @@
 		                <div class="card position-relative">
 		                    <a href="<?php echo get_permalink() ?>">
 		                        <img src="<?php echo(has_post_thumbnail()) ? get_the_post_thumbnail_url(get_the_ID(), 'medium') : '' ?>"
-		                            class="card-img-top" alt="<?php echo get_the_title() ?>">
+		                            class="card-img-top rounded-3" alt="<?php echo get_the_title() ?>">
 		                    </a>
 		                </div>
 		                <p class="card-text text-first mt-2">

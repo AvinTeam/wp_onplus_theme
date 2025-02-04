@@ -1,0 +1,1 @@
+<div style="width: 25%;"><canvas id="viewsChart"></canvas></div>

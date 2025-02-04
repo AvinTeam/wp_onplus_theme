@@ -4,14 +4,14 @@
     // اضافه کردن فیلد تصویر به فرم افزودن دسته‌بندی جدید
     function add_category_image_field($term)
     {
-        $image_id        = get_term_meta($term->term_id, 'category_image', true);
-        $image_url       = $image_id ? wp_get_attachment_url($image_id) : '';
+        $image_id         = get_term_meta($term->term_id, 'category_image', true);
+        $image_url        = $image_id ? wp_get_attachment_url($image_id) : '';
         $image_id_banner  = get_term_meta($term->term_id, 'category_banner', true);
         $image_url_banner = $image_id ? wp_get_attachment_url($image_id_banner) : '';
 
     ?>
     <tr class="form-field">
-        <th scope="row"><label for="category_image">تصویر دسته‌بندی</label></th>
+        <th scope="row"><label for="category_image">تصویر برنامه</label></th>
         <td>
             <input type="hidden" id="category_image" name="category_image" value="<?php echo esc_attr($image_id); ?>">
             <div id="category_image_preview">
@@ -25,7 +25,7 @@
         </td>
     </tr>
     <tr class="form-field">
-        <th scope="row"><label for="category_banner">بنر دسته‌بندی</label></th>
+        <th scope="row"><label for="category_banner">بنر برنامه</label></th>
         <td>
             <input type="hidden" id="category_banner" name="category_banner" value="<?php echo esc_attr($image_id_banner); ?>">
             <div id="category_banner_preview">
@@ -44,7 +44,7 @@
         add_action('on_category_add_form_fields', function () {
         ?>
     <div class="form-field">
-        <label for="category_image">تصویر دسته‌بندی</label>
+        <label for="category_image">تصویر برنامه</label>
         <input type="hidden" id="category_image" name="category_image" value="">
         <div id="category_image_preview"></div>
         <br>
@@ -52,7 +52,7 @@
         <button type="button" class="button category_image_remove">حذف تصویر</button>
     </div>
     <div class="form-field">
-        <label for="category_banner">بنر دسته‌بندی</label>
+        <label for="category_banner">بنر برنامه</label>
         <input type="hidden" id="category_banner" name="category_banner" value="">
         <div id="category_banner_preview"></div>
         <br>
@@ -71,5 +71,43 @@
                 update_term_meta($term_id, 'category_banner', sanitize_text_field($_POST[ 'category_banner' ]));
             }
         }
-    add_action('edited_on_category', 'save_category_image');
-    add_action('created_on_category', 'save_category_image');
+        add_action('edited_on_category', 'save_category_image');
+        add_action('created_on_category', 'save_category_image');
+        add_action('edited_on_agents', 'save_category_image');
+        add_action('created_on_agents', 'save_category_image');
+
+        function add_agents_image_field($term)
+        {
+            $image_id  = get_term_meta($term->term_id, 'category_image', true);
+            $image_url = $image_id ? wp_get_attachment_url($image_id) : '';
+
+        ?>
+    <tr class="form-field">
+        <th scope="row"><label for="category_image">تصویر عامل</label></th>
+        <td>
+            <input type="hidden" id="category_image" name="category_image" value="<?php echo esc_attr($image_id); ?>">
+            <div id="category_image_preview">
+                <?php if ($image_url): ?>
+                    <img src="<?php echo esc_url($image_url); ?>" style="max-width: 150px; height: auto;">
+                <?php endif; ?>
+            </div>
+            <br>
+            <button type="button" class="button category_image_upload">آپلود تصویر</button>
+            <button type="button" class="button category_image_remove">حذف تصویر</button>
+        </td>
+    </tr>
+    <?php
+        }
+        add_action('on_agents_edit_form_fields', 'add_agents_image_field');
+        add_action('on_agents_add_form_fields', function () {
+        ?>
+    <div class="form-field">
+        <label for="category_image">تصویر عامل</label>
+        <input type="hidden" id="category_image" name="category_image" value="">
+        <div id="category_image_preview"></div>
+        <br>
+        <button type="button" class="button category_image_upload">آپلود تصویر</button>
+        <button type="button" class="button category_image_remove">حذف تصویر</button>
+    </div>
+    <?php
+        });

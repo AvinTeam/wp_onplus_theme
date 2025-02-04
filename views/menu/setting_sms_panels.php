@@ -31,7 +31,7 @@
                         <th scope="row"><label for="notificator_token">توکن نوتیو</label></th>
                         <td>
                             <input name="notificator_token" type="text" id="notificator_token"
-                                value="<?php echo $arma_option[ 'notificator_token' ]?>" class="regular-text">
+                                value="<?php echo $arma_option[ 'notificator_token' ]?>" class="regular-text dir-ltr">
                         </td>
                     </tr>
                 </tbody>
@@ -44,21 +44,21 @@
                         <th scope="row"><label for="tsms_username">نام کاربری</label></th>
                         <td>
                             <input name="tsms[username]" type="text" id="tsms_username"
-                                value="<?php echo $arma_option[ 'tsms' ][ 'username' ]?>" class="regular-text">
+                                value="<?php echo $arma_option[ 'tsms' ][ 'username' ]?>" class="regular-text dir-ltr">
                         </td>
                     </tr>
                     <tr>
                         <th scope="row"><label for="tsms_password">رمز عبور پنل پیامک</label></th>
                         <td>
                             <input name="tsms[password]" type="text" id="tsms_password"
-                                value="<?php echo $arma_option[ 'tsms' ][ 'password' ]?>" class="regular-text">
+                                value="<?php echo $arma_option[ 'tsms' ][ 'password' ]?>" class="regular-text dir-ltr">
                         </td>
                     </tr>
                     <tr>
                         <th scope="row"><label for="tsms_number">شماره ارسال پیامک</label></th>
                         <td>
                             <input name="tsms[number]" type="text" id="tsms_number"
-                                value="<?php echo $arma_option[ 'tsms' ][ 'number' ]?>" class="regular-text">
+                                value="<?php echo $arma_option[ 'tsms' ][ 'number' ]?>" class="regular-text dir-ltr onlyNumbersInput" inputmode="numeric" pattern="\d*">
                         </td>
                     </tr>
                 </tbody>
@@ -71,14 +71,14 @@
                         <th scope="row"><label for="ghasedaksms_ApiKey">ApiKey</label></th>
                         <td>
                             <input name="ghasedaksms[ApiKey]" type="text" id="ghasedaksms_ApiKey"
-                                value="<?php echo $arma_option[ 'ghasedaksms' ][ 'ApiKey' ]?>" class="regular-text">
+                                value="<?php echo $arma_option[ 'ghasedaksms' ][ 'ApiKey' ]?>" class="regular-text dir-ltr">
                         </td>
                     </tr>
                     <tr>
                         <th scope="row"><label for="ghasedaksms_number">شماره ارسال پیامک</label></th>
                         <td>
                             <input name="ghasedaksms[number]" type="text" id="ghasedaksms_number"
-                                value="<?php echo $arma_option[ 'ghasedaksms' ][ 'number' ]?>" class="regular-text">
+                                value="<?php echo $arma_option[ 'ghasedaksms' ][ 'number' ]?>" class="regular-text dir-ltr onlyNumbersInput" inputmode="numeric" pattern="\d*">
                         </td>
                     </tr>
                 </tbody>

@@ -1,16 +1,67 @@
 <?php
 
+use oniclass\ARMADB;
+
+$bookmark = false;
+
 // دریافت اطلاعات دسته فعلی
 $term             = get_queried_object();
 $term_id          = $term->term_id;     // آی‌دی دسته
 $term_name        = $term->name;        // نام دسته
 $term_description = $term->description; // توضیحات دسته
+$term_type        = $term->taxonomy;
+$term_link        = get_term_link($term);
 
 $image_id  = get_term_meta($term_id, 'category_image', true);
 $image_url = $image_id ? wp_get_attachment_url($image_id) : '';
 
 $image_id_banner  = get_term_meta($term_id, 'category_banner', true);
 $image_url_banner = $image_id ? wp_get_attachment_url($image_id_banner) : '';
+
+$likedb = new ARMADB('like');
+
+$like_conut = $likedb->num([
+    'post_type' => $term_type,
+    'like_type' => 'like',
+    'idpost'    => $term_id,
+ ]);
+$dislike_conut = $likedb->num([
+    'post_type' => $term_type,
+    'like_type' => 'dislike',
+    'idpost'    => $term_id,
+ ]);
+
+$total_votes = $like_conut + $dislike_conut; // مجموع کل آرا
+
+$percentage    = 0; // درصد لایک
+$all_like_type = "up";
+
+if ($total_votes > 0) {
+    if ($like_conut >= $dislike_conut) {
+        $percentage    = round(($like_conut / $total_votes) * 100); // درصد لایک
+        $all_like_type = "up";
+    } else {
+        $percentage    = round(($dislike_conut / $total_votes) * 100); // درصد دیس‌لایک
+        $all_like_type = "down";
+    }
+
+}
+$all_like_type_color = ($all_like_type == "up") ? 'success' : 'danger';
+$all_like_type       = "bi-hand-thumbs-$all_like_type-fill text-$all_like_type_color ";
+
+$user_like = $likedb->get([
+    'post_type' => $term_type,
+    'iduser'    => get_current_user_id(),
+    'idpost'    => $term_id,
+ ]);
+
+$like_btn_class = ($user_like && $user_like->like_type == "like") ? "text-success" : "";
+$dislike_btn_class = ($user_like && $user_like->like_type == "dislike") ? "text-danger" : "";
+
+// $[
+//     'percentage' => $percentage,
+//     'type'       => $all_like_type,
+//  ];
 
 function atlas_title_filter_cat($title)
 {
@@ -20,6 +71,19 @@ function atlas_title_filter_cat($title)
     return $title;
 }
 add_filter('wp_title', 'atlas_title_filter_cat');
+
+if (is_user_logged_in()) {
+
+    $armadb = new ARMADB('bookmark');
+
+    if ($armadb->num([
+        'post_type' => $term_type,
+        'iduser'    => get_current_user_id(),
+        'idpost'    => $term_id,
+
+     ])) {$bookmark = true;}
+
+}
 
 // تنظیمات کوئری برای دریافت پست‌های مرتبط
 $paged = get_query_var('paged') ? get_query_var('paged') : 1;
@@ -61,6 +125,63 @@ if ($query->have_posts()):
     wp_reset_postdata();
 
 endif;
+
+$args_agents = [
+    'post_type'      => 'episode',
+    'posts_per_page' => -1, // دریافت همه پست‌ها
+    'tax_query'      => [
+        [
+            'taxonomy' => 'on_category',
+            'field'    => 'term_id',
+            'terms'    => $term_id,
+         ],
+     ],
+ ];
+
+$query_agents = new WP_Query($args_agents);
+
+$arma_colleagues_list = [  ];
+
+if ($query->have_posts()) {
+    while ($query->have_posts()) {
+        $query->the_post();
+
+        // دریافت متای پست به‌صورت آرایه
+        $arma_colleagues = get_post_meta(get_the_ID(), '_arma_colleagues', true);
+
+        if (empty($arma_colleagues)) {continue;}
+
+        $arma_colleagues_list[  ] = $arma_colleagues;
+
+    }
+}
+
+wp_reset_postdata();
+
+$all_colleagues = [  ];
+$seen           = [  ];
+
+foreach ($arma_colleagues_list as $subArray) {
+    foreach ($subArray as $item) {
+        $key = $item[ 'colleagues' ] . '-' . $item[ 'position' ];
+
+        if (! isset($seen[ $key ])) {
+            $seen[ $key ] = true;
+
+            $colleague_term = get_term($item[ 'colleagues' ], 'on_agents');
+
+            $position_term = get_term($item[ 'position' ], 'on_position');
+
+            $image_id = get_term_meta($item[ 'colleagues' ], 'category_image', true);
+
+            $all_colleagues[  ] = [
+                "image"      => $image_id ? wp_get_attachment_url($image_id) : arma_panel_image('avatar.jpg'),
+                "colleagues" => ($colleague_term && ! is_wp_error($colleague_term)) ? $colleague_term->name : 'نامشخص',
+                "position"   => ($position_term && ! is_wp_error($position_term)) ? $position_term->name : 'نامشخص',
+             ];
+        }
+    }
+}
 
 get_header();
 require_once ARMA_VIEWS . 'layout/taxonomy.php';

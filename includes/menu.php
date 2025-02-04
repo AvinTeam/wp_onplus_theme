@@ -16,17 +16,34 @@ function arma_admin_menu(string $context): void
         'آرمامدیا',
         'manage_options',
         'arma',
-        'setting_panels',
+        'arma_visited',
         'dashicons-hammer',
         2
     );
+
+    $visited_suffix = add_submenu_page(
+        'arma',
+        'آمارگیر',
+        'آمارگیر',
+        'manage_options',
+        'arma',
+        'arma_visited',
+    );
+
+    function arma_visited()
+    {
+        $arma_option = arma_start_working();
+
+        require_once ARMA_VIEWS . 'menu/visited.php';
+
+    }
 
     $setting_suffix = add_submenu_page(
         'arma',
         'تنظیمات',
         'تنظیمات',
         'manage_options',
-        'arma',
+        'arma_setting',
         'setting_panels',
     );
 

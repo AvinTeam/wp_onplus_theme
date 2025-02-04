@@ -1,13 +1,15 @@
 <?php
 
     global $arma_option;
+    $this_user = wp_get_current_user();
+
 ?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title><?php wp_title('|', true, 'right'); ?></title>
     <?php wp_head(); ?>
@@ -38,9 +40,9 @@
                             <ul class="navbar-nav me-auto">
                                 <?php wp_nav_menu([
                                         'theme_location' => 'main-menu',
-                                        'container'      => false,                            
+                                        'container'      => false,
                                         'menu_class'     => 'navbar-nav ms-auto mb-2 mb-lg-0',
-                                        'walker'         => new Custom_Nav_Walker(),         
+                                        'walker'         => new Custom_Nav_Walker(),
                                  ]); ?>
 
                                 <li onclick="openSearch()" role="button"
@@ -59,7 +61,13 @@
                     <i id="themeIcon" class="bi bi-sun"></i>
                 </button>
                 <!-- متن ورود/ثبت نام اضافه شده -->
-                <a href="/panel" class="ms-4 btn btn-dark"><?php echo (is_user_logged_in()) ? 'پنل کاربری' : 'ورود/ثبت نام'?></a>
+                <?php if (is_user_logged_in()): ?>
+                <a href="/panel" class="ms-4"><img class="rounded-circle" style="width: 40px;"
+                        src="<?php echo($this_user->user_avatar) ? wp_get_attachment_image_url($this_user->user_avatar) : arma_panel_image('panel/placeHolderUserImage.png') ?>"
+                        alt="<?php echo($this_user->display_name) ? $this_user->display_name : 'کاربر جدید' ?>"></a>
+                <?php else: ?>
+                <a href="/panel" class="ms-4 btn btn-dark">ورود/ثبت نام</a>
+                <?php endif; ?>
             </div>
         </div>
     </header>

@@ -105,6 +105,7 @@ function arma_row_install()
     $tabel_bookmark_row = $wpdb->prefix . 'arma_bookmark';
     $sql_bookmark       = "CREATE TABLE IF NOT EXISTS `$tabel_bookmark_row` (
                             `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+                            `post_type` varchar(50) COLLATE $wpdb_collate NOT NULL,
                             `idpost` bigint NOT NULL,
                             `iduser` bigint NOT NULL,
                             `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -112,6 +113,31 @@ function arma_row_install()
                             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=$wpdb_collate ";
 
     dbDelta($sql_bookmark);
+
+    $tabel_visit_row = $wpdb->prefix . 'arma_visit';
+    $sql_visit       = "CREATE TABLE IF NOT EXISTS `$tabel_visit_row` (
+                            `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+                            `visiter` varchar(255) NOT NULL,
+                            `type_track` varchar(20) NOT NULL,
+                            `idtrack` bigint unsigned NOT NULL DEFAULT '0',
+                            `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                            PRIMARY KEY (`id`)
+                            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=$wpdb_collate ";
+
+    dbDelta($sql_visit);
+
+    $tabel_like_row = $wpdb->prefix . 'arma_like';
+    $sql_like       = "CREATE TABLE IF NOT EXISTS `$tabel_like_row` (
+                        `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+                        `iduser` bigint unsigned NOT NULL,
+                        `idpost` bigint unsigned NOT NULL,
+                        `post_type` varchar(50) NOT NULL,
+                        `like_type` varchar(10) NOT NULL,
+                        `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        PRIMARY KEY (`id`)
+                        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=$wpdb_collate ";
+
+    dbDelta($sql_like);
 
 }
 

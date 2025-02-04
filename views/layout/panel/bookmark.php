@@ -13,73 +13,92 @@
             $armadb = new ARMADB('bookmark');
 
             $bookmarked_posts = $armadb->select([
-                'data' => [ 'iduser' => get_current_user_id() ],
-                'star' => "idpost",
+                'data'     => [ 'iduser' => get_current_user_id() ],
+                'order_by' => [ 'created_at', 'DESC' ],
+                'star'     => "post_type,idpost",
              ]);
 
-            // استخراج ID پست‌ها از آرایه
-            $post_ids = array_map(function ($item) {
-                return $item->idpost;
-            }, $bookmarked_posts);
-            
+            $bookmark_array = [  ];
 
-            if (! empty($post_ids)) {
-                $args = [
-                    'post_type'      => 'any',
-                    'post__in'       => $post_ids,
-                    'orderby'        => 'post__in',
-                    'posts_per_page' => -1,
-                 ];
+            foreach ($bookmarked_posts as $bookmark) {
+                if ($bookmark->post_type == 'episode' || $bookmark->post_type == 'episode_cat') {
 
-                $query = new WP_Query($args);
+                    $args = [
+                        'post_type'      => $bookmark->post_type,  // فقط پست تایپ‌های مورد نظر
+                        'post__in'       => [ $bookmark->idpost ], // فیلتر کردن فقط برای این ID ها
+                        'posts_per_page' => 1,                     // نمایش تمام پست‌ها
+                     ];
 
-                if ($query->have_posts()):
-                    echo '<div class="container">';
-                    echo '<div class="row">';
+                    $query = new WP_Query($args);
 
-                    while ($query->have_posts()):
-                        $query->the_post();
+                    if (! $query->have_posts()) {continue;}
 
-                        $categories = wp_get_post_terms(get_the_ID(), 'on_category');
+                    $query->the_post();
 
-                        $thumbnail = get_the_post_thumbnail_url(get_the_ID(), 'medium');
+                    $categories = wp_get_post_terms(get_the_ID(), 'on_category');
 
-                        $image_id  = get_term_meta($categories[ 0 ]->term_id, 'category_image', true);
-                        $thumbnail = $image_id ? wp_get_attachment_url($image_id) : '';
-                    ?>
+                    $thumbnail = get_the_post_thumbnail_url(get_the_ID(), 'medium');
+
+                    $image_id  = get_term_meta($categories[ 0 ]->term_id, 'category_image', true);
+                    $thumbnail = $image_id ? wp_get_attachment_url($image_id) : '';
+
+                    $bookmark_array[  ] = [
+                        'link'       => get_permalink(),
+                        'image'      => $thumbnail,
+                        'title'      => get_the_title(),
+                        'show_title' => esc_html($categories[ 0 ]->name) . '-' . tarikh(get_the_date('Y-m-d')),
+                     ];
+
+                    wp_reset_postdata();
+
+                }
+                if ($bookmark->post_type == 'on_category' || $bookmark->post_type == 'on_tag') {
+
+                    $term = get_term($bookmark->idpost, $bookmark->post_type);
+
+                    if (! $term && is_wp_error($term)) {continue;}
+
+                    $image_id = get_term_meta($bookmark->idpost, 'category_image', true);
+
+                    $bookmark_array[  ] = [
+                        'link'       => get_term_link($term),
+                        'image'      => $image_id ? wp_get_attachment_url($image_id) : '',
+                        'title'      => $term->name,
+                        'show_title' => $term->name,
+                     ];
+                }
+
+            }
+
+            if (! empty($bookmark_array)) {
+                echo '<div class="container">';
+                echo '<div class="row">';
+
+            foreach ($bookmark_array as $bookmark): ?>
         <div class="col-lg-2 col-md-2 col-sm-4 col-6 mb-4">
             <div class="card post-card">
                 <div style="position: relative;">
-                    <a href="<?php echo get_permalink() ?>">
-                        <?php if ($thumbnail): ?>
-                        <img src="<?php echo esc_url($thumbnail); ?>" class="card-img-top" alt="<?php the_title(); ?>">
-                        <?php else: ?>
-                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="بدون تصویر">
-                        <?php endif; ?>
-
+                    <a href="<?php echo $bookmark[ 'link' ] ?>">
+                        <img src="<?php echo esc_url($bookmark[ 'image' ]); ?>" class="card-img-top"
+                            alt="<?php $bookmark[ 'title' ]; ?>">
                         <div class="title-overlay">
-                            <span><?php the_title(); ?></span>
+                            <span><?php $bookmark[ 'title' ]; ?></span>
                         </div>
                     </a>
 
                 </div>
                 <div class="card-body">
                     <ul class="category-list">
-                        <li><?php echo esc_html($categories[ 0 ]->name); ?>
-                            -<?php echo tarikh(get_the_date('Y-m-d')); ?> </li>
+                        <li><?php echo $bookmark[ 'show_title' ]; ?> </li>
                     </ul>
                 </div>
             </div>
         </div>
         <?php
 
-                endwhile;
+                endforeach;
                 echo '</div>';
                 echo '</div>';
-                wp_reset_postdata();
-                else:
-                    echo "<p class='text-center text-danger'>هیچ پستی در بوکمارک‌ها پیدا نشد!</p>";
-                endif;
         } else {?>
 
 

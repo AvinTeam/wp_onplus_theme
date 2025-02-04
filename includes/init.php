@@ -1,9 +1,10 @@
 <?php
 
-
 add_action('init', 'arma_panel_rewrite');
 function arma_panel_rewrite()
 {
+    arma_cookie();
+    arma_cookie_visiter();
 
     add_rewrite_rule(
         ARMA_PANEL_BASE . '/([^/]+)/?',
@@ -14,6 +15,12 @@ function arma_panel_rewrite()
     add_rewrite_rule(
         ARMA_PANEL_BASE . '/?',
         'index.php?arma=dashboard',
+        'top'
+    );
+
+    add_rewrite_rule(
+        'oncat/?',
+        'index.php?oncat=cat',
         'top'
     );
 
@@ -33,6 +40,7 @@ function arma_query_vars($public_query_vars)
 {
 
     $public_query_vars[  ] = 'arma';
+    $public_query_vars[  ] = 'oncat';
 
     return $public_query_vars;
 }
@@ -57,20 +65,27 @@ function arma_template_include($template)
 
     }
 
+    $oncat = get_query_var('oncat');
+
+    if ($oncat) {
+
+        return ARMA_VIEWS . 'layout/on_category.php';
+
+    }
+
     return $template;
 }
 
-
 function restrict_admin_access()
 {
-    if (!is_user_logged_in()) {
+    if (! is_user_logged_in()) {
         return;
     }
 
-    $user = wp_get_current_user();
+    $user             = wp_get_current_user();
     $restricted_roles = [ 'subscriber', 'responsible' ];
 
-    if (array_intersect($restricted_roles, $user->roles) && !defined('DOING_AJAX')) {
+    if (array_intersect($restricted_roles, $user->roles) && ! defined('DOING_AJAX')) {
         wp_redirect(home_url());
         exit;
     }
@@ -82,7 +97,7 @@ add_filter('show_admin_bar', 'disable_admin_bar_for_specific_roles');
 function disable_admin_bar_for_specific_roles($show)
 {
     if (is_user_logged_in()) {
-        $user = wp_get_current_user();
+        $user             = wp_get_current_user();
         $restricted_roles = [ 'subscriber', 'responsible' ];
 
         if (array_intersect($restricted_roles, $user->roles)) {

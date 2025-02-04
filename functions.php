@@ -1,7 +1,8 @@
 <?php
+date_default_timezone_set('Asia/Tehran');
 
 (defined('ABSPATH')) || exit;
-define('ARMA_VERSION', '1.0.10');
+define('ARMA_VERSION', '1.1.11');
 
 define('ARMA_PATH', get_template_directory() . "/");
 define('ARMA_INCLUDES', ARMA_PATH . 'includes/');
@@ -22,6 +23,7 @@ if (! defined('ARMA_PANEL_BASE')) {
 }
 
 require_once ARMA_CLASS . '/ARMADB.php';
+require_once ARMA_CLASS . '/ARMAVISIT.php';
 
 require_once ARMA_INCLUDES . '/theme_filter.php';
 require_once ARMA_INCLUDES . '/postype.php';
@@ -49,8 +51,10 @@ if (is_admin()) {
     require_once ARMA_INCLUDES . '/edit_column_episode.php';
     require_once ARMA_INCLUDES . '/edit_user_table.php';
     require_once ARMA_INCLUDES . '/user_filed.php';
+    require_once ARMA_INCLUDES . '/dashboard_widget.php';
 
 }
+
 
 
 //exit;

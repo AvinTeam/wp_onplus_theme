@@ -41,18 +41,23 @@ add_filter('single_template', 'custom_single_template');
 function custom_avatar_with_attachment($avatar, $id_or_email, $size, $default, $alt)
 {
     $user = false;
+
     if (is_numeric($id_or_email)) {
         $user = get_user_by('id', $id_or_email);
-    } elseif (is_object($id_or_email) && !empty($id_or_email->user_id)) {
-        $user = get_user_by('id', $id_or_email->user_id);
-    } elseif (is_email($id_or_email)) {
+    } elseif (is_object($id_or_email)) {
+        if (!empty($id_or_email->user_id)) {
+            $user = get_user_by('id', $id_or_email->user_id);
+        } elseif (!empty($id_or_email->comment_author_email) && is_email($id_or_email->comment_author_email)) {
+            $user = get_user_by('email', $id_or_email->comment_author_email);
+        }
+    } elseif (is_string($id_or_email) && is_email($id_or_email)) {
         $user = get_user_by('email', $id_or_email);
     }
 
     if ($user) {
         $attachment_id = get_user_meta($user->ID, 'user_avatar', true);
         if (!empty($attachment_id)) {
-            $attachment_url = wp_get_attachment_image_url($attachment_id, [ $size, $size ]); // دریافت URL تصویر
+            $attachment_url = wp_get_attachment_image_url($attachment_id, [$size, $size]); // دریافت URL تصویر
             if ($attachment_url) {
                 return "<img src='" . esc_url($attachment_url) . "' alt='" . esc_attr($alt) . "' class='avatar avatar-$size' height='$size' width='$size' />";
             }
@@ -61,4 +66,5 @@ function custom_avatar_with_attachment($avatar, $id_or_email, $size, $default, $
 
     return $avatar;
 }
+
 add_filter('get_avatar', 'custom_avatar_with_attachment', 10, 5);

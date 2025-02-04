@@ -14,8 +14,21 @@
         <form method="post" action="" novalidate="novalidate" class="ag_form">
             <?php wp_nonce_field('arma_nonce' . get_current_user_id()); ?>
 
+            <h2>ابر آروان</h2>
 
+            <table class="form-table" role="presentation">
+                <tbody>
+                    <tr>
+                        <th scope="row"><label for="arvancloud_key">کلید</label></th>
+                        <td>
+                            <input name="arvancloud_key" type="text" class="regular-text dir-ltr" id="arvancloud_key"
+                                value="<?php echo $arma_option[ 'arvancloud_key' ] ?>">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
+            <h2>لوگو سایت</h2>
 
             <table class="form-table" role="presentation">
                 <tbody>
@@ -25,21 +38,20 @@
                             <img src="<?php echo $arma_option[ 'light-logo' ] ?>" style="max-width: 100px;">
                             <br>
                             <button type="button" class="button select-image">انتخاب لوگو</button>
-                            <input name="light-logo" type="text" id="light-logo"
+                            <input name="light-logo" type="hidden" id="light-logo"
                                 value="<?php echo $arma_option[ 'light-logo' ] ?>">
                         </td>
                     </tr>
                     <tr>
                         <th scope="row"><label for="dark-logo">لوگو روز</label></th>
                         <td>
-                            <img src="<?php echo $arma_option[ 'dark-logo' ] ?>" style="max-width: 100px;"> 
+                            <img src="<?php echo $arma_option[ 'dark-logo' ] ?>" style="max-width: 100px;">
                             <br>
                             <button type="button" class="button select-image">انتخاب لوگو</button>
-                            <input name="dark-logo" type="text" id="dark-logo"
+                            <input name="dark-logo" type="hidden" id="dark-logo"
                                 value="<?php echo $arma_option[ 'dark-logo' ] ?>">
                         </td>
                     </tr>
-
                 </tbody>
             </table>
 

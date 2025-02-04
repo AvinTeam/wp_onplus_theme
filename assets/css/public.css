@@ -344,9 +344,18 @@ body {
 html[data-bs-theme=light] .on_category .arma_duration,
 html[data-bs-theme=light] .on_category .arma_data,
 html[data-bs-theme=light] .sidebar-item-date,
+html[data-bs-theme=light] #download-svg,
 html[data-bs-theme=light] .single-sidebar .sidebar-item-title {
     background-color: rgb(209 213 219/1);
     color: rgb(69 69 69/1)
+}
+
+#download-svg {
+    stroke: #FFFFFF;
+}
+
+html[data-bs-theme=light] #download-svg {
+    stroke: #000000;
 }
 
 .video-container {
@@ -576,9 +585,10 @@ body.no-scroll {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.text-justify{
+.text-justify {
     text-align: justify;
 }
+
 .post-card img {
     width: 100%;
     height: auto;
@@ -644,6 +654,12 @@ body.no-scroll {
     font-weight: 300;
 
 }
-#sharingBtn {
+
+#sharingBtn,.arma_likes {
     cursor: pointer;
+}
+
+.colleagues {
+    background: rgb(0, 0, 0);
+    background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(59, 75, 109, 1) 100%);
 }

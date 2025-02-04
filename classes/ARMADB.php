@@ -100,10 +100,14 @@ class ARMADB
             $where .= $this->wpdb->prepare(' AND %i = ' . $this->set_type($value), $key, $value);
         }
 
+        
         $result = $this->wpdb->get_row(
             "SELECT * FROM `$this->tablename` WHERE $where",
             $output
         );
+
+        if (empty($result)) {return false;}
+
 
         return $result;
     }
@@ -149,7 +153,18 @@ class ARMADB
         if (isset($args[ 'data' ])) {
             foreach ($args[ 'data' ] as $key => $value) {
 
-                $where .= $this->wpdb->prepare(' AND %i = ' . $this->set_type($value), $key, $value);
+                if (is_array($value)) {
+                    $where .= ' AND (';
+                    foreach ($value as $i => $row) {
+                        if ($i == 1) {$where .= ' OR ';}
+                        $where .= $this->wpdb->prepare(' %i = ' . $this->set_type($row), $key, $row);
+                    }
+                    $where .= ')';
+                } else {
+                    $where .= $this->wpdb->prepare(' AND %i = ' . $this->set_type($value), $key, $value);
+
+                }
+
             }
         }
 
@@ -175,7 +190,6 @@ class ARMADB
         $mpn_row = $this->wpdb->get_results(
             "SELECT $star FROM `$this->tablename` WHERE  $where "
         );
-
         return $mpn_row;
 
     }

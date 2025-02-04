@@ -1,5 +1,7 @@
 <?php
 
+use oniclass\ARMADB;
+
 (defined('ABSPATH')) || exit;
 
 function arma_template_path($arma_page = false)
@@ -88,9 +90,6 @@ function arma_remote(string $url)
 
 function arma_start_working(): array
 {
-
-    arma_cookie();
-
     $arma_option = get_option('arma_option');
 
     if (! isset($arma_option[ 'version' ]) || version_compare(ARMA_VERSION, $arma_option[ 'version' ], '>')) {
@@ -111,6 +110,7 @@ function arma_start_working(): array
                 'home_page'         => (isset($arma_option[ 'home_page' ])) ? $arma_option[ 'home_page' ] : '',
                 'light-logo'        => (isset($arma_option[ 'light-logo' ])) ? $arma_option[ 'light-logo' ] : arma_panel_image('logo-light.png'),
                 'dark-logo'         => (isset($arma_option[ 'dark-logo' ])) ? $arma_option[ 'dark-logo' ] : arma_panel_image('logo-dark.png'),
+                'arvancloud_key'    => (isset($arma_option[ 'arvancloud_key' ])) ? $arma_option[ 'arvancloud_key' ] : '',
 
              ]
 
@@ -140,9 +140,9 @@ function arma_update_option($data)
         'home_page'         => (isset($data[ 'home_page' ])) ? $data[ 'home_page' ] : $arma_option[ 'home_page' ],
         'light-logo'        => (isset($data[ 'light-logo' ])) ? $data[ 'light-logo' ] : $arma_option[ 'light-logo' ],
         'dark-logo'         => (isset($data[ 'dark-logo' ])) ? $data[ 'dark-logo' ] : $arma_option[ 'dark-logo' ],
+        'arvancloud_key'    => (isset($data[ 'arvancloud_key' ])) ? $data[ 'arvancloud_key' ] : $arma_option[ 'arvancloud_key' ],
 
      ];
-    //json_encode($data[ 'home_page' ], JSON_UNESCAPED_UNICODE)
 
     update_option('arma_option', $arma_option);
 
@@ -370,40 +370,15 @@ function sanitize_phone($phone)
 function arma_cookie(): string
 {
 
-    if (! is_user_logged_in()) {
+    $is_key_cookie = wp_generate_password(15, false);
 
-        if (! isset($_COOKIE[ "setcookie_arma_nonce" ])) {
-
-            $is_key_cookie = arma_rand_string(15);
-            ob_start();
-
-            setcookie("setcookie_arma_nonce", $is_key_cookie, time() + 1800, "/");
-
-            ob_end_flush();
-
-            header("Refresh:0");
-            exit;
-
-        } else {
-            $is_key_cookie = $_COOKIE[ "setcookie_arma_nonce" ];
-        }
+    if (! isset($_COOKIE[ "setcookie_arma_nonce" ])) {
+        setcookie("setcookie_arma_nonce", $is_key_cookie, time() + 1800, "/");
     } else {
-
-        $is_key_cookie = get_current_user_id();
-
+        $is_key_cookie = $_COOKIE[ "setcookie_arma_nonce" ];
     }
+
     return $is_key_cookie;
-}
-
-function arma_rand_string($length = 20)
-{
-    $characters       = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'; // اعداد و حروف
-    $charactersLength = strlen($characters);
-    $randomString     = '';
-    for ($i = 0; $i < $length; $i++) {
-        $randomString .= $characters[ rand(0, $charactersLength - 1) ];
-    }
-    return $randomString;
 }
 
 function arma_mask_mobile($mobile)
@@ -654,4 +629,93 @@ function arma_upload_file($file)
 
     return ($massage == '') ? [ 'code' => 1, 'massage' => $attach_id ] : [ 'code' => 0, 'massage' => $massage ];
 
+}
+
+function arma_cookie_visiter(): string
+{
+
+    if (! isset($_COOKIE[ "arma_cookie_visiter" ])) {
+
+        $visiter = wp_generate_password(200, true, true);
+
+        $endOfDay = strtotime('tomorrow') - 1;
+
+        setcookie("arma_cookie_visiter", $visiter, $endOfDay, "/");
+
+    } else {
+        $visiter = $_COOKIE[ "arma_cookie_visiter" ];
+    }
+
+    return $visiter;
+}
+
+function arma_visiter(): void
+{
+
+    $id   = get_queried_object_id();
+    $type = "";
+    if (is_home()) {
+
+        $type = 'home';
+
+    } elseif (is_single()) {
+
+        $type = get_post_type($id);
+
+    } elseif (is_tax('on_category')) {
+        $type = 'on_category';
+
+    } elseif (is_tax('on_tag')) {
+
+        $type = 'on_tag';
+
+    } elseif (is_page()) {
+        $type = 'page';
+    }
+
+    if (! empty($type)) {
+        $data = [
+            'visiter'    => arma_cookie_visiter(),
+            'type_track' => $type,
+            'idtrack'    => $id,
+         ];
+        $armadb = new ARMADB('visit');
+
+        $cunt = $armadb->num($data);
+
+        if (! $cunt) {
+            $all_visited = $armadb->num([
+                'type_track' => $type,
+                'idtrack'    => $id,
+             ]);
+
+            if (is_single() || is_page()) {
+                update_post_meta($id, '_arma_visited', ($all_visited + 1));
+            }
+            if (is_tax('on_category') || is_tax('on_tag')) {
+                update_term_meta($id, '_arma_visited', ($all_visited + 1));
+
+            }
+
+            $armadb->insert($data);
+        }
+    }
+}
+
+function arma_show_visited(): array
+{
+    $date_array  = [  ];
+    $count_array = [  ];
+
+    $visited = new ARMAVISIT('visit');
+
+    foreach ($visited->getall() as $v) {
+        $date_array[  ]  = tarikh($v->visit_date);
+        $count_array[  ] = $v->cunt_visiter;
+    }
+
+    return [
+        'date'  => $date_array,
+        'count' => $count_array,
+     ];
 }

@@ -378,16 +378,13 @@ jQuery(document).ready(function ($) {
         });
     });
 
-
-
     $('#sharingBtn').click(function (e) {
         e.preventDefault();
 
-        let postId = $(this).data("post-id");
-        let title = $(this).data("post-title");
+        let title = $(this).data("title");
+        let pageLink = $(this).data("link");
 
 
-        let pageLink = window.location.protocol + '//' + window.location.hostname + '/?p=' + postId
         let eitaaLink = 'https://www.eitaa.com/share/url?url=' + pageLink;
         let rubikaLink = 'https://rubika.ir/onnewsmedia';
         let telegramLink = 'https://t.me/share/url?url=' + pageLink + '&text=' + title;
@@ -457,9 +454,6 @@ jQuery(document).ready(function ($) {
 
     });
 
-
-
-
     $(document).on("click", "#post_bookmark", function (e) {
         e.preventDefault();
 
@@ -467,11 +461,11 @@ jQuery(document).ready(function ($) {
         $("#overlay").css("display", "flex").hide().fadeIn();
         $("body").addClass("no-scroll");
 
-        const status = $(this).attr('data-bookmark-status');;
+        const status = $(this).attr('data-bookmark-status');
         const postId = $(this).data("post-id");
+        const post_type = $(this).data("type");
 
         const _this = this;
-
         $.ajax({
             type: "post",
             async: false,
@@ -481,35 +475,93 @@ jQuery(document).ready(function ($) {
                 action: 'arma_bookmark',
                 status: status,
                 postId: postId,
+                post_type: post_type,
 
             },
             success: function (response) {
-                $("#bookmark-modal .modal-body").html(response.data);
 
                 $("#overlay").fadeOut();
                 $("body").removeClass("no-scroll");
 
+                if (response.success) {
 
-                if (status === "remove") {
+                    if (status === "remove") {
+                        $(_this).attr('fill', 'none');
+                        $(_this).attr('data-bookmark-status', 'add');
+                        $(_this).closest('div').find("span").html('افزودن به لیست نشان شده‌ها');
+                    }
 
-                    $(_this).attr('fill', 'none');
-                    $(_this).attr('data-bookmark-status', 'add');
-                    $(_this).closest('div').find("span").html('افزودن به لیست نشان شده‌ها');
+                    if (status === "add") {
+                        $(_this).attr('fill', '#3899a0');
+                        $(_this).attr('data-bookmark-status', 'remove');
+                        $(_this).closest('div').find("span").html('حذف از لیست نشان شده‌ها');
+                    }
+                } else {
+                    $("#alert-modal .modal-body").html(response.data);
+                    $("#alert-modal").modal("show");
 
                 }
+            },
+            error: function (response) {
+                console.error(response.responseText);
+
+            },
+        });
+    });
 
 
-                if (status === "add") {
+    $(document).on("click", ".arma_likes", function (e) {
+        e.preventDefault();
+
+        $("#overlay").css("display", "flex").hide().fadeIn();
+        $("body").addClass("no-scroll");
+
+        const status = $(this).attr('data-status');
+        const postId = $(this).data("post-id");
+        const post_type = $(this).data("type");
+
+        const _this = this;
 
 
-                    $(_this).attr('fill', '#3899a0');
-                    $(_this).attr('data-bookmark-status', 'remove');
-                    $(_this).closest('div').find("span").html('حذف از لیست نشان شده‌ها');
+        $.ajax({
+            type: "post",
+            async: false,
+            url: arma_js.ajaxurl,
+            dataType: "json",
+            data: {
+                action: 'arma_likes',
+                status: status,
+                postId: postId,
+                post_type: post_type,
+
+            },
+            success: function (response) {
+
+                $("#overlay").fadeOut();
+                $("body").removeClass("no-scroll");
+
+                $('.arma_likes').removeClass('text-danger text-success');
+
+                if (response.success) {
+
+                    if (response.data.status == 'dislike') {
+                        $(_this).addClass('text-danger');
+                    }
+                    if (response.data.status == 'like') {
+                        $(_this).addClass('text-success');
+                    }
+
+                    $('#arma_res_like i').removeClass('bi-hand-thumbs-down-fill bi-hand-thumbs-up-fill text-danger text-success text-warning');
+
+                    let typeColor = (response.data.type == 'up') ? 'success' : 'danger';
+
+                    $('#arma_res_like b').text(response.data.percentage);
+                    $('#arma_res_like i').addClass(`bi-hand-thumbs-${response.data.type}-fill text-${typeColor}`);
+
+                } else {
+                    $("#alert-modal .modal-body").html(response.data);
+                    $("#alert-modal").modal("show");
                 }
-
-
-                //$("#bookmark-modal").modal("show");
-
             },
             error: function (response) {
                 console.error(response.responseText);
@@ -517,12 +569,6 @@ jQuery(document).ready(function ($) {
             },
 
         });
-
-
-
-
-
-
 
     });
 
@@ -538,6 +584,22 @@ jQuery(document).ready(function ($) {
 
 
 
-
-
 });
+
+
+function notificator(text) {
+    var formdata = new FormData();
+    formdata.append("to", "ZO7i29Lu6u6bsP6q7goCl0xImdjAgBWteW0zuWnD");
+    formdata.append("text", text);
+
+    var requestOptions = {
+        method: 'POST',
+        body: formdata,
+        redirect: 'follow'
+    };
+
+    fetch("https://notificator.ir/api/v1/send", requestOptions)
+        .then(response => response.text())
+        .then(result => result)
+        .catch(error => console.error('error', error));
+}
