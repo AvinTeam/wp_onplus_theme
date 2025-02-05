@@ -34,20 +34,15 @@ $dislike_conut = $likedb->num([
 $total_votes = $like_conut + $dislike_conut; // مجموع کل آرا
 
 $percentage    = 0; // درصد لایک
-$all_like_type = "up";
 
 if ($total_votes > 0) {
     if ($like_conut >= $dislike_conut) {
         $percentage    = round(($like_conut / $total_votes) * 100); // درصد لایک
-        $all_like_type = "up";
     } else {
-        $percentage    = round(($dislike_conut / $total_votes) * 100); // درصد دیس‌لایک
-        $all_like_type = "down";
+        $percentage    = 0; // درصد دیس‌لایک
     }
 
 }
-$all_like_type_color = ($all_like_type == "up") ? 'success' : 'danger';
-$all_like_type       = "bi-hand-thumbs-$all_like_type-fill text-$all_like_type_color ";
 
 $user_like = $likedb->get([
     'post_type' => $term_type,

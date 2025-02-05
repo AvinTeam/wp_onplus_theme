@@ -26,9 +26,9 @@ Template Name: تماس با ما
 
         <!-- Two Boxes Horizontally -->
         <div class="row g-4 mb-4 justify-content-between text-white">
-            <div class="col-12 col-md-6" style="font-size: 12px;background-color: #282828;">
-                <div class="p-4 border rounded">
-                    <h4 style="font-size: 12px;">با ارسال ایمیل به بخش مورد نظر خود می‌توانید با ON در تماس باشید.
+            <div class="col-12 col-md-6 rounded-3" style="font-size: 12px;background-color: #282828;">
+                <div class="p-4">
+                    <h4 style="font-size: 12px;">با ارسال ایمیل به بخش مورد نظر خود می‌توانید با ما در تماس باشید.
                     </h4>
                     <div class="row g-3 mt-3">
                         <!-- Second Row -->
@@ -52,7 +52,7 @@ Template Name: تماس با ما
 
             <!-- Second Box -->
             <div class="col-12 col-md-6">
-                <div class="p-4 border rounded" style="font-size: 12px;background-color: #282828;">
+                <div class="p-4 rounded-3" style="font-size: 12px;background-color: #282828;">
                     <p>
                         <?php the_content(); ?>
                     </p>

@@ -28,10 +28,9 @@
 ?>
 
 <div class="mx-auto p-4 swiper arma-swiper">
-    <!-- عنوان و دکمه "نمایش همه" -->
     <div class="view-all d-flex justify-content-between align-items-center px-4">
         <h5 style="font-size: 20px;" class="fw-bold"><?php echo trim($row[ 'title' ]) ?></h5>
-        <a href="#" class="ms-3" style="font-size: 13px; color: #3FB1D9; text-decoration: none;">
+        <a href="<?=$term_link?>" class="ms-3" style="font-size: 13px; color: #3FB1D9; text-decoration: none;">
             نمایش همه
             <svg fill="#3FB2DA" height="8px" width="8px" viewBox="0 0 512.005 512.005">
                 <path d="M123.586,240.923L358.253,6.256c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165L168.834,256.005

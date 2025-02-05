@@ -1,5 +1,5 @@
 <div class="container-fluid px-5">
-    <div class="row">
+    <div class="row mt-2">
         <!-- Sidebar -->
         <div class="col-md-4 col-lg-3 order-md-last single-sidebar mt-2 d-none d-md-block">
             <h5 class="mb-3">سایر قسمت‌ها</h5>

@@ -2,7 +2,7 @@
 date_default_timezone_set('Asia/Tehran');
 
 (defined('ABSPATH')) || exit;
-define('ARMA_VERSION', '1.2.4');
+define('ARMA_VERSION', '1.2.8');
 
 define('ARMA_PATH', get_template_directory() . "/");
 define('ARMA_INCLUDES', ARMA_PATH . 'includes/');
@@ -56,5 +56,9 @@ if (is_admin()) {
 
 }
 
-// exit;
+// $visited = new ARMAVISIT('visit');
+// $v =$visited->getall()->show();
 
+// print_r($v);
+
+// exit;

@@ -25,6 +25,9 @@
                 case 'list_category':
                     $row_file = "list_category";
                     break;
+                case 'shortcode':
+                    $row_file = "shortcode";
+                    break;
 
                 default:
                     $row_file = "";

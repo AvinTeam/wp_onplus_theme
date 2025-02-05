@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var tagsBox = document.getElementById('tagsdiv-on_tag');
 
     if (customMetaBox && categoriesBox && tagsBox) {
-        // قرار دادن متاباکس بین دسته‌بندی‌ها و برچسب‌ها
         categoriesBox.parentNode.insertBefore(customMetaBox, tagsBox);
     }
 });
@@ -18,15 +17,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 const accordionContainer = document.getElementById("accordion-container");
 const accordionDataInput = document.getElementById("accordionData");
-// const accordionData = [{
-//     title: "Accordion 1",
-//     type: "link",
-//     img: "10",
-//     link: "https://",
-//     typeShow: "auto",
-//     option: "0",
-//     listAll: [1, 2, 3, 4, 5]
-// }, ];
 
 let accordionData = [];
 
@@ -54,7 +44,9 @@ function renderAccordions() {
 
 
         let isImage = (item.img) ? item.img : '';
+        let isShortCode = (item.shortcode) ? item.shortcode : '';
         let isImageClass = (item.img) ? '' : 'd-none';
+        let isShortCodeClass = (item.shortcode) ? '' : 'd-none';
         let isTypeClass = (item.type === 'on_category' || item.type === 'on_tag') ? '' : 'd-none';
 
         let optionLabel = "انتخاب برنامه / برچسب:";
@@ -80,18 +72,22 @@ function renderAccordions() {
             <option value="on_category" ${item.type === "on_category" ? "selected" : ""}>برنامه</option>
             <option value="on_tag" ${item.type === "on_tag" ? "selected" : ""}>برچسب</option>
             <option value="list_category" ${item.type === "list_category" ? "selected" : ""}>لیست برنامه ها</option>
+            <option value="shortcode" ${item.type === "shortcode" ? "selected" : ""}>کد کوتاه</option>
             </select>
         </div>
         <div class="accordion-left"  >
             <div class="img ${isImageClass}">
-
                 <label>آدرس صفحه:</label>
                 <input type="text" value="${item.link}" ondblclick="this.select()" oninput="updateAccordion(${index}, 'link', this.value)" onclick="event.stopPropagation()">
                 <label>انتخاب تصویر:</label>
                 <button data-index="${index}" class="go_to_gallery" type="button" >انتخاب تصویر</button>
                 <img class="w-100 m-top-10" src="${isImage}" id="arma_image_${index}"  >
-
             </div>
+            <div class="shortcode ${isShortCodeClass}">
+                <label>کدکوتاه:</label>
+                <input type="text" value="${isShortCode}" ondblclick="this.select()" oninput="updateAccordion(${index}, 'shortcode', this.value)" onclick="event.stopPropagation()">
+            </div>
+
             <div class="list ${isTypeClass}  class="m-top-10"">
                 <label>${optionLabel}</label>
                 <select id="arma_option_${index}" onchange="updateAccordion(${index}, 'option', this.value)" onclick="event.stopPropagation()" data-selected="${item.option}">
@@ -144,6 +140,7 @@ function updateAccordion(index, key, value, element = null) {
         const selectedBox = accordionBoxes[index];
 
         const img = selectedBox.querySelector('.img');
+        const shortcode = selectedBox.querySelector('.shortcode');
         const list = selectedBox.querySelector('.list');
         const optionTitle = selectedBox.querySelector('.list label');
         const optionSelect = selectedBox.querySelector('.list select');
@@ -151,11 +148,10 @@ function updateAccordion(index, key, value, element = null) {
         if (value === 'link') {
             img.classList.remove('d-none');
             list.classList.add('d-none');
+            shortcode.classList.add('d-none');
+
         } else if (value === 'on_category' || value === 'on_tag') {
-
             let selectedValue = optionSelect.getAttribute("data-selected");
-
-
             armaSendAjax('arma_cat_tag', value, optionSelect, Number(selectedValue));
             if (value === 'on_category') { optionTitle.textContent = "انتخاب برنامه:" }
             if (value === 'on_tag') { optionTitle.textContent = "انتخاب برچسب:" }
@@ -163,6 +159,10 @@ function updateAccordion(index, key, value, element = null) {
             list.classList.remove('d-none');
         } else if (value === 'list_category') {
             img.classList.add('d-none');
+            list.classList.add('d-none');
+            shortcode.classList.add('d-none');
+        } else if (value === 'shortcode') {
+            shortcode.classList.remove('d-none');
             list.classList.add('d-none');
         } else {
             img.classList.add('d-none');
@@ -227,45 +227,48 @@ if (accordionContainer) {
     renderAccordions();
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+
+function arma_show_chart(visited) {
+
     var ctx = document.getElementById('viewsChart');
-
-    if (ctx) {
-        ctx = ctx.getContext('2d');
-
-        // داده‌ها رو اینجا دستی تعریف کن
-        var postTitles = arma_js.visited.date;
-        var postViews = arma_js.visited.count;
-
-        var chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: postTitles, // عنوان‌های پست‌ها
-                datasets: [{
-                    label: 'تعداد بازدید',
-                    data: postViews, // تعداد بازدیدها
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+    ctx = ctx.getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: visited.date, // عنوان‌های پست‌ها
+            datasets: [{
+                label: 'تعداد بازدید',
+                data: visited.count, // تعداد بازدیدها
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
-        });
-
-    }
-});
+        }
+    });
+}
 
 
 
 //انتخاب همکار باقی مانده
 jQuery(document).ready(function ($) {
+
+    if ($('#viewsChart').length > 0) {
+        arma_show_chart(arma_js.visited);
+    }
+
+
+
+
+
+
 
     $('.onlyNumbersInput').on('input paste', function () {
         this.value = this.value.replace(/[^0-9]/g, '');
@@ -478,7 +481,7 @@ jQuery(document).ready(function ($) {
             background_uploader.open();
             return;
         }
-        
+
         background_uploader = wp.media({
             title: 'انتخاب تصویر',
             button: {
@@ -499,17 +502,9 @@ jQuery(document).ready(function ($) {
             updateAccordion(isIndex, 'img', mph_utl);
             $('#arma_image_' + isIndex).attr('src', mph_utl);
 
-            // $('.' + mph_id + ' input').val(mph_utl);
-
-            // $('.' + mph_id + ' img').attr('src', mph_utl);
-
         });
 
-
         background_uploader.open();
-
-
-
 
     });
 
@@ -570,6 +565,77 @@ jQuery(document).ready(function ($) {
         }, 1000);
 
     });
+
+    $('#from_date').change(function (e) {
+        e.preventDefault();
+        let mindate = $(this).val();
+        $('#to_date').attr('minDate', 'attr');
+        $('#to_date').attr('data-jdp-min-date', mindate);
+
+    });
+
+    $('#to_date').change(function (e) {
+        e.preventDefault();
+        let mindate = $(this).val();
+        $('#from_date').attr('maxDate', 'attr');
+        $('#from_date').attr('data-jdp-max-date', mindate);
+
+    });
+
+    $(document).on("submit", "#form-vizit", function (e) {
+        e.preventDefault();
+
+        $('#arma_canvas').html('<canvas id="viewsChart"></canvas>');
+
+        // $("#overlay").css("display", "flex").hide().fadeIn();
+        // $("body").addClass("no-scroll");
+
+        const fromDate = $('#from_date').val();
+        const toDate = $('#to_date').val();
+
+        if (fromDate == "" && toDate == "") {
+            console.log('empty');
+
+            arma_show_chart(arma_js.visited);
+        } else {
+
+            $.ajax({
+                type: "post",
+                async: false,
+                url: arma_js.ajaxurl,
+                dataType: "json",
+                data: {
+                    action: 'arma_admin_view',
+                    from_date: fromDate,
+                    to_date: toDate,
+
+                },
+                success: function (response) {
+
+                    // $("#overlay").fadeOut();
+                    // $("body").removeClass("no-scroll");
+
+                    console.log(response);
+                    if (response.success) {
+
+                        arma_show_chart(response.data);
+
+
+                    } else {
+
+                        $('#arma_canvas').html('<p class="button button-primary button-error w-100 p-y-10 text-center" >خطا</p>');
+
+                    }
+                },
+                error: function (response) {
+                    console.error(response.responseText);
+
+                },
+
+            });
+        }
+    });
+
 
 
 

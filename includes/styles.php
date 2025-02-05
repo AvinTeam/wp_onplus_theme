@@ -110,6 +110,7 @@ function arma_admin_script()
         }
 
     }
+    $visited = new ARMAVISIT('visit');
 
     wp_localize_script(
         'arma_admin',
@@ -120,7 +121,7 @@ function arma_admin_script()
             'agents_term'   => $agents_term,
             'position_term' => $position_term,
             'option'        => arma_start_working(),
-            'visited'        => arma_show_visited(),
+            'visited'       => $visited->getall()->show(),
 
          ]
     );
@@ -187,10 +188,6 @@ function arma_style()
         [ 'videojs-http-streaming' ],
         '2.0.0',
     );
-
-
-
-
 
     wp_register_style(
         'swiper',

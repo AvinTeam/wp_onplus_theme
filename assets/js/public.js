@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeIcon = document.getElementById('themeIcon');
     const logoLight = document.getElementById('logo-light');
     const logoDark = document.getElementById('logo-dark');
-    const savedTheme = localStorage.getItem('theme') || 'light';
+    const savedTheme = localStorage.getItem('theme') || 'dark';
     if (savedTheme == 'dark') {
         logoDark.classList.add('d-none')
     } else {
@@ -550,13 +550,7 @@ jQuery(document).ready(function ($) {
                     if (response.data.status == 'like') {
                         $(_this).addClass('text-success');
                     }
-
-                    $('#arma_res_like i').removeClass('bi-hand-thumbs-down-fill bi-hand-thumbs-up-fill text-danger text-success text-warning');
-
-                    let typeColor = (response.data.type == 'up') ? 'success' : 'danger';
-
                     $('#arma_res_like b').text(response.data.percentage);
-                    $('#arma_res_like i').addClass(`bi-hand-thumbs-${response.data.type}-fill text-${typeColor}`);
 
                 } else {
                     $("#alert-modal .modal-body").html(response.data);
@@ -571,18 +565,6 @@ jQuery(document).ready(function ($) {
         });
 
     });
-
-
-
-
-
-
-
-
-
-
-
-
 
 });
 

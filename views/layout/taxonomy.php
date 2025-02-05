@@ -52,8 +52,8 @@
             </div>
             <p class="text-justify"><?php echo $term_description ?></p>
             <div class="d-flex align-items-center " id="arma_res_like">
-                <i class="bi <?=$all_like_type?> me-2 fs-4"></i>
-                <span><b><?=$percentage?></b> درصد</span>
+                <i class="bi bi-hand-thumbs-up-fill text-warning me-2 fs-4"></i>
+                <span><b><?=$percentage?></b> درصد کاربران این برنامه را دوست داشتن</span>
             </div>
             <div class="mt-2">
                 <i id="arma_like" class="bi bi-hand-thumbs-up-fill me-2 fs-4 arma_likes <?=$like_btn_class?>"

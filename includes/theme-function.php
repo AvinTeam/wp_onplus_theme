@@ -640,24 +640,6 @@ function arma_visiter(): void
     }
 }
 
-function arma_show_visited(): array
-{
-    $date_array  = [  ];
-    $count_array = [  ];
-
-    $visited = new ARMAVISIT('visit');
-
-    foreach ($visited->getall() as $v) {
-        $date_array[  ]  = tarikh($v->visit_date);
-        $count_array[  ] = $v->cunt_visiter;
-    }
-
-    return [
-        'date'  => $date_array,
-        'count' => $count_array,
-     ];
-}
-
 function arma_arvancloud(string $url)
 {
 
