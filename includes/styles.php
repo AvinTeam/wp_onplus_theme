@@ -172,8 +172,26 @@ function arma_style()
         ARMA_VENDOR . 'videojs/video.min.js',
         [  ],
         '8.7.0',
-
     );
+
+    wp_register_script(
+        'videojs-http-streaming',
+        ARMA_VENDOR . 'videojs/videojs-http-streaming.min.js',
+        [ 'videojs' ],
+        '3.15.0',
+    );
+
+    wp_register_script(
+        'videojs-hls-quality-selector',
+        ARMA_VENDOR . 'videojs/videojs-hls-quality-selector.min.js',
+        [ 'videojs-http-streaming' ],
+        '2.0.0',
+    );
+
+
+
+
+
     wp_register_style(
         'swiper',
         ARMA_VENDOR . 'swiper/swiper-bundle.min.css',
@@ -213,7 +231,7 @@ function arma_style()
     wp_enqueue_script(
         'arma_js',
         ARMA_JS . 'public.js',
-        [ 'jquery', 'bootstrap', 'videojs', 'swiper', 'jalalidatepicker' ],
+        [ 'jquery', 'bootstrap', 'videojs-hls-quality-selector', 'swiper', 'jalalidatepicker' ],
         ARMA_VERSION,
         true
     );

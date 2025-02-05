@@ -36,6 +36,4 @@ $arma_cron = absint(get_option('arma_cron'));
 if ($arma_cron < time()) {
     update_video_status_function();
     update_option('arma_cron', (time() + (15 * 60)));
-
-    exit;
 }

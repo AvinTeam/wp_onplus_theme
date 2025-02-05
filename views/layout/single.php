@@ -29,27 +29,39 @@
         <div class="col-md-8 col-lg-9">
             <div class="video-container mb-3">
 
-                <video id="my-video" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto"
-                    poster="<?php echo $episode_data[ 'image' ]?>" width="100%" height="360"
-                    style="border-radius: 7px; width: 100%; ">
-                    <source src="<?php echo $episode_data[ 'video' ][ 'm3u8' ] ?>" type="application/x-mpegURL">
-                    مرورگر شما از پخش ویدئو پشتیبانی نمی‌کند.
-
+                <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered rounded-3 w-100" controls
+                    poster="<?php echo $episode_data[ 'image' ] ?>" width="100%" height="360" >
                 </video>
 
                 <script>
-                var player = videojs('my-video', {
-                    playbackRates: [0.5, 1, 1.5, 2], // تنظیم سرعت‌های قابل انتخاب
+                var player = videojs('videoPlayer', {
+                    playbackRates: [0.5, 1, 1.5, 2],
                     controls: true,
                     autoplay: false,
-                    fluid: true,
+                    preload: 'auto',
                     muted: true,
                     responsive: true,
+                    fluid: true,
+                    controlBar: {
+                        pictureInPictureToggle: true
+                    }
+                });
+
+                player.src({
+                    src: "<?php echo $episode_data[ 'video' ][ 'm3u8' ] ?>",
+                    type: "application/x-mpegURL"
+                });
+
+                player.ready(function() {
+                    player.hlsQualitySelector({
+                        displayCurrentQuality: true,
+                        title: 'کیفیت'
+                    });
                 });
                 </script>
             </div>
             <p class="video-title"><?php echo $episode_data[ 'title' ] ?></p>
-            <p class="video-description">🔍                                              <?php echo $episode_data[ 'brief' ] ?></p>
+            <p class="video-description">🔍 <?php echo $episode_data[ 'brief' ] ?></p>
             <div class="video-description"><?php echo $episode_data[ 'content' ] ?></div>
 
 
@@ -364,4 +376,3 @@
         </div>
     </div>
 </div>
-
