@@ -107,3 +107,38 @@ function disable_admin_bar_for_specific_roles($show)
 
     return $show;
 }
+
+function add_arma_admin_bar_menu($wp_admin_bar)
+{
+    if (! current_user_can('manage_options')) {
+        return;
+    }
+
+    $wp_admin_bar->add_node([
+        'id'    => 'arma-settings',
+        'title' => 'تنظیمات آرامامدیا',
+        'href'  => admin_url('admin.php?page=arma'),
+     ]);
+
+    $wp_admin_bar->add_node([
+        'id'     => 'arma-settings-general',
+        'title'  => 'تنظیمات',
+        'href'   => admin_url('admin.php?page=arma_setting'),
+        'parent' => 'arma-settings',
+     ]);
+
+    $wp_admin_bar->add_node([
+        'id'     => 'arma-sms_panels',
+        'title'  => 'تنظیمات پنل پیامک',
+        'href'   => admin_url('admin.php?page=sms_panels'),
+        'parent' => 'arma-settings',
+     ]);
+
+    $wp_admin_bar->add_node([
+        'id'     => 'arma-settings-home_page',
+        'title'  => 'تنظیمات صفحه نخست',
+        'href'   => admin_url('admin.php?page=arma_home_page'),
+        'parent' => 'arma-settings',
+     ]);
+}
+add_action('admin_bar_menu', 'add_arma_admin_bar_menu', 100);
