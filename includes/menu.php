@@ -141,6 +141,24 @@ function arma_admin_menu(string $context): void
             if (wp_verify_nonce($_POST[ '_wpnonce' ], 'arma_nonce' . get_current_user_id())) {
 
                 arma_update_option($_POST);
+                wp_admin_notice(
+                    'تغییر شما با موفقیت ثبت شد',
+                    [
+                        'id'          => 'message',
+                        'type'        => 'success',
+                        'dismissible' => true,
+                     ]
+                );
+
+            } else {
+                wp_admin_notice(
+                    'ذخیره سازی به مشکل خورده دوباره تلاش کنید',
+                    [
+                        'id'          => 'arma_message',
+                        'type'        => 'error',
+                        'dismissible' => true,
+                     ]
+                );
 
             }
         }
