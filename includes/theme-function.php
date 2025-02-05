@@ -688,7 +688,6 @@ function arma_arvancloud(string $url)
                     $resolution                = $matches[ 1 ] . "p";
                     $mp4_videos[ $resolution ] = $video;
                 }
-
             }
 
             $endpoint = [

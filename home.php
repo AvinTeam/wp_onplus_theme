@@ -8,32 +8,32 @@
     // حالا JSON رو تبدیل به آرایه کن
     $data = json_decode($json_string, true);
 
-    foreach ($data as $row) {
+    if (is_array($data)) {
+        foreach ($data as $row) {
 
-        $row_file = "";
-        switch ($row[ 'type' ]) {
-            case 'link':
-                $row_file = "link";
-                break;
-            case 'on_category':
-                $row_file = "category";
-                break;
-            case 'on_tag':
-                $row_file = "category";
-                break;
-            case 'list_category':
-                $row_file = "list_category";
-                break;
+            $row_file = "";
+            switch ($row[ 'type' ]) {
+                case 'link':
+                    $row_file = "link";
+                    break;
+                case 'on_category':
+                    $row_file = "category";
+                    break;
+                case 'on_tag':
+                    $row_file = "category";
+                    break;
+                case 'list_category':
+                    $row_file = "list_category";
+                    break;
 
-            default:
-                $row_file = "";
-                break;
+                default:
+                    $row_file = "";
+                    break;
+            }
+            if ($row_file != "") {
+                require ARMA_VIEWS . "layout/home/{$row_file}.php";
+            }
         }
-        if ($row_file != "") {
-            require ARMA_VIEWS . "layout/home/{$row_file}.php";
-
-        }
-
     }
 ?>
 

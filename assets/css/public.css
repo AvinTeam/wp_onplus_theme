@@ -164,8 +164,7 @@ body {
 
 .footer {
     font-size: 10px;
-    color: #E8E8E8;
-    background-color: #0F0F0F;
+
     padding: 6px 0;
     position: fixed;
     bottom: 0;
@@ -389,10 +388,6 @@ html[data-bs-theme=light] #download-svg {
     transition: background 0.3s ease, color 0.3s ease;
 }
 
-.social-container:hover .social-title {
-    background: #444;
-    color: white;
-}
 
 .arrow-icon {
     transition: transform 0.3s ease;
@@ -409,7 +404,6 @@ html[data-bs-theme=light] #download-svg {
     position: absolute;
     bottom: 100%;
     left: 0;
-    background: #444;
     padding: 10px;
     border-radius: 8px;
     list-style: none;
@@ -433,7 +427,6 @@ html[data-bs-theme=light] #download-svg {
 .social-list a {
     display: flex;
     align-items: center;
-    color: white;
     text-decoration: none;
 }
 
