@@ -556,6 +556,17 @@ html[data-bs-theme=light] #download-svg {
     animation: spin 1s linear infinite;
 }
 
+
+
+  
+.arma-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+
+
 @keyframes spin {
     0% {
         transform: rotate(0deg);

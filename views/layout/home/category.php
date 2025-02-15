@@ -57,7 +57,7 @@
 				                    </a>
 				                </div>
 				                <p class="card-text text-first mt-2">
-				                    <a class="nav-link" href="<?php echo get_permalink() ?>"><?php echo get_the_title() . ' - ' . tarikh(get_the_date('Y-m-d')) ?></a>
+				                    <a class="nav-link  arma-text" href="<?php echo get_permalink() ?>"><?php echo get_the_title() . ' - ' . tarikh(get_the_date('Y-m-d')) ?></a>
 				                </p>
 				            </div>
 				            <?php

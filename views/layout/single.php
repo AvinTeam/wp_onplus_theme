@@ -15,7 +15,7 @@
                             -<?php echo $episode[ 'title' ] ?></span>
                         <span class="sidebar-item-date"><?php echo $episode[ 'relative_time' ] ?></span>
                     </div>
-                    <a class="fw-bold nav-link"
+                    <a class="fw-bold nav-link arma-text"
                         href="<?php echo $episode[ 'permalink' ] ?>"><?php echo $episode[ 'title' ] ?></a>
                 </div>
 
@@ -227,7 +227,7 @@
                                 </a>
                             </div>
                             <p class="card-text text-first mt-2">
-                                <a class="nav-link"
+                                <a class="nav-link  arma-text"
                                     href="<?php echo $episode[ 'permalink' ] ?>"><small><?php echo $episode[ 'title' ] ?></small></a>
                             </p>
                         </div>

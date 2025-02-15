@@ -8,7 +8,7 @@
         <div class="col-md-3 col-12 d-none text-center text-md-end mt-2 d-md-block ">
             <img src="<?php echo $image_url ?>" class="img-fluid w-50 rounded-2" alt="Thumbnail">
         </div>
-        <div class="col-md-3 col-7 px-5">
+        <div class="col-md-3 col-12 px-5">
             <div class="d-flex align-items-center justify-content-start gap-2">
                 <h3><?php echo $term_name ?></h3>
 
@@ -81,12 +81,12 @@
                     class="card-img-top rounded-2" alt="<?php echo $episode[ 'title' ] ?>"></a>
 
         </div>
-        <div class="card-body d-flex justify-content-between">
-            <h6 class="text-right px-3 pt-2 arma_data"><?php echo $term_name ?> -<?php echo $episode[ 'data' ] ?></h6>
-            <span class="text-secondary px-3 pt-2 arma_duration"><?php echo $episode[ 'duration' ] ?></span>
+        <div class="card-body d-flex flex-column flex-md-row justify-content-between px-0 ">
+            <h6 class="text-right px-0 px-md-3 pt-2 arma_data "><?php echo $term_name ?> -<?php echo $episode[ 'data' ] ?></h6>
+            <span class="text-secondary px-0 px-md-3 pt-2 arma_duration"><?php echo $episode[ 'duration' ] ?></span>
         </div>
-        <a class="nav-link" href="<?php echo $episode[ 'permalink' ] ?>">
-            <p class="card-text text-first text-right"><?php echo $episode[ 'title' ] ?></p>
+        <a class="nav-link " href="<?php echo $episode[ 'permalink' ] ?>">
+            <p class="card-text text-first text-right arma-text"><?php echo $episode[ 'title' ] ?></p>
         </a>
     </div>
     <?php endforeach; ?>
@@ -137,7 +137,7 @@ if ($query->max_num_pages > 1): ?>
         <div class="w-75 mx-auto text-first text-white">
             <!-- Main Title -->
             <h2 class="mb-3" style="font-size: 18px;">عوامل برنامه</h2>
-            <div class="row row-cols-4">
+            <div class="row row-cols-1 row-cols-md-4 ">
                 <?php foreach ($all_colleagues as $colleague): ?>
                 <div class="col mb-3 d-flex flex-row justify-content-start align-items-center gap-2">
                     <img src="<?php echo $colleague[ 'image' ] ?>" class="img-fluid rounded-circle"

@@ -116,7 +116,7 @@ function add_arma_admin_bar_menu($wp_admin_bar)
 
     $wp_admin_bar->add_node([
         'id'    => 'arma-settings',
-        'title' => 'تنظیمات آرامامدیا',
+        'title' => 'تنظیمات کامامدیا',
         'href'  => admin_url('admin.php?page=arma'),
      ]);
 

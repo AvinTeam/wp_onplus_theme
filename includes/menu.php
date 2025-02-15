@@ -12,8 +12,8 @@ function arma_admin_menu(string $context): void
 {
 
     add_menu_page(
-        'آرمامدیا',
-        'آرمامدیا',
+        'کامامدیا',
+        'کامامدیا',
         'manage_options',
         'arma',
         'arma_visited',
