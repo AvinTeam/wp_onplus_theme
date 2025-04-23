@@ -1,4 +1,4 @@
-jalaliDatepicker.startWatch({
+arma-swiperjalaliDatepicker.startWatch({
     minDate: "attr",
     maxDate: "attr"
 });
