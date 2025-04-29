@@ -45,9 +45,13 @@ function renderAccordions() {
 
         let isImage = (item.img) ? item.img : '';
         let isShortCode = (item.shortcode) ? item.shortcode : '';
+        let isSlider = (item.slider) ? item.slider : 400;
         let isImageClass = (item.img) ? '' : 'd-none';
         let isShortCodeClass = (item.shortcode) ? '' : 'd-none';
+        let isSliderClass = (item.type == 'slider') ? '' : 'd-none';
         let isTypeClass = (item.type === 'on_category' || item.type === 'on_tag') ? '' : 'd-none';
+
+        console.log(item);
 
         let optionLabel = "انتخاب برنامه / برچسب:";
 
@@ -72,6 +76,7 @@ function renderAccordions() {
             <option value="on_category" ${item.type === "on_category" ? "selected" : ""}>برنامه</option>
             <option value="on_tag" ${item.type === "on_tag" ? "selected" : ""}>برچسب</option>
             <option value="list_category" ${item.type === "list_category" ? "selected" : ""}>لیست برنامه ها</option>
+            <option value="slider" ${item.type === "slider" ? "selected" : ""}>اسلایدر</option>
             <option value="shortcode" ${item.type === "shortcode" ? "selected" : ""}>کد کوتاه</option>
             </select>
         </div>
@@ -86,6 +91,10 @@ function renderAccordions() {
             <div class="shortcode ${isShortCodeClass}">
                 <label>کدکوتاه:</label>
                 <input type="text" value="${isShortCode}" ondblclick="this.select()" oninput="updateAccordion(${index}, 'shortcode', this.value)" onclick="event.stopPropagation()">
+            </div>
+            <div class="slider ${isSliderClass}">
+                <label>ارتفاع اسلایدر: px</label>
+                <input type="text" value="${isSlider}" style="width: 100px;" ondblclick="this.select()" oninput="updateAccordion(${index}, 'slider', this.value)" onclick="event.stopPropagation()">
             </div>
 
             <div class="list ${isTypeClass}  class="m-top-10"">
@@ -130,6 +139,9 @@ function updateAccordion(index, key, value, element = null) {
     } else {
         accordionData[index][key] = value;
     }
+
+    console.log(accordionData.type);
+
     updateHiddenInput();
 
 
@@ -141,6 +153,7 @@ function updateAccordion(index, key, value, element = null) {
 
         const img = selectedBox.querySelector('.img');
         const shortcode = selectedBox.querySelector('.shortcode');
+        const slider = selectedBox.querySelector('.slider');
         const list = selectedBox.querySelector('.list');
         const optionTitle = selectedBox.querySelector('.list label');
         const optionSelect = selectedBox.querySelector('.list select');
@@ -149,6 +162,7 @@ function updateAccordion(index, key, value, element = null) {
             img.classList.remove('d-none');
             list.classList.add('d-none');
             shortcode.classList.add('d-none');
+            slider.classList.add('d-none');
 
         } else if (value === 'on_category' || value === 'on_tag') {
             let selectedValue = optionSelect.getAttribute("data-selected");
@@ -157,13 +171,27 @@ function updateAccordion(index, key, value, element = null) {
             if (value === 'on_tag') { optionTitle.textContent = "انتخاب برچسب:" }
             img.classList.add('d-none');
             list.classList.remove('d-none');
+            shortcode.classList.add('d-none');
+            slider.classList.add('d-none');
+
         } else if (value === 'list_category') {
             img.classList.add('d-none');
-            list.classList.add('d-none');
+            list.classList.add('d-none');            
             shortcode.classList.add('d-none');
+            slider.classList.add('d-none');
+
+
         } else if (value === 'shortcode') {
             shortcode.classList.remove('d-none');
+            list.classList.add('d-none');            
+            slider.classList.add('d-none');
+
+        } else if (value === 'slider') {
+            slider.classList.remove('d-none');
             list.classList.add('d-none');
+            shortcode.classList.add('d-none');
+
+
         } else {
             img.classList.add('d-none');
             list.classList.add('d-none');
@@ -183,7 +211,9 @@ function addAccordion() {
         type: "0",
         img: "",
         link: "",
+        slider: 400,
         option: "0",
+        shortcode: "",
     });
     renderAccordions();
 }
@@ -263,11 +293,6 @@ jQuery(document).ready(function ($) {
     if ($('#viewsChart').length > 0) {
         arma_show_chart(arma_js.visited);
     }
-
-
-
-
-
 
 
     $('.onlyNumbersInput').on('input paste', function () {

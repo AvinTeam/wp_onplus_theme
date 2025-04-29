@@ -11,6 +11,28 @@ add_action('admin_menu', 'arma_admin_menu');
 function arma_admin_menu(string $context): void
 {
 
+    $slider_suffix =add_menu_page(
+        'اسلایدر',
+        'اسلایدر',
+        'manage_options',
+        'arma_slider',
+        'arma_slider',
+        'dashicons-slides',
+        3
+    );
+
+
+    function arma_slider()
+    {
+        $arma_option = arma_start_working();
+
+        require_once ARMA_VIEWS . 'menu/slider.php';
+
+    }
+
+
+
+
     add_menu_page(
         'کامامدیا',
         'کامامدیا',
@@ -92,6 +114,7 @@ function arma_admin_menu(string $context): void
     add_action('load-' . $setting_suffix, 'arma__submit');
     add_action('load-' . $sms_panels_suffix, 'arma__submit');
     add_action('load-' . $home_page_suffix, 'arma__home_page');
+    add_action('load-' . $slider_suffix, 'arma__home_page');
 
     function arma__submit()
     {

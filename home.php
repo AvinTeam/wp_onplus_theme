@@ -27,6 +27,8 @@
                     break;
                 case 'shortcode':
                     $row_file = "shortcode";
+                case 'slider':
+                    $row_file = "slider";
                     break;
 
                 default:

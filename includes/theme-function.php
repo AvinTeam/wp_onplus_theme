@@ -89,6 +89,8 @@ function arma_start_working(): array
                 'dark-logo'         => (isset($arma_option[ 'dark-logo' ])) ? $arma_option[ 'dark-logo' ] : arma_panel_image('logo-dark.png'),
                 'arvancloud_key'    => (isset($arma_option[ 'arvancloud_key' ])) ? $arma_option[ 'arvancloud_key' ] : '',
 
+                'slider_images'    => (isset($arma_option[ 'slider_images' ])) ? $arma_option[ 'slider_images' ] : '',
+
              ]
 
         );
@@ -118,6 +120,9 @@ function arma_update_option($data)
         'light-logo'        => (isset($data[ 'light-logo' ])) ? $data[ 'light-logo' ] : $arma_option[ 'light-logo' ],
         'dark-logo'         => (isset($data[ 'dark-logo' ])) ? $data[ 'dark-logo' ] : $arma_option[ 'dark-logo' ],
         'arvancloud_key'    => (isset($data[ 'arvancloud_key' ])) ? $data[ 'arvancloud_key' ] : $arma_option[ 'arvancloud_key' ],
+
+        'slider_images'    => (isset($data[ 'slider_images' ])) ? $data[ 'slider_images' ] : $arma_option[ 'slider_images' ],
+
 
      ];
 
