@@ -8,7 +8,7 @@
         <div class="col-md-3 col-12 d-none text-center text-md-end mt-2 d-md-block ">
             <img src="<?php echo $image_url ?>" class="img-fluid w-50 rounded-2" alt="Thumbnail">
         </div>
-        <div class="col-md-3 col-12 px-5">
+        <div class="col-lg-3 col-12 px-5">
             <div class="d-flex align-items-center justify-content-start gap-2">
                 <h3><?php echo $term_name ?></h3>
 

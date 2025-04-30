@@ -47,7 +47,7 @@ function renderAccordions() {
         let isShortCode = (item.shortcode) ? item.shortcode : '';
         let isSlider = (item.slider) ? item.slider : 400;
         let isImageClass = (item.img) ? '' : 'd-none';
-        let isShortCodeClass = (item.shortcode) ? '' : 'd-none';
+        let isShortCodeClass = (item.type == 'shortcode') ? '' : 'd-none';
         let isSliderClass = (item.type == 'slider') ? '' : 'd-none';
         let isTypeClass = (item.type === 'on_category' || item.type === 'on_tag') ? '' : 'd-none';
 
@@ -180,16 +180,18 @@ function updateAccordion(index, key, value, element = null) {
             shortcode.classList.add('d-none');
             slider.classList.add('d-none');
 
-
         } else if (value === 'shortcode') {
             shortcode.classList.remove('d-none');
             list.classList.add('d-none');            
             slider.classList.add('d-none');
+            img.classList.add('d-none');
+
 
         } else if (value === 'slider') {
             slider.classList.remove('d-none');
             list.classList.add('d-none');
             shortcode.classList.add('d-none');
+            img.classList.add('d-none');
 
 
         } else {

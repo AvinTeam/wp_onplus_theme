@@ -1,10 +1,10 @@
 <div id="edit-profile" class="content-box"
-    style="                       <?php echo(get_query_var('arma') != 'edit-profile') ? 'display: none;' : '' ?> ">
+    style="<?php echo(get_query_var('arma') != 'edit-profile') ? 'display: none;' : '' ?> ">
     <h5 class="m-0 text-center">ویرایش پروفایل</h5>
     <div class="card mx-auto mt-5"
         style="max-width: 500px; position: relative; border-radius: 10px; overflow: hidden; background-color: #242323;">
-        <div class="card-header bg-primary text-white text-center py-3">
-            ***
+        <div class="card-header bg-primary text-white text-center py-4">
+            
         </div>
         <form accept="" method="POST" enctype="multipart/form-data">
             <?php wp_nonce_field('arma_nonce' . arma_cookie()); ?>
@@ -14,8 +14,13 @@
                 <div class="text-center mb-3">
                     <img id="profileImage"
                         src="<?php echo($this_user->user_avatar) ? wp_get_attachment_image_url($this_user->user_avatar) : arma_panel_image('panel/placeHolderUserImage.png') ?>"
-                        alt="Profile Image" class="img-fluid rounded-circle mb-2"
-                        style="width: 70px; height: 70px; object-fit: cover; border: 5px solid #3899a0;">
+                        alt="<?php echo($this_user->display_name) ? $this_user->display_name : 'کاربر جدید' ?>"
+                        class="img-fluid rounded-circle mb-2 border border-5"
+                        style="width: 100px; height: 100px; object-fit: cover; border-color: #3899a0 !important;">
+
+
+
+
                     <div>
                         <button class="btn btn-link text-white mt-2" type="button"
                             onclick="document.getElementById('fileInput').click();">انتخاب تصویر</button>
@@ -30,7 +35,7 @@
                     <input type="text" id="profileName" name="profileName" class="form-control"
                         placeholder="نام پروفایل خود را وارد کنید"
                         style="background-color: #333; color: #fff; border: 1px solid #444;"
-                        value="<?php echo $this_user->display_name ?>">
+                        value="<?php echo ($this_user->display_name == $this_user->user_login) ? '' : $this_user->display_name ?>">
                 </div>
 
                 <!-- Gender Field -->
@@ -38,10 +43,10 @@
                     <label for="gender" class="form-label d-block text-white">جنسیت</label>
                     <select id="gender" class="form-select w-100" name="gender"
                         style="background-color: #333; color: #fff; border: 1px solid #444;">
-                        <option <?php selected('man', $this_user->gender)?> value="man" selected>آقا</option>
-                        <option <?php selected('woman', $this_user->gender)?> value="woman">خانم</option>
-                        <option <?php selected('know', $this_user->gender)?> value="know">ترجیح میدهم اعلام نکنم
+                        <option <?php selected('know', $this_user->gender)?> value="know" selected>جنسیت خود را انتخاب کنید
                         </option>
+                        <option <?php selected('man', $this_user->gender)?> value="man">آقا</option>
+                        <option <?php selected('woman', $this_user->gender)?> value="woman">خانم</option>
                     </select>
                 </div>
 

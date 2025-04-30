@@ -62,9 +62,18 @@
                 </button>
                 <!-- متن ورود/ثبت نام اضافه شده -->
                 <?php if (is_user_logged_in()): ?>
-                <a href="/panel" class="ms-4"><img class="rounded-circle" style="width: 40px;"
+                <a href="/panel" class="ms-4">
+
+
+                    <img id="profileImage"
                         src="<?php echo($this_user->user_avatar) ? wp_get_attachment_image_url($this_user->user_avatar) : arma_panel_image('panel/placeHolderUserImage.png') ?>"
-                        alt="<?php echo($this_user->display_name) ? $this_user->display_name : 'کاربر جدید' ?>"></a>
+                        alt="<?php echo($this_user->display_name) ? $this_user->display_name : 'کاربر جدید' ?>"
+                        class="img-fluid rounded-circle mb-2 border border-1"
+                        style="width: 40px; height: 40px; object-fit: cover; border-color: #3899a0 !important;">
+
+
+
+                </a>
                 <?php else: ?>
                 <a href="/panel" class="ms-4 btn btn-dark">ورود/ثبت نام</a>
                 <?php endif; ?>

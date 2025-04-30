@@ -2,7 +2,7 @@
 date_default_timezone_set('Asia/Tehran');
 
 (defined('ABSPATH')) || exit;
-define('ARMA_VERSION', '1.3.2');
+define('ARMA_VERSION', '1.3.5');
 
 define('ARMA_PATH', get_template_directory() . "/");
 define('ARMA_INCLUDES', ARMA_PATH . 'includes/');

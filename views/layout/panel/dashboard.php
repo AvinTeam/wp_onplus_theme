@@ -66,10 +66,14 @@
             style="max-height: 100vh; overflow-y: auto; background-color: #171717;">
             <div class="d-flex flex-column">
                 <div class="text-center mb-4" style="background-color: #171717;">
-                    <img src="<?php echo($this_user->user_avatar) ? wp_get_attachment_image_url($this_user->user_avatar) : arma_panel_image('panel/placeHolderUserImage.png') ?>" alt="<?php echo($this_user->display_name) ? $this_user->display_name : 'کاربر جدید' ?>"
-                        class="rounded-circle" width="100">
+
+                    <img src="<?php echo($this_user->user_avatar) ? wp_get_attachment_image_url($this_user->user_avatar) : arma_panel_image('panel/placeHolderUserImage.png') ?>"
+                        alt="<?php echo($this_user->display_name) ? $this_user->display_name : 'کاربر جدید' ?>"
+                        class="img-fluid rounded-circle mb-2 border border-5"
+                        style="width: 100px; height: 100px; object-fit: cover; border-color: #3899a0 !important;">
+
                     <h5 class="mt-2 text-white">
-                        <?php echo($this_user->display_name) ? $this_user->display_name : 'کاربر جدید' ?></h5>
+                        <?php echo($this_user->display_name != $this_user->user_login) ? $this_user->display_name : 'کاربر جدید' ?></h5>
                     <p class="text-white"><?php echo $this_user->mobile ?></p>
                 </div>
 
@@ -81,7 +85,8 @@
                         <i class="bi bi-person me-2"></i>
                         ویرایش پروفایل
                     </a>
-                    <a href="<?php echo arma_base_url('show') ?>" class="list-group-item border-0 list-group-item-action d-flex align-items-center"
+                    <a href="<?php echo arma_base_url('show') ?>"
+                        class="list-group-item border-0 list-group-item-action d-flex align-items-center d-none"
                         style="background-color: #171717; color: white;">
                         <i class="bi bi-clock-history me-2"></i>
                         تاریخچه تماشا
@@ -92,7 +97,8 @@
                         <i class="bi bi-bookmarks me-2"></i>
                         نشان شده&zwnj;ها
                     </a>
-                    <a href="<?php echo arma_base_url('mobile') ?>" class="list-group-item border-0 list-group-item-action d-flex align-items-center"
+                    <a href="<?php echo arma_base_url('mobile') ?>"
+                        class="list-group-item border-0 list-group-item-action d-flex align-items-center"
                         style="background-color: #171717; color: white;">
                         <i class="bi bi-phone me-2"></i>
                         تغییر شماره موبایل
@@ -110,7 +116,7 @@
 
         <!-- Column (Content Area) -->
         <div class="col-12 col-md-9 p-md-3 py-5">
-        <?php echo arma_transient()?>
+            <?php echo arma_transient() ?>
 
             <?php
 
@@ -142,5 +148,5 @@
         </div>
     </div>
 </div>
-            <?php
+<?php
             get_footer();
