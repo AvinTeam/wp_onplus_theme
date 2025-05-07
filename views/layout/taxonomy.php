@@ -16,7 +16,7 @@
                 <div class="d-flex align-items-center bookmark-container">
                     <svg id="post_bookmark" data-bookmark-status="remove" data-post-id="<?php echo $term_id ?>"
                         data-type="<?php echo $term_type ?>" xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                        viewBox="0 0 24 24" fill="#3899a0" stroke="#3899a0" stroke-width="2" stroke-linecap="round"
+                        viewBox="0 0 24 24" fill="#ffad00" stroke="#ffad00" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" class="lucide lucide-bookmark">
                         <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path>
                     </svg>
@@ -29,7 +29,7 @@
                 <div class="d-flex align-items-center bookmark-container">
                     <svg id="post_bookmark" data-bookmark-status="add" data-post-id="<?php echo $term_id ?>"
                         data-type="<?php echo $term_type ?>" xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                        viewBox="0 0 24 24" fill="none" stroke="#3899a0" stroke-width="2" stroke-linecap="round"
+                        viewBox="0 0 24 24" fill="none" stroke="#ffad00" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" class="lucide lucide-bookmark">
                         <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path>
                     </svg>

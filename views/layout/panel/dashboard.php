@@ -70,7 +70,7 @@
                     <img src="<?php echo($this_user->user_avatar) ? wp_get_attachment_image_url($this_user->user_avatar) : arma_panel_image('panel/placeHolderUserImage.png') ?>"
                         alt="<?php echo($this_user->display_name) ? $this_user->display_name : 'کاربر جدید' ?>"
                         class="img-fluid rounded-circle mb-2 border border-5"
-                        style="width: 100px; height: 100px; object-fit: cover; border-color: #3899a0 !important;">
+                        style="width: 100px; height: 100px; object-fit: cover; border-color: #ffad00 !important;">
 
                     <h5 class="mt-2 text-white">
                         <?php echo($this_user->display_name != $this_user->user_login) ? $this_user->display_name : 'کاربر جدید' ?></h5>
@@ -98,7 +98,7 @@
                         نشان شده&zwnj;ها
                     </a>
                     <a href="<?php echo arma_base_url('mobile') ?>"
-                        class="list-group-item border-0 list-group-item-action d-flex align-items-center"
+                        class="list-group-item border-0 list-group-item-action d-flex align-items-center d-none"
                         style="background-color: #171717; color: white;">
                         <i class="bi bi-phone me-2"></i>
                         تغییر شماره موبایل

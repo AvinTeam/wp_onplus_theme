@@ -7,8 +7,8 @@ Template Name: درباره ما
 
     <!-- سطر اول -->
     <div class="container-fluid bg-custom py-5 text-center" style="background-color: #181818;">
-        <h2 class="mb-3 fw-bold" style="font-size: 24px; color: #3899A0;"><?php the_title(); ?></h2>
-        <h2 class="text-white" style="font-size: 16px;">صفحه اصلی / <?php the_title(); ?></h2>
+        <h2 class="mb-3 fw-bold" style="font-size: 24px; color: #ffad00;"><?php the_title(); ?></h2>
+        <h2 class="text-white d-none" style="font-size: 16px;">صفحه اصلی / <?php the_title(); ?></h2>
     </div>
 
     <!-- سطر دوم -->

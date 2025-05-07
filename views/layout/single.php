@@ -30,7 +30,7 @@
             <div class="video-container mb-3">
 
                 <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered rounded-3 w-100" controls
-                    poster="<?php echo $episode_data[ 'image' ] ?>" width="100%" height="360" >
+                    poster="<?php echo $episode_data[ 'image' ] ?>" width="100%" height="360">
                 </video>
 
                 <script>
@@ -87,7 +87,7 @@
                         <svg id="post_bookmark" data-bookmark-status="remove"
                             data-post-id="<?php echo $episode_data[ 'id' ] ?>"
                             data-type="<?php echo $episode_data[ 'type' ] ?>" xmlns="http://www.w3.org/2000/svg"
-                            width="25" height="25" viewBox="0 0 24 24" fill="#3899a0" stroke="#3899a0" stroke-width="2"
+                            width="25" height="25" viewBox="0 0 24 24" fill="#ffad00" stroke="#ffad00" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark">
                             <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path>
                         </svg>
@@ -101,7 +101,7 @@
                         <svg id="post_bookmark" data-bookmark-status="add"
                             data-post-id="<?php echo $episode_data[ 'id' ] ?>"
                             data-type="<?php echo $episode_data[ 'type' ] ?>" xmlns="http://www.w3.org/2000/svg"
-                            width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#3899a0" stroke-width="2"
+                            width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#ffad00" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark">
                             <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path>
                         </svg>
@@ -155,11 +155,11 @@
             <?php if (! empty($episode_cat)): ?>
             <div class="mx-auto p-4 swiper arma-swiper">
                 <!-- عنوان و دکمه "نمایش همه" -->
-                <div class="view-all d-flex justify-content-between align-items-center px-4">
+                <div class="view-all d-flex justify-content-between align-items-center px-4 text-kama py-3">
                     <p class="fw-bold small">بخش های منتخب</p>
-                    <a href="#" class="ms-3 d-none" style="font-size: 13px; color: #3FB1D9; text-decoration: none;">
+                    <a href="#" class="ms-3 d-none" style="font-size: 13px; color: #ffad00 ; text-decoration: none;">
                         نمایش همه
-                        <svg fill="#3FB2DA" height="8px" width="8px" viewBox="0 0 512.005 512.005">
+                        <svg fill="#ffad00 " height="8px" width="8px" viewBox="0 0 512.005 512.005">
                             <path d="M123.586,240.923L358.253,6.256c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165L168.834,256.005
                 l219.584,219.584c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251
                 L123.586,271.747C115.245,263.406,115.245,249.923,123.586,240.923z">
@@ -202,9 +202,9 @@
                 <div class="view-all d-flex  justify-content-between align-items-center px-4">
                     <p class="fw-bold small">سایر قسمت‌ها</p>
                     <a href="<?php echo $category_link ?>" class="ms-3"
-                        style="font-size: 13px; color: #3FB1D9; text-decoration: none;">
+                        style="font-size: 13px; color: #ffad00 ; text-decoration: none;">
                         نمایش همه
-                        <svg fill="#3FB2DA" height="8px" width="8px" viewBox="0 0 512.005 512.005">
+                        <svg fill="#ffad00 " height="8px" width="8px" viewBox="0 0 512.005 512.005">
                             <path d="M123.586,240.923L358.253,6.256c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165L168.834,256.005
                 l219.584,219.584c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251
                 L123.586,271.747C115.245,263.406,115.245,249.923,123.586,240.923z">
@@ -295,7 +295,9 @@
                     <div class="d-flex flex-column w-100">
                         <div class="d-flex flex-row justify-content-between align-items-center">
                             <div class="d-flex align-items-center gap-2">
-                                <p><?php echo esc_html($author); ?></p>
+                                <p><?php echo esc_html($author); ?>
+                                    <?php if (absint($comment->user_id) && user_can($comment->user_id, 'manage_options')) {echo "( مدیر سایت )";}?>
+                                </p>
                                 <p><?php echo esc_html($date); ?></p>
                             </div>
                             <?php if (is_user_logged_in()): ?>

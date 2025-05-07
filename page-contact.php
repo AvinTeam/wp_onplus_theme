@@ -19,7 +19,7 @@ Template Name: تماس با ما
 
         <!-- FAQ Button -->
         <div class="mb-4 text-center d-none">
-            <button class="btn btn-primary" style="font-size: 12px; background-color: #3899a0; border-color: #3899a0;">
+            <button class="btn btn-primary" style="font-size: 12px; background-color: #ffad00; border-color: #ffad00;">
                 سوالات متداول
             </button>
         </div>

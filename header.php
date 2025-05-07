@@ -23,9 +23,9 @@
             <!-- Logo -->
             <div class="d-flex">
                 <a href="/" class="navbar-brand d-flex align-items-center">
-                    <img src="<?php echo $arma_option[ 'light-logo' ] ?>" alt="لوگو نسخه روشن"
+                    <img style="height: 45px;" src="<?php echo $arma_option[ 'light-logo' ] ?>" alt="لوگو نسخه روشن"
                         class="rounded me-2 logo-light" id="logo-light">
-                    <img src="<?php echo $arma_option[ 'dark-logo' ] ?>" alt="لوگو نسخه تیره"
+                    <img style="height: 45px;" src="<?php echo $arma_option[ 'dark-logo' ] ?>" alt="لوگو نسخه تیره"
                         class="rounded me-2 logo-dark" id="logo-dark">
                 </a>
                 <!-- Navigation Menu -->
@@ -60,23 +60,20 @@
                 <button id="toggleTheme" class="btn border-0 mx-2">
                     <i id="themeIcon" class="bi bi-sun"></i>
                 </button>
+                <div class="d-none">
                 <!-- متن ورود/ثبت نام اضافه شده -->
                 <?php if (is_user_logged_in()): ?>
                 <a href="/panel" class="ms-4">
-
-
                     <img id="profileImage"
                         src="<?php echo($this_user->user_avatar) ? wp_get_attachment_image_url($this_user->user_avatar) : arma_panel_image('panel/placeHolderUserImage.png') ?>"
                         alt="<?php echo($this_user->display_name) ? $this_user->display_name : 'کاربر جدید' ?>"
                         class="img-fluid rounded-circle mb-2 border border-1"
-                        style="width: 40px; height: 40px; object-fit: cover; border-color: #3899a0 !important;">
-
-
-
+                        style="width: 40px; height: 40px; object-fit: cover; border-color: #ffad00 !important;">
                 </a>
                 <?php else: ?>
                 <a href="/panel" class="ms-4 btn btn-dark">ورود/ثبت نام</a>
                 <?php endif; ?>
+                </div>
             </div>
         </div>
     </header>

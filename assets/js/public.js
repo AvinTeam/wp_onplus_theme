@@ -492,7 +492,7 @@ jQuery(document).ready(function ($) {
                     }
 
                     if (status === "add") {
-                        $(_this).attr('fill', '#3899a0');
+                        $(_this).attr('fill', '#ffad00');
                         $(_this).attr('data-bookmark-status', 'remove');
                         $(_this).closest('div').find("span").html('حذف از لیست نشان شده‌ها');
                     }

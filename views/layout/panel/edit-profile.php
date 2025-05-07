@@ -16,7 +16,7 @@
                         src="<?php echo($this_user->user_avatar) ? wp_get_attachment_image_url($this_user->user_avatar) : arma_panel_image('panel/placeHolderUserImage.png') ?>"
                         alt="<?php echo($this_user->display_name) ? $this_user->display_name : 'کاربر جدید' ?>"
                         class="img-fluid rounded-circle mb-2 border border-5"
-                        style="width: 100px; height: 100px; object-fit: cover; border-color: #3899a0 !important;">
+                        style="width: 100px; height: 100px; object-fit: cover; border-color: #ffad00 !important;">
 
 
 
@@ -66,7 +66,7 @@
                 <div class="row mt-4">
                     <div class="col-6">
                         <button class="btn w-100" name="act" value="submit_profile"
-                            style="background-color: #3899A0; border-radius: 5px; color: white;">تایید</button>
+                            style="background-color: #ffad00; border-radius: 5px; color: white;">تایید</button>
                     </div>
                     <div class="col-6">
                         <button class="btn w-100 btn-secondary" style="border-radius: 5px;">بازگشت</button>

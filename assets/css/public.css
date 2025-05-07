@@ -24,6 +24,11 @@
     font-weight: normal;
 }
 
+
+.text-kama{
+    color: #ffad00 !important;
+}
+
 body {
     font-family: 'vazir';
 }
@@ -485,7 +490,7 @@ html[data-bs-theme=light] #download-svg {
     /* نمایش متن بالای آیکن */
     left: 50%;
     transform: translateX(-50%);
-    background: #3899a0;
+    background: #ffad00;
     /* رنگ پس‌زمینه هم‌رنگ آیکن */
     color: black;
     /* رنگ متن مشکی */
@@ -509,7 +514,7 @@ html[data-bs-theme=light] #download-svg {
     height: 0;
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
-    border-top: 6px solid #3899a0;
+    border-top: 6px solid #ffad00;
     /* همرنگ پس‌زمینه */
 }
 

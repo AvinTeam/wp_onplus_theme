@@ -440,11 +440,14 @@ function arma_admin_view()
 // بررسی لاگین بودن کاربر
 function check_user_login()
 {
-    if (is_user_logged_in()) {
-        wp_send_json_success([ "logged_in" => true ]);
-    } else {
-        wp_send_json_success([ "logged_in" => false ]);
-    }
+
+    
+    wp_send_json_success([ "logged_in" => true ]);
+    // if (is_user_logged_in()) {
+    //     wp_send_json_success([ "logged_in" => true ]);
+    // } else {
+    //     wp_send_json_success([ "logged_in" => false ]);
+    // }
 }
 add_action("wp_ajax_check_user_login", "check_user_login");
 add_action("wp_ajax_nopriv_check_user_login", "check_user_login");
@@ -456,11 +459,7 @@ function submit_comment()
         wp_send_json_error([ "message" => "مشکل امنیتی رخ داده است." ]);
     }
 
-    if (! is_user_logged_in()) {
-        wp_send_json_error([ "message" => "شما باید وارد شوید!" ]);
-    }
-
-    $user_id = get_current_user_id();
+  
     $comment = sanitize_text_field($_POST[ "comment" ]);
     $post_id = intval($_POST[ "post_id" ]);
 
@@ -470,12 +469,15 @@ function submit_comment()
 
     $comment_data = [
         "comment_post_ID"      => $post_id,
-        "comment_author"       => wp_get_current_user()->display_name,
-        "comment_author_email" => wp_get_current_user()->user_email,
+        "comment_author"       => is_user_logged_in() ? wp_get_current_user()->display_name : "مهمان",
+        "comment_author_email" => is_user_logged_in() ? wp_get_current_user()->user_email : microtime()."@example.com",
         "comment_content"      => $comment,
-        "user_id"              => $user_id,
-        "comment_approved"     => 1, // اگر بخوای تایید خودکار بشه
+        "comment_approved"     => 0, // اگر بخوای تایید خودکار بشه
      ];
+
+     if (is_user_logged_in()) {
+        $comment_data['user_id'] = get_current_user_id();
+    }
 
     $comment_id = wp_insert_comment($comment_data);
 

@@ -29,7 +29,7 @@ if (have_posts()):
         'title'           => get_the_title(),
         'permalink'       => get_permalink(),
         'excerpt'         => get_the_excerpt(),
-        'content'         => get_the_content(),
+        'content'         => nl2br(get_the_content()),
         'image'           => (has_post_thumbnail()) ? get_the_post_thumbnail_url($current_post_id, 'full') : '',
         'categories'      => wp_get_post_terms($current_post_id, 'on_category', [ 'fields' => 'names' ]),
         'date'            => tarikh(get_the_date('Y-m-d')),
@@ -40,6 +40,10 @@ if (have_posts()):
         'colleagues'      => get_post_meta($current_post_id, '_arma_colleagues', true),
         'type'            => get_post_type($current_post_id),
      ];
+
+
+
+
 
     $term_id       = $categories[ 0 ]->term_id; // آی‌دی دسته
     $term_name     = $categories[ 0 ]->name;    // نام دسته

@@ -17,7 +17,7 @@
                 <div class="row mt-4">
                     <div class="col-12">
                         <button class="btn w-100"
-                            style="background-color: #3899A0; border-radius: 5px; color: white;">ارسال</button>
+                            style="background-color: #ffad00; border-radius: 5px; color: white;">ارسال</button>
                     </div>
                 </div>
             </div>
