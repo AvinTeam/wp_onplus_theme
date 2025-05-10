@@ -30,7 +30,7 @@ function arma_meta_box()
     }
     add_meta_box(
         'arma_colleagues',
-        "همکاران ",
+        "همکاران",
         'arma_colleagues_metabox_callback',
         [ 'episode' ],
         'normal',
@@ -144,19 +144,21 @@ function arma_save_bax($post_id, $post, $updata)
 
     if (isset($_POST[ 'onplus' ])) {
 
+        remove_action('save_post', 'arma_save_bax');
+
         $POST       = $_POST[ 'onplus' ];
         $colleagues = [  ];
 
         update_post_meta($post_id, '_arma_brief', wp_kses_post(wp_unslash(nl2br($POST[ 'brief' ]))));
         update_post_meta($post_id, '_arma_production_date', sanitize_text_field($POST[ 'production_date' ]));
 
-        remove_action('save_post', 'arma_save_bax');
-
-
         arma_set_video_post($post_id, sanitize_text_field($POST[ 'video' ]));
+
+      
 
         if (isset($POST[ 'colleagues' ])) {
             foreach ($POST[ 'colleagues' ] as $index => $value) {
+                if (empty($POST[ 'colleagues' ]) || empty($POST[ 'position' ])) {continue;}
 
                 $colleagues[  ] = [
                     'colleagues' => $value,
@@ -165,9 +167,9 @@ function arma_save_bax($post_id, $post, $updata)
 
             }
 
-            update_post_meta($post_id, '_arma_colleagues', $colleagues);
-
         }
+
+        update_post_meta($post_id, '_arma_colleagues', $colleagues);
         if (isset($POST[ 'episode' ])) {
 
             update_post_meta($post_id, '_arma_episode', absint($POST[ 'episode' ]));
@@ -176,8 +178,6 @@ function arma_save_bax($post_id, $post, $updata)
         add_action('save_post', 'arma_save_bax');
 
     }
-
-
 
 }
 

@@ -152,3 +152,5 @@ if ($query->max_num_pages > 1): ?>
         </div>
     </div>
 </div>
+
+<div style="height: 25px;"></div>

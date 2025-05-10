@@ -10,7 +10,11 @@
                 <td>
                     <div class="agents_list">
 
-                    <?php foreach ($arma_colleagues as $colleague): ?>
+                    <?php
+                    
+                    foreach ($arma_colleagues as $colleague): 
+                        if(empty($colleague[ 'colleagues' ]) || empty($colleague[ 'position' ]) ){ continue;}
+                        ?>
 
                         <div class="agents-row">
                             <select class="select2colleagues regular-text" name="onplus[colleagues][]" data-select="<?php echo $colleague[ 'colleagues' ]?>">
