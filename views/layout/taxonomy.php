@@ -131,7 +131,7 @@ if ($query->max_num_pages > 1): ?>
 </nav>
 <?php endif; ?>
 
-<div class="container-fluid mt-5">
+<div class="container-fluid mt-5    <?php  if(!$all_colleagues){ echo 'd-none'; } ?>    ">
     <!-- Background Section -->
     <div class="row justify-content-center align-items-center py-5 colleagues">
         <div class="w-75 mx-auto text-first text-white">
