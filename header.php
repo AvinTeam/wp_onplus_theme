@@ -89,7 +89,7 @@
             <form role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>">
                 <input type="search" name="s" class="form-control search-input"
                     placeholder="عبارت مورد نظر را جستجو کنید..." value="<?php echo get_search_query(); ?>">
-                <button type="submit" class="btn btn-info mt-3 w-100">جستجو</button>
+                <button type="submit" class="btn btn-warning mt-3 w-100" style="background-color: #ffad00;">جستجو</button>
             </form>
         </div>
     </div>

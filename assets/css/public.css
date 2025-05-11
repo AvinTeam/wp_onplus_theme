@@ -247,6 +247,11 @@ body {
     .contact_us.w-50 {
         width: 100% !important;
     }
+
+    .search-input {
+    font-size: 1rem;
+    padding: 0.3rem;
+}
 }
 
 .on-eight-slider {
