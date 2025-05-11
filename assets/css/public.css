@@ -243,6 +243,10 @@ body {
         /* ارتفاع کارت در موبایل */
         object-fit: cover;
     }
+
+    .contact_us.w-50 {
+        width: 100% !important;
+    }
 }
 
 .on-eight-slider {

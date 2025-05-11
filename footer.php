@@ -94,16 +94,25 @@
                 </svg>
             </span>
             <ul class="social-list bg-body">
-                <li><a class="text-body" href="#"><img src="<?php echo arma_panel_image('Bale.png') ?>"
-                            alt="bale">بله</a></li>
-                <li><a class="text-body" href="#"><img src="<?php echo arma_panel_image('rubika.png') ?>"
-                            alt="rubika">روبیکا</a></li>
-                <li><a class="text-body" href="#"><img src="<?php echo arma_panel_image('eitaa.svg') ?>"
+
+                <li><a class="text-body" target="_blank" href="https://www.aparat.com/kamaitv"><img src="<?php echo arma_panel_image('aparat.png') ?>"
+                            alt="bale">آپارات</a></li>
+
+                <li><a class="text-body" target="_blank" href="https://eitaa.com/kamaitv"><img src="<?php echo arma_panel_image('eitaa.svg') ?>"
                             alt="eita">ایتا</a></li>
-                <li><a class="text-body" href="#"><img src="<?php echo arma_panel_image('telegram.svg') ?>"
+
+                <li><a class="text-body" target="_blank" href="https://t.me/kamaitv"><img src="<?php echo arma_panel_image('telegram.svg') ?>"
                             alt="telegram">تلگرام</a></li>
-                <li><a class="text-body" href="#"><img src="<?php echo arma_panel_image('instagram.png') ?>"
+
+
+                <li class="d-none"><a class="text-body" target="_blank" href="#"><img src="<?php echo arma_panel_image('instagram.png') ?>"
                             alt="instagram">اینستاگرام</a></li>
+                            
+                <li class="d-none"><a class="text-body" target="_blank" href="#"><img src="<?php echo arma_panel_image('Bale.png') ?>"
+                            alt="bale">بله</a></li>
+                            
+                <li class="d-none"><a class="text-body" target="_blank" href="#"><img src="<?php echo arma_panel_image('rubika.png') ?>"
+                            alt="rubika">روبیکا</a></li>
             </ul>
         </div>
     </div>

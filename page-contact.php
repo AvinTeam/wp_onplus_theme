@@ -8,9 +8,9 @@ Template Name: تماس با ما
     $phone_support = get_post_meta(get_the_ID(), 'contact_phone_support', true);
 ?>
 
-<div class="container-fluid p-5" style="background: #3a3a3a;">
+<div class="container-fluid p-5 " style="background: #3a3a3a;">
     <!-- افزودن رنگ پس‌زمینه دارک -->
-    <div class="w-50  my-5 mx-auto">
+    <div class="contact_us w-50 my-5 mx-auto">
         <!-- Titles -->
         <div class="d-flex flex-column mb-4 text-center">
             <h2 style="font-size: 16px; " class=" d-none">پاسخ سوال خود را پیدا نکرده‌اید؟</h2>
@@ -51,7 +51,7 @@ Template Name: تماس با ما
             </div>
 
             <!-- Second Box -->
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-6 p-0">
                 <div class="p-4 rounded-3" style="font-size: 12px;background-color: #282828;">
                     <p>
                         <?php the_content(); ?>
