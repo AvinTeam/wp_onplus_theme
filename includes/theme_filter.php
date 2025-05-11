@@ -5,7 +5,7 @@ function arma_title_filter($title)
 {
     if (is_home() || is_front_page()) {
         $title = get_bloginfo('name') . " | صفحه اصلی";
-    } elseif (is_single()) {
+    } elseif (is_single() || is_page()) {
         $title = get_the_title() . " | " . get_bloginfo('name');
     } elseif (is_category()) {
         $title = single_cat_title('', false) . " | دسته‌بندی";
